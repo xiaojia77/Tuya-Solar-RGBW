@@ -1,0 +1,5 @@
+
+*.uvguix.*	eol=lf
+Project.uvoptx    eol=lf
+Project.uvprojx   eol=lf
+JLinkLog.txt text eol=lf
