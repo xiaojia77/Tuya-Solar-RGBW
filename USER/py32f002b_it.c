@@ -105,7 +105,8 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void)	//TIM1 中断
 	LL_TIM_ClearFlag_UPDATE(TIM1);
 	LL_TIM_DisableIT_UPDATE(TIM1);
 	NVIC_DisableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);
-	for(i=0;i<15;i++)__NOP(); //避开采集到尖峰电压
+	for(i=0;i<30;i++)__NOP(); //避开采集到尖峰电压
+	LL_GPIO_TogglePin(GPIOA,LL_GPIO_PIN_3);
 	LL_ADC_REG_StartConversion(ADC1); //马上开始采集
 }
 void TIM14_IRQHandler(void)		//T1M14 中断
@@ -125,12 +126,7 @@ void LPTIM1_IRQHandler(void)
 }
 void EXTI0_1_IRQHandler(void)
 {
-	if(LL_EXTI_IsActiveFlag(IR_EXTI_LINE))
-	{
-		LL_EXTI_ClearFlag(IR_EXTI_LINE);
-		Sys.IrWakeUPFlag = 1;
-		Ir_ExtiCallback();
-	}
+
 }
 void EXTI4_15_IRQHandler(void)
 {
@@ -138,6 +134,12 @@ void EXTI4_15_IRQHandler(void)
 	{
 		 LL_EXTI_ClearFlag(RX_EXTI_LINE);
 		 Sys.UartMWakeUPFlag = 1;
+	}
+	if(LL_EXTI_IsActiveFlag(IR_EXTI_LINE))
+	{
+		LL_EXTI_ClearFlag(IR_EXTI_LINE);
+		Sys.IrWakeUPFlag = 1;
+		Ir_ExtiCallback();
 	}
 	
 }

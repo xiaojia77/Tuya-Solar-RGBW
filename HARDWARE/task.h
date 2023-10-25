@@ -10,22 +10,29 @@
 #define unint volatile unsigned int
 #define unlong volatile unsigned long
 	
-#define GPIO_TY_EN_PORT GPIOB
-#define GPIO_TY_EN_PIN LL_GPIO_PIN_6
+#define GPIO_TY_EN_PORT GPIOB	 // 涂鸦供电
+#define GPIO_TY_EN_PIN LL_GPIO_PIN_7
 
-#define TY_ENANBLE   LL_GPIO_SetOutputPin(GPIO_TY_EN_PORT,GPIO_TY_EN_PIN);
-#define TY_DISANBLE	 LL_GPIO_ResetOutputPin(GPIO_TY_EN_PORT,GPIO_TY_EN_PIN);
+#define TY_ENANBLE    LL_GPIO_SetOutputPin(GPIO_TY_EN_PORT,GPIO_TY_EN_PIN);
+#define TY_DISANBLE 	LL_GPIO_ResetOutputPin(GPIO_TY_EN_PORT,GPIO_TY_EN_PIN);
+
+#define GPIO_TY_RST_PORT GPIOA  // 涂鸦复位
+#define GPIO_TY_RST_PIN LL_GPIO_PIN_1
+
+#define TY_RST_1  LL_GPIO_SetOutputPin(GPIO_TY_RST_PORT,GPIO_TY_RST_PIN);
+#define TY_RST_0  LL_GPIO_ResetOutputPin(GPIO_TY_RST_PORT,GPIO_TY_RST_PIN);
+
+
 
 typedef struct _xSys
 {
 	uint8_t EnterSleepFlag;
 	uint8_t LowVoltageFlag;
 	
-	
 	uint16_t EntreSleepTimeCount;  //
-	uint8_t SleepTimeCount;  //˯��ʱ�䳬��24h �͹رպ��� ����ʹ��
+	uint8_t SleepTimeCount;  //睡锟斤拷时锟戒超锟斤拷24h 锟酵关闭猴拷锟斤拷 锟斤拷锟斤拷使锟斤拷
 	
-	uint8_t IrWakeUPFlag;		// 4������Դ
+	uint8_t IrWakeUPFlag;		// 4锟斤拷锟斤拷锟斤拷源
 	uint8_t ChargWakeUPFlag;
 	uint8_t LPTIMWakeUPFlag;
 	uint8_t UartMWakeUPFlag;
@@ -48,14 +55,18 @@ extern xTY_t TY;
 
 
 extern void Sys_EnterSleep_Handle(void);
+extern void Sys_EntreSleep(void);
 extern void Sys_Timer1ms_Handle(void);
 extern void Sys_Init(void);
+
 extern void TY_Init(void);
 extern void TY_Updata_Bright(void);
+
 extern void Ir_Power_OFF(void);
 extern void Ir_Power_ON(void);
+
 extern void BLE_Power_OFF(void);
 extern void BLE_Power_ON(void);
-extern void Sys_EntreSleep(void);
+
 
 #endif

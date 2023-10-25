@@ -4,7 +4,7 @@
 #include "bluetooth.h"
 #include "string.h "
 
-#define  TAKS_IT_ON			SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk |SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk  	// ¿ªÆôÈÎÎñÖĞ¶Ï
+#define  TAKS_IT_ON			SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk |SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk  	// å¼€å¯ä»»åŠ¡ä¸­æ–­
 #define  TAKS_IT_OFF		SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk |SysTick_CTRL_ENABLE_Msk   
 
 xSys Sys;
@@ -24,6 +24,13 @@ void hex2str(uint16_t data, uint8_t * s, int len)
 void Sys_Init()
 {
 	memset(&Sys,0,sizeof(xSys));
+	LL_GPIO_InitTypeDef GPIO_InitStruct;
+	GPIO_InitStruct.Pin = LL_GPIO_PIN_3;
+	GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+	LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 void TY_Init()
 {
@@ -35,24 +42,25 @@ void TY_Init()
 	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
 	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
 	LL_GPIO_Init(GPIO_TY_EN_PORT, &GPIO_InitStruct);
-	LL_GPIO_SetOutputPin(GPIO_TY_EN_PORT, GPIO_TY_EN_PIN);
+	TY_ENANBLE;
+	TY_RST_1;
 	
 	memset(&TY,0,sizeof(xTY_t));
 	
-	TY.SceneData [0] = '0';   //³¡¾°
+	TY.SceneData [0] = '0';   //åœºæ™¯
 	TY.SceneData [1] = '0';
 	
-	TY.ColourData [0] = '0';  //HÊı¾İ
+	TY.ColourData [0] = '0';  //Hæ•°æ®
 	TY.ColourData [1] = '0';
 	TY.ColourData [2] = '0';
 	TY.ColourData [3] = '0';
 	
-	TY.ColourData [4] = '0';  //SÊı¾İ
+	TY.ColourData [4] = '0';  //Sæ•°æ®
 	TY.ColourData [5] = '0';
 	TY.ColourData [6] = '0';
 	TY.ColourData [7] = '0';
 	
-	TY.ColourData [8] = '0';  //VÊı¾İ
+	TY.ColourData [8] = '0';  //Væ•°æ®
 	TY.ColourData [9] = '1';
 	TY.ColourData [10] = 'f';
 	TY.ColourData [11] = '4';
@@ -65,7 +73,7 @@ void TY_Init()
 }
 void Sys_Timer1ms_Handle(void) //1MS
 {
-	//Õı³£½øÈëË¯Ãß
+	//æ­£å¸¸è¿›å…¥ç¡çœ 
 	if( ( !RGB.OnFlag && ( Bat.Status == BAT_DISCHARGE )  ) ||  Sys.LowVoltageFlag )
 	{
 		++Sys.EntreSleepTimeCount;
@@ -112,21 +120,21 @@ void Sys_EntreSleep()
 }
 static void APP_EnterStop(void)
 {
-  /* Ê¹ÄÜPWRÊ±ÖÓ */
+  /* ä½¿èƒ½PWRæ—¶é’Ÿ */
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-  /* µÍ¹¦ºÄÔËĞĞÄ£Ê½ */
+  /* ä½åŠŸè€—è¿è¡Œæ¨¡å¼ */
   LL_PWR_SetLprMode(LL_PWR_LPR_MODE_LPR);
-  /* SRAMµçÑ¹¸úÊı×ÖLDOÊä³öÒ»ÖÂ */
+  /* SRAMç”µå‹è·Ÿæ•°å­—LDOè¾“å‡ºä¸€è‡´ */
   LL_PWR_SetStopModeSramVoltCtrl(LL_PWR_SRAM_RETENTION_VOLT_CTRL_LDO);
-  /* ½øÈëDeepSleepÄ£Ê½ */
+  /* è¿›å…¥DeepSleepæ¨¡å¼ */
   LL_LPM_EnableDeepSleep();
 /*	
-	µÈ´ıÖĞ¶ÏÖ¸Áî    WFEÄ£Ê½ ÊÂ¼ş»½ĞÑ²»½øÖĞ¶Ï
+	ç­‰å¾…ä¸­æ–­æŒ‡ä»¤    WFEæ¨¡å¼ äº‹ä»¶å”¤é†’ä¸è¿›ä¸­æ–­
   __SEV();
   __WFE();
   __WFE();
 */
-  /* µÈ´ıÖĞ¶ÏÖ¸Áî */
+  /* ç­‰å¾…ä¸­æ–­æŒ‡ä»¤ */
   __WFI();
 
   LL_LPM_EnableSleep();
@@ -135,39 +143,43 @@ void Adc_RefVoltage_ON()
 {
 	__IO uint32_t wait_loop_index = 0;
 	LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(ADC1),LL_ADC_PATH_INTERNAL_VREFINT);
-	/* Vrefint µÈ´ıÎÈ¶¨Ê±¼ä */
+	/* Vrefint ç­‰å¾…ç¨³å®šæ—¶é—´ */
 	wait_loop_index = ((LL_ADC_DELAY_VREFINT_STAB_US * (SystemCoreClock / (100000 * 2))) / 10);
 	while(wait_loop_index != 0)
 	{
 		wait_loop_index--;
 	}
+	LL_ADC_Enable(ADC1);
+	LL_mDelay(1);
 }
-void Adc_RefVoltage_OFF() //¹Ø±ÕÄÚ²¿Í¨µÀ·ÀÖ¹ºÄµç
+void Adc_RefVoltage_OFF() //å…³é—­å†…éƒ¨é€šé“é˜²æ­¢è€—ç”µ
 {
 	LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(ADC1),LL_ADC_PATH_INTERNAL_NONE);
+	LL_ADC_Disable(ADC1);
 }
-// ³äµç»½ĞÑ(Íâ²¿) ºìÍâ»½ĞÑ(Íâ²¿) À¶ÑÀ»½ĞÑ(Íâ²¿)  ¶¨Ê±»½ĞÑ(ÄÚ²¿)
+// å……ç”µå”¤é†’(å¤–éƒ¨) çº¢å¤–å”¤é†’(å¤–éƒ¨) è“ç‰™å”¤é†’(å¤–éƒ¨)  å®šæ—¶å”¤é†’(å†…éƒ¨)
 void Sys_EnterSleep_Handle(void)
 {
 	DEBUG_INFO("SysEnterSleep");
 	
-	TAKS_IT_OFF; //¹Ø±ÕÈÎÎñÖĞ¶Ï
+	TAKS_IT_OFF; //å…³é—­ä»»åŠ¡ä¸­æ–­
 	
 	LED_RGB_Off_Handle();
 	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM  ); //RED
+	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM  ); //BLUE
+	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM  ); //BLUE
 	LL_TIM_OC_SetCompareCH4(TIM1 , RGB_PWM  ); //GREEN
-	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM); //BLUE
 	RGB.Dispaly_v = 0;
 	
-	//Ê¹ÄÜÀ¶ÑÀµÍ¹¦ºÄ
+	//ä½¿èƒ½è“ç‰™ä½åŠŸè€—
 	enable_low_power();
 	
-	//ÑÓ³ÙÒ»»á	
+	//å»¶è¿Ÿä¸€ä¼š	
 	LL_mDelay(50);
 
-	//´¦ÀíĞÅÏ¢  data_handle();
+	//å¤„ç†ä¿¡æ¯  data_handle();
 	
-	LL_IWDG_ReloadCounter(IWDG); // IWDG ÇåÁã
+	LL_IWDG_ReloadCounter(IWDG); // IWDG æ¸…é›¶
 	
 	
 	Sys.EnterSleepFlag = 0;
@@ -182,11 +194,11 @@ void Sys_EnterSleep_Handle(void)
 	
 	if(Sys.LowVoltageFlag)
 	{
-		//¹Ø±ÕºìÍâ  
+		//å…³é—­çº¢å¤–  
 		Ir_Power_OFF();	
-		//¹Ø±ÕÀ¶ÑÀ
+		//å…³é—­è“ç‰™
 		BLE_Power_OFF();
-		//¹Ø±ÕLPTIME»½ĞÑ
+		//å…³é—­LPTIMEå”¤é†’
 		LL_LPTIM_Disable(LPTIM);
 	}
 	else 
@@ -196,32 +208,32 @@ void Sys_EnterSleep_Handle(void)
 		LL_EXTI_EnableIT(LL_EXTI_LINE_4);
 	}
 	
-	LL_LPTIM_SetAutoReload(LPTIM,15360 );  //1·ÖÖÓ
+	LL_LPTIM_SetAutoReload(LPTIM,15360 );  //1åˆ†é’Ÿ
 	LL_LPTIM_StartCounter(LPTIM, LL_LPTIM_OPERATING_MODE_CONTINUOUS);
 	LL_mDelay(1);
 	
-	LED_RGB_Off_Handle(); //¹Ø±ÕµÆ
+	LED_RGB_Off_Handle(); //å…³é—­ç¯
 	
-	Led_Off(); //¹Ø±ÕLEDÖ¸Ê¾µÆ
+	Led_Off(); //å…³é—­LEDæŒ‡ç¤ºç¯
 	
-	Adc_RefVoltage_OFF(); //²Î¿¼µçÑ¹¹Ø±Õ
+	Adc_RefVoltage_OFF(); //å‚è€ƒç”µå‹å…³é—­
 	
 Resleep:
-	APP_EnterStop();	//½øÈëË¯Ãß
+	APP_EnterStop();	//è¿›å…¥ç¡çœ 
 	if(Sys.LPTIMWakeUPFlag)
 	{
 		DEBUG_INFO("LPTIMWakeUP");
-		Sys.SleepTimeCount++; //1·ÖÖÓ¼ÓÒ»
-		if(Sys.SleepTimeCount > 5)  //´óÓÚ24Ğ¡Ê± ¹Ø±ÕºìÍâÀ¶ÑÀ  60 * 24 = 1440 
+		Sys.SleepTimeCount++; //1åˆ†é’ŸåŠ ä¸€
+		if(Sys.SleepTimeCount > 5)  //å¤§äº24å°æ—¶ å…³é—­çº¢å¤–è“ç‰™  60 * 24 = 1440 
 		{
 			Sys.SleepTimeCount = 0;
-			//¹Ø±ÕºìÍâ  
+			//å…³é—­çº¢å¤–  
 			Ir_Power_OFF();	
-			//¹Ø±ÕÀ¶ÑÀ
+			//å…³é—­è“ç‰™
 			BLE_Power_OFF();	
-			//¹Ø±ÕLPTIME
+			//å…³é—­LPTIME
 			LL_LPTIM_Disable(LPTIM);
-			//Ö»ÓĞCDS¿ÉÒÔ»½ĞÑ
+			//åªæœ‰CDSå¯ä»¥å”¤é†’
 			DEBUG_INFO("entry shut down mode");
 		}
 	}
@@ -231,22 +243,22 @@ Resleep:
 	DEBUG_INFO("ChargWakeUPFlag %d",Sys.ChargWakeUPFlag);
 	DEBUG_INFO("UartMWakeUPFlag %d",Sys.UartMWakeUPFlag);
 	
-	Adc_RefVoltage_ON(); //²Î¿¼µçÑ¹¿ªÆô
+	Adc_RefVoltage_ON(); //å‚è€ƒç”µå‹å¼€å¯
 	
-	//¿ªÆôºìÍâ
+	//å¼€å¯çº¢å¤–
 	Ir_Power_ON();
 	
-	//¿ªÆôÀ¶ÑÀ
+	//å¼€å¯è“ç‰™
 	BLE_Power_ON();
 	LL_mDelay(1);
-	//ÑÓ³ÙÒ»»á
+	//å»¶è¿Ÿä¸€ä¼š
 	
-	//´¦ÀíĞÅÏ¢
+	//å¤„ç†ä¿¡æ¯
 	
-	//Ê¹ÄÜLPTIM¶ÁÇåÁã  
+	//ä½¿èƒ½LPTIMè¯»æ¸…é›¶  
 	LL_LPTIM_EnableResetAfterRead(LPTIM);
-	LL_LPTIM_GetCounter(LPTIM); //ÇåÁã¼ÆÊıÆ÷
-	LL_LPTIM_GetCounter(LPTIM); //¶ÁÁ½´ÎÇåÁã¼ÆÊıÆ÷
+	LL_LPTIM_GetCounter(LPTIM); //æ¸…é›¶è®¡æ•°å™¨
+	LL_LPTIM_GetCounter(LPTIM); //è¯»ä¸¤æ¬¡æ¸…é›¶è®¡æ•°å™¨
     LL_LPTIM_DisableResetAfterRead(LPTIM);
 	LL_mDelay(1);
 	LL_LPTIM_Disable(LPTIM);
@@ -254,7 +266,7 @@ Resleep:
 	
 	disable_low_power();
 	
-	all_data_update(); //¸üĞÂÀ¶ÑÀÊı¾İ
+	all_data_update(); //æ›´æ–°è“ç‰™æ•°æ®
 	
-	TAKS_IT_ON; //¿ªÆôÈÎÎñÖĞ¶Ï
+	TAKS_IT_ON; //å¼€å¯ä»»åŠ¡ä¸­æ–­
 }

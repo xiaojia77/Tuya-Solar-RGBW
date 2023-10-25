@@ -10,31 +10,31 @@
 Ir_s Ir;
 void APP_ConfigTIM14(void)
 {
-	/*ÅäÖÃTIM1*/
+	/*é…ç½®TIM1*/
 	LL_TIM_InitTypeDef TIM14CountInit = {0};
 
-	/*Ê¹ÄÜTIM1Ê±ÖÓ*/
+	/*ä½¿èƒ½TIM1æ—¶é’Ÿ*/
 	LL_APB1_GRP2_EnableClock(RCC_APBENR2_TIM14EN);
 	// 24MHZ
-	TIM14CountInit.ClockDivision       = LL_TIM_CLOCKDIVISION_DIV1;/* ²»·ÖÆµ             */
-	TIM14CountInit.CounterMode         = LL_TIM_COUNTERMODE_UP;    /* ¼ÆÊıÄ£Ê½£ºÏòÉÏ¼ÆÊı */
-	TIM14CountInit.Prescaler           = (24*64)-1;                   /* Ê±ÖÓÔ¤·ÖÆµ£º8000   */
-	TIM14CountInit.Autoreload          = 256-1;                   /* ×Ô¶¯ÖØ×°ÔØÖµ£º1000 */
-	TIM14CountInit.RepetitionCounter   = 0;                        /* ÖØ¸´¼ÆÊıÖµ£º0      */
+	TIM14CountInit.ClockDivision       = LL_TIM_CLOCKDIVISION_DIV1;/* ä¸åˆ†é¢‘             */
+	TIM14CountInit.CounterMode         = LL_TIM_COUNTERMODE_UP;    /* è®¡æ•°æ¨¡å¼ï¼šå‘ä¸Šè®¡æ•° */
+	TIM14CountInit.Prescaler           = (24*64)-1;                   /* æ—¶é’Ÿé¢„åˆ†é¢‘ï¼š8000   */
+	TIM14CountInit.Autoreload          = 256-1;                   /* è‡ªåŠ¨é‡è£…è½½å€¼ï¼š1000 */
+	TIM14CountInit.RepetitionCounter   = 0;                        /* é‡å¤è®¡æ•°å€¼ï¼š0      */
 	
-	/*³õÊ¼»¯TIM1*/
+	/*åˆå§‹åŒ–TIM1*/
 	LL_TIM_Init(TIM14,&TIM14CountInit);
 
-	/*Çå³ı¸üĞÂ±êÖ¾Î»*/
+	/*æ¸…é™¤æ›´æ–°æ ‡å¿—ä½*/
 	LL_TIM_ClearFlag_UPDATE(TIM14);
 
-	/*Ê¹ÄÜUPDATEÖĞ¶Ï*/
+	/*ä½¿èƒ½UPDATEä¸­æ–­*/
 	LL_TIM_EnableIT_UPDATE(TIM14);
 
-	/*Ê¹ÄÜTIM1¼ÆÊıÆ÷*/
+	/*ä½¿èƒ½TIM1è®¡æ•°å™¨*/
 	LL_TIM_EnableCounter(TIM14);
 
-	/*¿ªÆôUPDATEÖĞ¶ÏÇëÇó*/
+	/*å¼€å¯UPDATEä¸­æ–­è¯·æ±‚*/
 	NVIC_EnableIRQ(TIM14_IRQn);
 	NVIC_SetPriority(TIM14_IRQn,Ir_Priority);
 }
@@ -44,7 +44,7 @@ void Ir_Init(void)
 	LL_GPIO_InitTypeDef GPIO_InitStruct;
 
 	#if IR_EN_ENANBLE == 1
-	/* ÅäÖÃGPIO_IR_ENÊä³öÄ£Ê½ */
+	/* é…ç½®GPIO_IR_ENè¾“å‡ºæ¨¡å¼ */
 	GPIO_InitStruct.Pin = GPIO_IR_EN_PIN;
 	GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
 	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
@@ -54,16 +54,16 @@ void Ir_Init(void)
 	LL_GPIO_SetOutputPin(GPIO_IR_EN_PORT, GPIO_IR_EN_PIN);
 	#endif 
 
-	// ÅäÖÃPA0ÊäÈëÄ£Ê½ 
+	// é…ç½®PA0è¾“å…¥æ¨¡å¼ 
 	GPIO_InitStruct.Pin = GPIO_IR_PIN;
 	GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
 	LL_GPIO_Init(GPIO_IR_PORT, &GPIO_InitStruct);
 
-	// Ñ¡ÔñEXTI0×öÍâ²¿ÖĞ¶ÏÊäÈë 
+	// é€‰æ‹©EXTI0åšå¤–éƒ¨ä¸­æ–­è¾“å…¥ 
 	LL_EXTI_SetEXTISource(IR_EXTI_CONFIG_PORT, IR_EXTI_CONFIG_LINE);
 
-	// ÅäÖÃEXTI0ÎªÖĞ¶Ï¡¢ÉÏÏÂ½µÑØ´¥·¢ 
+	// é…ç½®EXTI0ä¸ºä¸­æ–­ã€ä¸Šä¸‹é™æ²¿è§¦å‘ 
 	LL_EXTI_InitTypeDef EXTI_InitStruct;
 	EXTI_InitStruct.Line = IR_EXTI_LINE;
 	EXTI_InitStruct.LineCommand = ENABLE;
@@ -71,7 +71,7 @@ void Ir_Init(void)
 	EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING_FALLING;
 	LL_EXTI_Init(&EXTI_InitStruct);
 
-	/* Ê¹ÄÜÖĞ¶Ï */
+	/* ä½¿èƒ½ä¸­æ–­ */
 
 	NVIC_SetPriority(IR_EXTI_IRQn, Ir_Priority);
 	NVIC_EnableIRQ(IR_EXTI_IRQn);
@@ -89,13 +89,13 @@ void Ir_ExtiCallback(void)
 				Ir.DataTemp = Ir.DataTemp << 1;
 			else if (Ir.HighLevelTime <= IR_DATA1_TH_H && Ir.HighLevelTime >= IR_DATA1_TH_L) // 1
 				Ir.DataTemp = Ir.DataTemp << 1 | 0x01;
-			else if (Ir.HighLevelTime <= IR_REDATA_TH_H && Ir.HighLevelTime >= IR_REDATA_TH_L)	//ÖØ¸´
+			else if (Ir.HighLevelTime <= IR_REDATA_TH_H && Ir.HighLevelTime >= IR_REDATA_TH_L)	//é‡å¤
 			{
 				Ir.RepeatCount ++;
 				Ir.Timeout = 0;
 			}
 		}
-		else if(Ir.HighLevelTime >= IR_GUID_TH_L && Ir.HighLevelTime <= IR_GUID_TH_H)	//Òıµ¼
+		else if(Ir.HighLevelTime >= IR_GUID_TH_L && Ir.HighLevelTime <= IR_GUID_TH_H)	//å¼•å¯¼
 		{
 			Ir.GuideFlag = 1;
 			Ir.RepeatCount = 0;
@@ -179,11 +179,12 @@ void Ir_CommandReceiv(uint8_t key)
 					DEBUG_INFO("RGB.ResetCnt %d",RGB.ResetCnt);
 				}
 				LED_RGB_On_Handle();
-				RGB.Command = IR_LEDON;
+				//RGB.Command = IR_LEDON;
+				RGB.Command = RGB.LastCommand;
 				DEBUG_INFO("LEDON");
 				break;
 			case IR_COMMAND_LEDOFF:	
-				if(RGB.OnFlag == 1)	RGB.ResetCnt++; //ÅäÍøÓÃ
+				if(RGB.OnFlag == 1)	RGB.ResetCnt++; //é…ç½‘ç”¨
 				LED_RGB_Off_Handle();
 				RGB.Command = IR_LEDOFF;
 				DEBUG_INFO("LEDOFF");
@@ -212,7 +213,7 @@ void Ir_CommandReceiv(uint8_t key)
 						{
 							Ir_ReScan();
 							RGB.v = 1000;
-							RGB.Dispaly_v = 0; //Ë¢ĞÂ
+							RGB.Dispaly_v = 0; //åˆ·æ–°
 						}
 						if(Ir.TimeOutFlag) 
 						{
@@ -246,46 +247,44 @@ void Ir_CommandReceiv(uint8_t key)
 						{
 							RGB.v = 100;
 							Ir_ReScan();
-							RGB.Dispaly_v = 0; //Ë¢ĞÂ
+							RGB.Dispaly_v = 0; //åˆ·æ–°
 						}
 						if(Ir.TimeOutFlag) 
 						{
 							TY_Updata_Bright();
 							Ir_ReScan();
 						}
-					}
-					//DEBUG_INFO("LIAGHDONW");	
-					
+					}				
 					RGB.vTemp = RGB.v;
 				}
 				break;
 			case IR_COMMAND_3H:
 				RGB.Dispaly_v = 0;
 				LED_RGB_On_Handle();
-			//	RGB.SetOffTime = 3 * 60 * 60000 /5; 
-				RGB.SetOffTime = 1000 *5 /5; 
-				RGB.Command =IR_LEDON;
+				RGB.SetOffTime = TIME_3H; 
+				RGB.Command = RGB.LastCommand;
 				DEBUG_INFO("3H");
 				break;
 			case IR_COMMAND_5H:
 				RGB.Dispaly_v = 0;
 				LED_RGB_On_Handle();
-			//	RGB.SetOffTime = 5 * 60 * 60000 /5;
-				RGB.SetOffTime = 1000 *10 /5; 
-				RGB.Command =IR_LEDON;
+				RGB.SetOffTime = TIME_5H; 
+				RGB.Command = RGB.LastCommand;
 				DEBUG_INFO("5H");
 				break;
 			case IR_COMMAND_WRITE_MODE:
 				LED_RGB_SetHSV(0,0,RGB.vTemp);
 				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 				LED_RGB_On_Handle();
-				RGB.Command =IR_WRITE_MODE;
+				RGB.Command = IR_WRITE_MODE;
+				RGB.LastCommand = IR_WRITE_MODE;
 				DEBUG_INFO("WRITE_MODE");
 				break;
 			case IR_COMMAND_RGB_MODE:
 				RGB.OnFlag = 1;
 				LED_RGB_On_Handle();
 				RGB.Command =IR_RGB_MODE;
+				RGB.LastCommand = IR_RGB_MODE;
 				DEBUG_INFO("RGB_MODE");
 				break;
 			case IR_COMMAND_RED_MODE:
@@ -293,6 +292,7 @@ void Ir_CommandReceiv(uint8_t key)
 				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 				LED_RGB_On_Handle();
 				RGB.Command =IR_RED_MODE;
+				RGB.LastCommand = IR_RED_MODE;
 				DEBUG_INFO("RED_MODE");
 				break;
 			case IR_COMMAND_GREEN_MODE:	
@@ -300,13 +300,15 @@ void Ir_CommandReceiv(uint8_t key)
 				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 				LED_RGB_On_Handle();
 				RGB.Command =IR_GREEN_MODE;
+				RGB.LastCommand = IR_GREEN_MODE;
 				DEBUG_INFO("GREEN_MODE");
 				break;
 			case IR_COMMAND_BLUE_MODE:
 				LED_RGB_SetHSV(240,1000,RGB.vTemp);
 				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 				LED_RGB_On_Handle();
-				RGB.Command =IR_RED_MODE;
+				RGB.Command =IR_BLUE_MODE;
+				RGB.LastCommand = IR_BLUE_MODE;
 				DEBUG_INFO("IR_BLUE_MODE");
 				break;
 		}

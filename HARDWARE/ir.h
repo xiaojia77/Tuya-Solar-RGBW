@@ -8,7 +8,7 @@
 #include "debug.h"
 
 #define IR_EN_ENANBLE 1  //IR 使能控制
-
+//IR命令
 #define  IR_COMMAND_POWEROFF 0XA2
 #define  IR_COMMAND_LEDON 0X62
 #define  IR_COMMAND_LEDOFF 0x22
@@ -21,13 +21,11 @@
 #define  IR_COMMAND_RED_MODE 0xA8
 #define  IR_COMMAND_GREEN_MODE 0x68
 #define  IR_COMMAND_BLUE_MODE 0X18
-
-
 //中断优先级
 #define Ir_Priority 1 
-
 //引导码
 #define Ir_GUIDE 0x01
+
 
 #define  IR_DATA0_TH_H        19 
 #define  IR_DATA0_TH_L        2
@@ -38,22 +36,21 @@
 #define  IR_REDATA_TH_H       48
 #define  IR_REDATA_TH_L       26
 
-
 #define GPIO_IR_PORT GPIOA
-#define GPIO_IR_PIN LL_GPIO_PIN_1
-#define IR_EXTI_LINE	LL_EXTI_LINE_1
+#define GPIO_IR_PIN LL_GPIO_PIN_5
+#define IR_EXTI_LINE	LL_EXTI_LINE_5
 #define IR_EXTI_CONFIG_PORT	LL_EXTI_CONFIG_PORTA
-#define IR_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE1
-#define IR_EXTI_IRQn	EXTI0_1_IRQn
-
+#define IR_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE5
+#define IR_EXTI_IRQn	EXTI4_15_IRQn
 
 #if IR_EN_ENANBLE == 1
-#define GPIO_IR_EN_PORT GPIOB
-#define GPIO_IR_EN_PIN LL_GPIO_PIN_4
-
+#define GPIO_IR_EN_PORT GPIOA
+#define GPIO_IR_EN_PIN LL_GPIO_PIN_6
 #define IR_ENANBLE   LL_GPIO_SetOutputPin(GPIO_IR_EN_PORT,GPIO_IR_EN_PIN);
 #define IR_DISANBLE	 LL_GPIO_ResetOutputPin(GPIO_IR_EN_PORT,GPIO_IR_EN_PIN);
-
+#else 
+#define IR_ENANBLE
+#define IR_DISANBLE
 #endif 
 
 // TO 替换成 PY32F002B T4的计数器

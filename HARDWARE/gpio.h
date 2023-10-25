@@ -12,10 +12,10 @@
 #define CDS_EXTI_CONFIG_PORT	LL_EXTI_CONFIG_PORTA
 #define CDS_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE6
 #define CDS_EXTI_IRQn	EXTI4_15_IRQn
-// MOS¿ª¹Ø
+// MOSå¼€å…³
 #define GPIO_MOS_REAL_PORT GPIOA
 #define GPIO_MOS_REAL_PIN  LL_GPIO_PIN_1
-// µç²â¼ì²â¿ª¹Ø
+// ç”µæµ‹æ£€æµ‹å¼€å…³
 #define GPIO_BAT_EN_PORT GPIOB
 #define GPIO_BAT_EN_PIN  LL_GPIO_PIN_4
 // WB_EN

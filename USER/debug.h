@@ -4,9 +4,12 @@
 #include <stdio.h>
 
 #define NO_USE_SWD
-#define DEBUG
+#define DEBUG 0
 
-#ifdef DEBUG
+#if DEBUG == 1
+
+
+#define PRINT(title, fmt, args...) printf("{"#title"}"fmt"\n", ##args)
 
 #define DEBUG_LINE() 																												\
   printf("Log: [%s:%s] line = %d \n", __FILE__, __func__, __LINE__)
@@ -30,6 +33,7 @@
 #define DEBUG_LINE()
 #define DEBUG_INFO(fmt, ...)
 #define DEBUG_PRINTF(fmt, ...)
+#define PRINT(title, fmt, args...)
 
 #endif
 

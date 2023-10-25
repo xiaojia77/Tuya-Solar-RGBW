@@ -66,9 +66,28 @@ void led_strip_hsv2rgb(uint16_t h, uint16_t s, uint16_t v, uint8_t *r, uint8_t *
 }
 void LED_RGB_HSVdisplay(uint16_t h, uint16_t s, uint16_t v)
 {
-	led_strip_hsv2rgb(h,s,v,&RGB.Rvalue,&RGB.Gvalue,&RGB.Bvalue);
+	led_strip_hsv2rgb(h,s,v,&RGB.Rvalue,&RGB.Gvalue,&RGB.Bvalue); //RGB HSV 显示
 	LED_RGB_display(RGB.Rvalue,RGB.Gvalue,RGB.Bvalue);
 }
+void LED_RGB_display(uint8_t r,uint8_t g,uint8_t b) //RGB 888 显示
+{
+	RGB.Rvalue = r;
+	RGB.Gvalue = g;
+	RGB.Bvalue = b;
+	RGB.Rpwm = r * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
+	RGB.Gpwm = g * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
+	RGB.Bpwm = b * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
+	LL_TIM_OC_SetCompareCH4(TIM1 , RGB_PWM - RGB.Rpwm ); //RED
+	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM - RGB.Gpwm ); //GREEN
+	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM - RGB.Bpwm ); //BLUE
+}
+void LED_RGB_W_display(uint16_t w) //白光亮度设置
+{
+	RGB.Wvalue = w;
+	RGB.Wpwm =  w * RGB_Light_MAX / 1000   ; //r/255*RGB_Light_MAX
+	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM - RGB.Wpwm ); //RED
+}
+
 void LED_Init()	
 {
 
@@ -151,7 +170,7 @@ void APP_ConfigTIM1(void) //1500
 	TIM1CountInit.ClockDivision       = LL_TIM_CLOCKDIVISION_DIV1;	/* 不分频             */
 	TIM1CountInit.CounterMode         = LL_TIM_COUNTERMODE_UP;   	/* 计数模式：向上计数 */
 	TIM1CountInit.Prescaler           = 0;                   		/* 时钟预分频：8000   */
-	TIM1CountInit.Autoreload          = 2400;                   	/* 自动重装载值：1000 */
+	TIM1CountInit.Autoreload          = RGB_PWM;                   	/* 自动重装载值：1000 */
 	TIM1CountInit.RepetitionCounter   = 0;                      	/* 重复计数值：0      */
 	
 	DEBUG_INFO("----------------------------TIM1 CONFIG----------------------------");
@@ -183,11 +202,14 @@ void APP_ConfigPWMChannel(void)
 	LL_GPIO_InitTypeDef TIM1CH1MapInit= {0};
 	LL_TIM_OC_InitTypeDef TIM_OC_Initstruct ={0};
 
-
-	//  /*配置PA5/PB0/PA4为TIM1_CH1/TIM1_CH2/TIM1_CH3*/
-	TIM1CH1MapInit.Pin        = LL_GPIO_PIN_2;
+	TIM1CH1MapInit.Pin        = LL_GPIO_PIN_0;
 	TIM1CH1MapInit.Mode       = LL_GPIO_MODE_ALTERNATE;
-	TIM1CH1MapInit.Alternate  = LL_GPIO_AF_3; 
+	TIM1CH1MapInit.Alternate  = LL_GPIO_AF_2; 
+	LL_GPIO_Init(GPIOA,&TIM1CH1MapInit);
+
+	TIM1CH1MapInit.Pin        = LL_GPIO_PIN_0;
+	TIM1CH1MapInit.Mode       = LL_GPIO_MODE_ALTERNATE;
+	TIM1CH1MapInit.Alternate  = LL_GPIO_AF_2; 
 	LL_GPIO_Init(GPIOB,&TIM1CH1MapInit);
 
 	TIM1CH1MapInit.Pin        = LL_GPIO_PIN_1;
@@ -195,35 +217,29 @@ void APP_ConfigPWMChannel(void)
 	TIM1CH1MapInit.Alternate  = LL_GPIO_AF_3; 
 	LL_GPIO_Init(GPIOB,&TIM1CH1MapInit);
 
-
-	TIM1CH1MapInit.Pin        = LL_GPIO_PIN_0;
+	TIM1CH1MapInit.Pin        = LL_GPIO_PIN_2;
 	TIM1CH1MapInit.Mode       = LL_GPIO_MODE_ALTERNATE;
-	TIM1CH1MapInit.Alternate  = LL_GPIO_AF_2; 
-	LL_GPIO_Init(GPIOA,&TIM1CH1MapInit);
-
+	TIM1CH1MapInit.Alternate  = LL_GPIO_AF_3; 
+	LL_GPIO_Init(GPIOB,&TIM1CH1MapInit);
 	/*配置PWM通道*/
 	TIM_OC_Initstruct.OCMode        = LL_TIM_OCMODE_PWM1;       /* 通道模式：PWM2       */
 	TIM_OC_Initstruct.OCState       = LL_TIM_OCSTATE_ENABLE;    /* 通道状态：开启       */
 	TIM_OC_Initstruct.OCPolarity    = LL_TIM_OCPOLARITY_LOW;   /* 通道有效极性：高电平 */
 	TIM_OC_Initstruct.OCIdleState   = LL_TIM_OCIDLESTATE_LOW;   /* 通道空闲极性：低电平 */
-
-	/*通道1 BLU */
-	//TIM_OC_Initstruct.CompareValue  = 1500;
+	/*通道1 white */
+	TIM_OC_Initstruct.CompareValue  = RGB_PWM;
 	/*配置通道1*/
-	//LL_TIM_OC_Init(TIM1,LL_TIM_CHANNEL_CH1,&TIM_OC_Initstruct);
-
-	/*通道2 */
-	TIM_OC_Initstruct.CompareValue  = 2400;
-	/*配置通道2*/
 	LL_TIM_OC_Init(TIM1,LL_TIM_CHANNEL_CH1,&TIM_OC_Initstruct);
-
+	/*通道2 BLUE*/
+	TIM_OC_Initstruct.CompareValue  = RGB_PWM;
+	/*配置通道2*/
+	LL_TIM_OC_Init(TIM1,LL_TIM_CHANNEL_CH2,&TIM_OC_Initstruct);
 	/*通道3 RED */  
-	TIM_OC_Initstruct.CompareValue  = 2400;
+	TIM_OC_Initstruct.CompareValue  = RGB_PWM;
 	/*配置通道3*/
 	LL_TIM_OC_Init(TIM1,LL_TIM_CHANNEL_CH3,&TIM_OC_Initstruct);
-
 	/*通道3 GREEN */  
-	TIM_OC_Initstruct.CompareValue  = 2400;
+	TIM_OC_Initstruct.CompareValue  = RGB_PWM;
 	/*配置通道4*/
 	LL_TIM_OC_Init(TIM1,LL_TIM_CHANNEL_CH4,&TIM_OC_Initstruct);
 }
@@ -231,27 +247,13 @@ void LED_RGB_init(void)
 {
 	APP_ConfigTIM1();
 	APP_ConfigPWMChannel();
-	//开机默认50%的白光
-	
+	//开机默认90%的白光
 	memset(&RGB,0,sizeof(xRGB));
-	
 	RGB.h = 0;
 	RGB.s = 0;
-	RGB.v = 900;
-	RGB.vTemp = 900;
+	RGB.v = 1000;
+	RGB.vTemp = 1000;
 }	
-void LED_RGB_display(uint8_t r,uint8_t g,uint8_t b)
-{
-	RGB.Rvalue = r;
-	RGB.Gvalue = g;
-	RGB.Bvalue = b;
-	RGB.Rpwm = r * RGB_Light_MAX / 255; //r/255*RGB_Light_MAX
-	RGB.Gpwm = g * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
-	RGB.Bpwm = b * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
-	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM - RGB.Rpwm ); //RED
-	LL_TIM_OC_SetCompareCH4(TIM1 , RGB_PWM - RGB.Gpwm ); //GREEN
-	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM - RGB.Bpwm ); //BLUE
-}
 void LED_RGB_Off_Handle(void)
 {
 	if(RGB.OnFlag == 1)
@@ -309,10 +311,10 @@ void LED_RGB_On_Handle(void)
 		RGB.Command = IR_LEDON;
 	}
 }
-void LED_DisplayBatGear_Handle(void) // 100ms
+void LED_DisplayBatGear_Handle(void)  // 100ms
 {
 	static uint8_t low_flash,charge_flash,flash_cnt;
-	low_flash = !low_flash;
+	low_flash = !low_flash; 		  //低压闪烁
 	if(++flash_cnt >= 5)
 	{
 		flash_cnt = 0;
@@ -325,7 +327,11 @@ void LED_DisplayBatGear_Handle(void) // 100ms
 	}
 	else if(Bat.Status == BAT_CHARGE) //充电
 	{
-		if(charge_flash )LED_DisplayTemp =  Bat.Gera - 1;
+		if(charge_flash )
+		{
+			if(Bat.Gera)LED_DisplayTemp =  Bat.Gera - 1;
+			else  LED_DisplayTemp = 1;
+		}
 		else LED_DisplayTemp =  Bat.Gera ;
 	}
 	else							  //满电
@@ -347,7 +353,6 @@ void IR_RGB_MODE_handle()
 			LED_RGB_SetHSV(0,1000,RGB.vTemp);
 			LED_RGB_SetDisplayHSV(120,1000,RGB.vTemp);
 			LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.v);
-			
 			break;
 		case 1:
 			LED_RGB_SetHSV(120,1000,RGB.vTemp);
@@ -376,7 +381,7 @@ void RGB_App_Handle(void) // 5MS时间
 		{
 			if (RGB.Time < TIME_10MIN) //nothing
 			{
-				RGB.StepTime = 1* 200; // 时间步进间距68S
+				RGB.StepTime = 1 * 200; // 时间步进间距68S
 				RGB.Powersaving_set_v = 1000;	//测试看有没有降序用 
 			}
 			else if (RGB.Time >= TIME_10MIN && RGB.Time < TIME_1H)
@@ -438,13 +443,17 @@ void RGB_App_Handle(void) // 5MS时间
 					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
 					break;
 				case 1:	
-					if(RGB.Dispaly_v<500)RGB.Dispaly_v+=2;
+					if(RGB.Dispaly_v<600)RGB.Dispaly_v+=2;
 					else TY_Reset_Mode_Status = 0;
 					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
 					break;
 			}
 		}
-		else LED_RGB_display(0,0,0);
+		else 
+		{
+			LED_RGB_display(0,0,0);
+			RGB.Dispaly_v = 0;
+		}
 	}
 	else
 	{
@@ -452,7 +461,6 @@ void RGB_App_Handle(void) // 5MS时间
 		{
 			//亮度渐变上去
 			case TY_ON_MODE:
-			case IR_WRITE_MODE:
 			case IR_RED_MODE:
 			case IR_GREEN_MODE:
 			case IR_BLUE_MODE:
@@ -460,9 +468,12 @@ void RGB_App_Handle(void) // 5MS时间
 			case TY_scene_MODE:
 				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v+=5;
 				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v-=5;
+				if(RGB.Dispaly_w<RGB.w)RGB.Dispaly_w+=5;
+				if(RGB.Dispaly_w<RGB.w)RGB.Dispaly_w+=5;
 				LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+				LED_RGB_W_display(0);
 				break;
-			
+
 			//亮度渐灭下去
 			case TY_OFF_MODE:
 			case IR_LEDOFF:
@@ -471,29 +482,46 @@ void RGB_App_Handle(void) // 5MS时间
 				{
 					if(RGB.Dispaly_v>5)RGB.Dispaly_v-=5;
 					else RGB.Dispaly_v=0;
-					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+//					if(RGB.Dispaly_w>5)RGB.Dispaly_w-=5;
+//					else RGB.Dispaly_w=0;
+					if(RGB.LastCommand == IR_WRITE_MODE)
+					{
+						LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/3);
+						LED_RGB_W_display(RGB.Dispaly_v);
+					}
+					else 
+					{
+						LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+						LED_RGB_W_display(0);
+					}
+				
 				}		
 				break;
-				
+
 			//RGB 三色互换	
 			case IR_RGB_MODE: 
 				IR_RGB_MODE_handle();
-				break;
-			
+				LED_RGB_W_display(0); //W灯关闭
+				break;	
+
 			//RGB 调色
 			case TY_colour_MODE:
-			case TY_bright_MODE:
-			case TY_temp_MODE:
-			//case TY_MUSIC_MODE:
-				if(RGB.Dispaly_h<RGB.h)RGB.Dispaly_h+=5;
-				if(RGB.Dispaly_h>RGB.h)RGB.Dispaly_h-=5;
-				if(RGB.Dispaly_s<RGB.s)RGB.Dispaly_s+=5;
-				if(RGB.Dispaly_s>RGB.s)RGB.Dispaly_s-=5;
 				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v+=5;
 				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v-=5;
 				LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+				LED_RGB_W_display(0);
 				break;	
 			
+			//白光
+			case IR_WRITE_MODE:
+			case TY_temp_MODE:
+			case TY_bright_MODE:	
+				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v+=5;
+				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v-=5;
+				LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/2);
+				LED_RGB_W_display(RGB.Dispaly_v);
+				break;
+
 			//音乐律动 渐变
 			case TY_MUSIC_MODE:
 				if(RGB.Dispaly_h<RGB.h)RGB.Dispaly_h++;
@@ -503,6 +531,7 @@ void RGB_App_Handle(void) // 5MS时间
 				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v++;
 				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v--;
 				LED_RGB_HSVdisplay(RGB.Dispaly_h,RGB.Dispaly_s,RGB.Dispaly_v);
+				LED_RGB_W_display(0); //W灯关闭
 				break;
 			
 			

@@ -34,7 +34,7 @@ void APP_ConfigUsart(USART_TypeDef *USARTx,uint32_t BaudRate)
 		/*GPIOB配置*/
 		LL_GPIO_InitTypeDef GPIO_InitStruct;
 		/*选择4号引脚*/
-		GPIO_InitStruct.Pin = LL_GPIO_PIN_6;
+		GPIO_InitStruct.Pin = LL_GPIO_PIN_4;
 		/*选择复用模式*/
 		GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
 		/*选择输出速度*/
@@ -46,14 +46,14 @@ void APP_ConfigUsart(USART_TypeDef *USARTx,uint32_t BaudRate)
 		/*复用为USART1功能*/
 		GPIO_InitStruct.Alternate = LL_GPIO_AF1_USART1;
 		/*GPIOB初始化*/
-		LL_GPIO_Init(GPIOA,&GPIO_InitStruct);
+		LL_GPIO_Init(GPIOB,&GPIO_InitStruct);
 
 		/*选择5号引脚*/
-		GPIO_InitStruct.Pin = LL_GPIO_PIN_4;
+		GPIO_InitStruct.Pin = LL_GPIO_PIN_5;
 		/*复用为USART1功能*/
 		GPIO_InitStruct.Alternate = LL_GPIO_AF1_USART1;
 		/*GPIOB初始化*/
-		LL_GPIO_Init(GPIOA,&GPIO_InitStruct);
+		LL_GPIO_Init(GPIOB,&GPIO_InitStruct);
 		
 		// 选择EXTI0做外部中断输入 
 		LL_EXTI_SetEXTISource(RX_EXTI_CONFIG_PORT, RX_EXTI_CONFIG_LINE);

@@ -184,7 +184,8 @@ static unsigned char dp_download_switch_led_handle(const unsigned char value[], 
 	{
         //bool on
 		LED_RGB_On_Handle();
-		RGB.Command = TY_ON_MODE;
+		//RGB.Command = TY_ON_MODE;
+        RGB.Command = RGB.LastCommand;
 		DEBUG_INFO("LEDON");
     }
   
@@ -261,7 +262,8 @@ static unsigned char dp_download_bright_value_handle(const unsigned char value[]
     //There should be a report after processing the DP
     ret = mcu_dp_value_update(DPID_BRIGHT_VALUE,TY.bright);
 	
-	RGB.Command = TY_bright_MODE;
+	RGB.Command = IR_WRITE_MODE;
+    RGB.LastCommand = IR_WRITE_MODE;
 	DEBUG_INFO("bright_value %d",bright_value);
 	
     if(ret == SUCCESS)
@@ -290,7 +292,8 @@ static unsigned char dp_download_temp_value_handle(const unsigned char value[], 
 	
     //There should be a report after processing the DP
     ret = mcu_dp_value_update(DPID_TEMP_VALUE,temp_value);
-	RGB.Command = TY_temp_MODE;
+	RGB.Command = IR_WRITE_MODE;
+    RGB.LastCommand = IR_WRITE_MODE;
     if(ret == SUCCESS)
         return SUCCESS;
     else
@@ -354,6 +357,7 @@ static unsigned char dp_download_colour_data_handle(const unsigned char value[],
     ret = mcu_dp_string_update(DPID_COLOUR_DATA,value, length);
 
 	RGB.Command = TY_colour_MODE;
+    RGB.LastCommand = TY_colour_MODE;
 	DEBUG_INFO("%d %d %d",h,s,v);
 	DEBUG_INFO("%d %d %d",RGB.Rvalue,RGB.Gvalue,RGB.Bvalue);
     if(ret == SUCCESS)
@@ -414,6 +418,7 @@ static unsigned char dp_download_scene_data_handle(const unsigned char value[], 
 	}
 
 	RGB.Command = TY_scene_MODE;
+    RGB.LastCommand = TY_scene_MODE;
     DEBUG_INFO("scence %d ",scence);
     //There should be a report after processing the DP
 	 DEBUG_INFO("scence Data %s length %d ",(char *)string_data,length);
@@ -508,6 +513,7 @@ static unsigned char dp_download_music_data_handle(const unsigned char value[], 
     ret = mcu_dp_string_update(DPID_MUSIC_DATA,value, length);
 
 	RGB.Command = TY_MUSIC_MODE;
+    RGB.LastCommand = TY_colour_MODE;
 	DEBUG_INFO("%d %d %d",h,s,v);
 	DEBUG_INFO("%d %d %d",RGB.Rvalue,RGB.Gvalue,RGB.Bvalue);
     if(ret == SUCCESS)

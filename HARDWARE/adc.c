@@ -131,8 +131,8 @@ void APP_AdcConfig(void)
 	
 	LL_ADC_REG_SetSequencerDiscont(ADC1, LL_ADC_REG_SEQ_DISCONT_1RANK);
 	
-	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_0, LL_GPIO_MODE_ANALOG);
-	LL_ADC_REG_SetSequencerChannels(ADC1,LL_ADC_CHANNEL_7);
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_4, LL_GPIO_MODE_ANALOG);
+	LL_ADC_REG_SetSequencerChannels(ADC1,LL_ADC_CHANNEL_2);
 
 	/* 设置通道Vrefint为转换通道 */
 //	LL_ADC_REG_SetSequencerChannels(ADC1, LL_ADC_CHANNEL_VREFINT);
@@ -195,6 +195,7 @@ void Adc_BatVolatageCollection_handle(void) //10MS 采样一次电压
 		Adc.BatVoltage = ( Adc.Temp - Adc.TempMax - Adc.TempMin ) / 8;
 		Adc.BatVoltage =  Adc.BatVoltage * 1500 * 3 / 4096 ;
 	//	DEBUG_PRINTF("bat = %d \r\n",Adc.BatVoltage);
+		PRINT(B,"%d",Adc.BatVoltage);
 		BatVolatageToPercent_handle();
 		Adc.Temp = 0;
 		Adc.TempMax = 0X0000;
@@ -211,8 +212,8 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 	int16_t percent;
 	static uint8_t last_percent = 0,current_percent = 0 , gear_changetemp = 0;
 //	static uint8_t percent_temp[10]={0,0,0,0,0,0,0,0,0,0};
-	uint8_t const BatGear_thread[] = {10,20,40,65,81,101};  // percent-voltage   9 -2.65V   30-3.04V   65 - 3.15V  81 - 3.22  93 - 3.27
-	uint8_t const BatGear_threadCharge[] = {5,24,41,66,82,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
+	uint8_t const BatGear_thread[] = {10,20,40,64,81,101};  // percent-voltage   9 -2.65V   30-3.04V   65 - 3.15V  81 - 3.22  93 - 3.27
+	uint8_t const BatGear_threadCharge[] = {0,24,41,66,82,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
 	uint32_t add_temp = 0;
 	
 	if( Adc.BatVoltage )
@@ -300,6 +301,7 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 	}
  	//DEBUG_PRINTF("Bat.Gera = %d \r\n",Bat.Gera);
 	//DEBUG_PRINTF("Bat.Percent = %d \r\n",Bat.Percent);
+	
 }
 void Bat_StatusCheck_Handle(void) // 10MS 定时器
 {
@@ -331,7 +333,10 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 				{
 					filter_cnt = 0;
 					if(Bat.SolarMode) //太阳能模式
+					{
 						LED_RGB_On_Handle();
+						RGB.Command = RGB.LastCommand;
+					}
 					Bat.Status = BAT_DISCHARGE;
 					Adc_ReScan();
 					for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = Bat.Percent;

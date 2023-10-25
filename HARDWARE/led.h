@@ -7,14 +7,14 @@
 #include "mcu_api.h"
 #include "protocol.h"
 
-#define GPIO_L1_PORT GPIOB
-#define GPIO_L1_PIN LL_GPIO_PIN_7
-
-#define GPIO_L2_PORT GPIOC
-#define GPIO_L2_PIN LL_GPIO_PIN_1
-
 #define GPIO_L3_PORT GPIOA
 #define GPIO_L3_PIN LL_GPIO_PIN_7
+
+#define GPIO_L2_PORT GPIOC
+#define GPIO_L2_PIN LL_GPIO_PIN_0
+
+#define GPIO_L1_PORT GPIOC
+#define GPIO_L1_PIN LL_GPIO_PIN_1
 
 #define L1_SET		LL_GPIO_SetOutputPin(GPIO_L1_PORT,GPIO_L1_PIN);
 #define L1_RESET	LL_GPIO_ResetOutputPin(GPIO_L1_PORT,GPIO_L1_PIN);
@@ -34,15 +34,20 @@
 #define L2_INPUT   LL_GPIO_SetPinMode(GPIO_L2_PORT, GPIO_L2_PIN, LL_GPIO_MODE_INPUT);
 #define L3_INPUT   LL_GPIO_SetPinMode(GPIO_L3_PORT, GPIO_L3_PIN, LL_GPIO_MODE_INPUT);
 
-#define RGB_PWM 2400
-#define RGB_Light_MAX 2200//×î´óÁÁ¶È PWM
-#define RGB_Light_MIN 240//×îĞ¡ÁÁ¶È PWM
+//#define RGB_PWM 2400
+//#define RGB_Light_MAX 2200//æœ€å¤§äº®åº¦ PWM
+//#define RGB_Light_MIN 240//æœ€å°äº®åº¦ PWM
 
-#define TIME_10MIN 10 * 60000 /5
-#define TIME_1H   60 * 60000  /5
-#define TIME_5H  5*60 * 60000 /5 
-#define TIME_11H 11*60 * 60000 /5
-#define	TIME_18H 18*60 * 60000 /5
+#define RGB_PWM 6000
+#define RGB_Light_MAX 6000 * 0.95//æœ€å¤§äº®åº¦ PWM
+#define RGB_Light_MIN 6000 * 0.1//æœ€å°äº®åº¦ PWM
+
+#define TIME_10MIN     10 * 60000 /5
+#define TIME_1H   1  * 60 * 60000 /5
+#define TIME_3H   5  * 60 * 60000 /5 
+#define TIME_5H   5  * 60 * 60000 /5 
+#define TIME_11H  11 * 60 * 60000 /5
+#define	TIME_18H  18 * 60 * 60000 /5
 
 enum RGB_Mode
 {
@@ -59,7 +64,7 @@ enum RGB_Mode
 	IR_GREEN_MODE,
 	IR_BLUE_MODE,
 	
-	//TY_CONNECT_MODE, //ºôÎüµÆÄ£Ê½
+	//TY_CONNECT_MODE, //å‘¼å¸ç¯æ¨¡å¼
 	
 	TY_RGB_MODE,
 	TY_colour_MODE,
@@ -77,51 +82,53 @@ typedef struct _xRGB
 {
 	uint8_t OnFlag;
 	
-	uint8_t ResetCnt; //¸´Î»¼ÆÊı
+	uint8_t ResetCnt; //å¤ä½è®¡æ•°
 	uint16_t ResetTime; 
 	
-	//HSVÉ«²Ê¿Õ¼ä
-	uint16_t h; //É«Ïà 0 -360
-	uint16_t s; //±¥ºÍ 0 - 1000
-	uint16_t v; //Ã÷¶È 0 - 1000
-	uint16_t vTemp; //Ã÷¶È 0 - 1000  ÓÃÀ´±£´æÁÁ¶ÈµÄÊı¾İ
-		
-	//RGBÉ«²Ê¿Õ¼ä
+	//HSVè‰²å½©ç©ºé—´
+	uint16_t h; //è‰²ç›¸ 0 -360
+	uint16_t s; //é¥±å’Œ 0 - 1000
+	uint16_t v; //æ˜åº¦ 0 - 1000
+	uint16_t vTemp; //æ˜åº¦ 0 - 1000  ç”¨æ¥ä¿å­˜äº®åº¦çš„æ•°æ®
+	//W ç™½å…‰
+	uint16_t w;
+	uint16_t wTemp; //æ˜åº¦ 0 - 1000  ç”¨æ¥ä¿å­˜äº®åº¦çš„æ•°æ®	
+	//RGBè‰²å½©ç©ºé—´
 	uint8_t Rvalue; 
 	uint8_t Gvalue;
 	uint8_t Bvalue;
-	
-	//Êµ¼ÊµÄPWMÖµ
+	uint16_t Wvalue;  //ç™½å…‰PWM
+	//å®é™…çš„PWMå€¼
 	uint16_t Rpwm;
 	uint16_t Gpwm;
 	uint16_t Bpwm;
-	
-	//ÏÔÊ¾»º´æ
+	uint16_t Wpwm;  //ç™½å…‰PWM
+	//æ˜¾ç¤ºç¼“å­˜
 	uint16_t Dispaly_h;
 	uint16_t Dispaly_s;
 	uint16_t Dispaly_v;
-		
-	//ÒôÀÖÂÉ¶¯²½½ø
+	uint16_t Dispaly_w;
+	//éŸ³ä¹å¾‹åŠ¨æ­¥è¿›
 /*	int8_t Music_inc_h;
 	int8_t Music_inc_s;
 	int8_t Music_inc_v;*/
+
+	uint8_t Command; 	 //æŒ‡ä»¤
+	uint8_t LastCommand; //ä¸Šä¸€æŒ‡ä»¤
 	
-	uint8_t Command; 	 //Ö¸Áî
-	uint8_t LastCommand; //ÉÏÒ»Ö¸Áî
-	
-	uint32_t Time;		 //´ò¿ªµÄÊ±¼ä
-	uint32_t SetOffTime; //ÉèÖÃ¹Ø±ÕµÄÊ±¼ä 3H 5H
+	uint32_t Time;		 //æ‰“å¼€çš„æ—¶é—´
+	uint32_t SetOffTime; //è®¾ç½®å…³é—­çš„æ—¶é—´ 3H 5H
  	
-	//½µĞòÓÃ
-	uint32_t StepTime; //²½½øÊ±¼ä 	
-	uint32_t StepTimecnt; //²½½øÊ±¼ä¼ÆÊı
-	uint16_t Powersaving_set_v; //ÒªÈ¥µÄÁÁ¶È
+	//é™åºç”¨
+	uint32_t StepTime; //æ­¥è¿›æ—¶é—´ 	
+	uint32_t StepTimecnt; //æ­¥è¿›æ—¶é—´è®¡æ•°
+	uint16_t Powersaving_set_v; //è¦å»çš„äº®åº¦
 	
 }xRGB;
 
 extern xRGB RGB;
 
-extern uint8_t LED_DisplayTemp; // 0 È«Ãğ  1-L1 2-L2 3-L3 4-L4 5-L5
+extern uint8_t LED_DisplayTemp; // 0 å…¨ç­  1-L1 2-L2 3-L3 4-L4 5-L5
 
 extern void LED_Init(void); 
 extern void LED_Scan_Handle(void);
@@ -138,6 +145,7 @@ extern void led_strip_hsv2rgb(uint16_t h, uint16_t s, uint16_t v, uint8_t *r, ui
 extern void LED_RGB_SetDisplayHSV(uint16_t h, uint16_t s, uint16_t v);
 extern void LED_RGB_display(uint8_t r,uint8_t g,uint8_t b);
 extern void LED_RGB_HSVdisplay(uint16_t h, uint16_t s, uint16_t v);
+extern void LED_RGB_W_display(uint16_t w);
 extern void RGB_App_Handle(void);
 
 

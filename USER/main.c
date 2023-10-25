@@ -44,7 +44,27 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 static void APP_SystemClockConfig(void);
+static void APP_EnterStop(void)
+{
+  /* 使能PWR时钟 */
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+  /* 低功耗运行模式 */
+  LL_PWR_SetLprMode(LL_PWR_LPR_MODE_LPR);
+  /* SRAM电压跟数字LDO输出一致 */
+  LL_PWR_SetStopModeSramVoltCtrl(LL_PWR_SRAM_RETENTION_VOLT_CTRL_LDO);
+  /* 进入DeepSleep模式 */
+  LL_LPM_EnableDeepSleep();
+/*	
+	等待中断指令    WFE模式 事件唤醒不进中断
+  __SEV();
+  __WFE();
+  __WFE();
+*/
+  /* 等待中断指令 */
+  __WFI();
 
+  LL_LPM_EnableSleep();
+}
 int main(void)
 {
 	#ifdef DEBUG
@@ -62,27 +82,49 @@ int main(void)
 	/* 使能GPIO全部时钟	*/
 	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_ALL);
 	
-	#ifdef NO_USE_SWD
-	LL_mDelay(2000); //给jink复位用 即使没有复用SWD端口 但保险起见给1秒延迟 防止后面误操作 导致jlink检测不到芯片
-	#else
-	LL_mDelay(3000); //给SWD端口被复用时jink复位用 
-	#endif
+
+	LL_mDelay(500); //给jink复位用 
+		
+	LED_Init();         // LED初始化
 	
-	APP_ConfigUsart(USART1,115200);
-	#ifdef DEBUG
+	L1_OUTPUT;L2_OUTPUT;L3_INPUT; // L1
+	L2_SET;L1_RESET;  
+	LL_mDelay(150);
+	L1_OUTPUT;L2_OUTPUT;L3_INPUT; // L2
+	L1_SET;L2_RESET;  
+	LL_mDelay(150);
+	L2_OUTPUT;L3_OUTPUT;L1_INPUT; // L3
+	L3_SET;L2_RESET;
+	LL_mDelay(150);
+	L2_OUTPUT;L3_OUTPUT;L1_INPUT; // L4 
+	L2_SET;L3_RESET;  
+	LL_mDelay(150);
+	L1_OUTPUT;L3_OUTPUT;L2_INPUT; // L5
+	L3_SET;L1_RESET; 
+	LL_mDelay(150);
+	L1_OUTPUT;L3_OUTPUT;L3_OUTPUT; // L5
+	L1_RESET;L2_RESET;L3_RESET; 
+
+	
+	//
+	//APP_ConfigUsart(USART1,115200);
+	#if DEBUG
 	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_ALL);
 	DEBUG_PRINTF("\r\n");
 	DEBUG_INFO("-----------------------------------INIT START---------------------------------");
 	DEBUG_INFO("----------------------------APP_SystemClock CONFIG----------------------------");
 	DEBUG_INFO("HSI = 24MH");
 	DEBUG_INFO("----------------------------RST_PORT CHECK----------------------------");
+
+	#endif	
 	if(READ_BIT(FLASH->OPTR, OB_USER_SWD_NRST_MODE) != OB_SWD_PB6_GPIO_PC0 )	//检测端口信息  
 	{	
 		DEBUG_INFO("RST_PORT is reused as GPIO");
 		APP_FlashOBProgram(); //把复位脚复用成普通引脚
 	}
-	else DEBUG_INFO("RST_PORT is used as RST");
-	#endif
+	else DEBUG_INFO("RST_PORT is used as GPIO");
+	
+	//APP_EnterStop();
 	
 	//GPIO_Init();	    // 引脚初始化
 	
@@ -92,8 +134,6 @@ int main(void)
 	
 	Bat_GpioInit();     //Bat检测初始化
 	
-	LED_Init();         // LED初始化
-
     Ir_Init();  	    // 红外初始化
 	
 	TY_Init();			// TY初始化
@@ -102,17 +142,16 @@ int main(void)
 	
 	bt_protocol_init(); // 涂鸦蓝牙初始化
 	
-	Lptim_Init(); 		// 低功耗定时器唤醒
+//	Lptim_Init(); 		// 低功耗定时器唤醒
 	
 //	APP_IwdgConfig();	// 看门狗
 	
 	TAKS_IT_ON; 	    // 开启任务中断  
 	
 	Bat.ChargeUpFlag = 0;  //只降不升关闭
-//	Sys.LowVoltageFlag = 0;
+	Sys.LowVoltageFlag = 0;
 	Bat.SolarMode = 1;	   //太阳能功能开启
 	Bat.SaveEnergMode = 1; //节能开启
-	
 
 	Ir_Power_ON();  //开启红外
 	BLE_Power_ON(); //开启蓝牙
@@ -120,9 +159,9 @@ int main(void)
 	LL_mDelay(50);
 	
 //	enable_low_power();  //使能低功耗
-   disable_low_power(); //不使能低功耗 TY发送心跳包
-	
-	
+    disable_low_power(); //不使能低功耗 TY发送心跳包
+
+	RGB.LastCommand = IR_WRITE_MODE;
 	
 	
 	while (1)
@@ -138,7 +177,7 @@ int main(void)
 //			DEBUG_INFO("Bat.Percent = %d%%  Bat.Voltage %dMV",Bat.Percent,Adc.BatVoltage);
 //			DEBUG_INFO("bt_work_state = %d ",bt_work_state);
 //			DEBUG_INFO("Sys.LowVoltageFlag = %d",Sys.LowVoltageFlag);
-//			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
+			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
 		}
 		#endif
 		if( HAL_GetTick() > LEDtick) //100ms
