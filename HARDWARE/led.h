@@ -81,6 +81,8 @@ enum RGB_Mode
 typedef struct _xRGB
 {
 	uint8_t OnFlag;
+
+	uint8_t W_Mode; //白光模式  1 RGBW  RGB模拟
 	
 	uint8_t ResetCnt; //复位计数
 	uint16_t ResetTime; 

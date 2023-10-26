@@ -74,10 +74,10 @@ void TY_Init()
 void Sys_Timer1ms_Handle(void) //1MS
 {
 	//正常进入睡眠
-	if( ( !RGB.OnFlag && ( Bat.Status == BAT_DISCHARGE )  ) ||  Sys.LowVoltageFlag )
+	if(  ( BAT_CDS_RX == 0 ) && ( ( !RGB.OnFlag && ( Bat.Status == BAT_DISCHARGE ) ) ||  Sys.LowVoltageFlag ) )
 	{
 		++Sys.EntreSleepTimeCount;
-		if(Sys.EntreSleepTimeCount > 15000)Sys.EnterSleepFlag = 1;
+		if(Sys.EntreSleepTimeCount > 5000)Sys.EnterSleepFlag = 1;
 		if(Sys.LowVoltageFlag && Sys.EntreSleepTimeCount > 2000)Sys.EnterSleepFlag = 1;
 	}
 	else Sys.EntreSleepTimeCount = 0;
@@ -108,11 +108,70 @@ void Ir_Power_ON()
 }
 void BLE_Power_OFF()
 {
+	/*GPIOB配置*/
+	LL_GPIO_InitTypeDef GPIO_InitStruct;
+	/*选择4号引脚*/
+	GPIO_InitStruct.Pin = LL_GPIO_PIN_4;
+	/*选择复用模式*/
+	GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+	/*选择输出速度*/
+	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+	/*选择输出模式*/
+	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+	/*选择上拉*/
+	GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+	/*复用为USART1功能*/
+	GPIO_InitStruct.Alternate = LL_GPIO_AF1_USART1;
+	/*GPIOB初始化*/
+	LL_GPIO_Init(GPIOB,&GPIO_InitStruct);
+
+	/*选择5号引脚*/
+	GPIO_InitStruct.Pin = LL_GPIO_PIN_5;
+	/*复用为USART1功能*/
+	GPIO_InitStruct.Alternate = LL_GPIO_MODE_OUTPUT;
+	/*GPIOB初始化*/
+	LL_GPIO_Init(GPIOB,&GPIO_InitStruct);
+
+	LL_GPIO_ResetOutputPin(GPIOB,LL_GPIO_PIN_4);
+	LL_GPIO_ResetOutputPin(GPIOB,LL_GPIO_PIN_5);
+	
 	TY_DISANBLE;
+	
+	TY_RST_0;
+		
 }
 void BLE_Power_ON()
 {
+	
+	
+	/*GPIOB配置*/
+	LL_GPIO_InitTypeDef GPIO_InitStruct;
+	/*选择4号引脚*/
+	GPIO_InitStruct.Pin = LL_GPIO_PIN_4;
+	/*选择复用模式*/
+	GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+	/*选择输出速度*/
+	GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+	/*选择输出模式*/
+	GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+	/*选择上拉*/
+	GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+	/*复用为USART1功能*/
+	GPIO_InitStruct.Alternate = LL_GPIO_AF1_USART1;
+	/*GPIOB初始化*/
+	LL_GPIO_Init(GPIOB,&GPIO_InitStruct);
+
+	/*选择5号引脚*/
+	GPIO_InitStruct.Pin = LL_GPIO_PIN_5;
+	/*复用为USART1功能*/
+	GPIO_InitStruct.Alternate = LL_GPIO_AF1_USART1;
+	/*GPIOB初始化*/
+	LL_GPIO_Init(GPIOB,&GPIO_InitStruct);
+	
 	TY_ENANBLE;
+	
+	TY_RST_1;
+	
 }
 void Sys_EntreSleep()
 {
@@ -191,9 +250,11 @@ void Sys_EnterSleep_Handle(void)
 	DEBUG_INFO("IrWakeUPFlag %d",Sys.IrWakeUPFlag);
 	DEBUG_INFO("ChargWakeUPFlag %d",Sys.ChargWakeUPFlag);
 	DEBUG_INFO("UartMWakeUPFlag %d",Sys.UartMWakeUPFlag);
-	
+
+
 	if(Sys.LowVoltageFlag)
 	{
+		Sys.LowVoltageFlag = 0;
 		//关闭红外  
 		Ir_Power_OFF();	
 		//关闭蓝牙
@@ -264,7 +325,7 @@ Resleep:
 	LL_LPTIM_Disable(LPTIM);
 	LL_EXTI_DisableIT(LL_EXTI_LINE_4);
 	
-	disable_low_power();
+	disable_low_power(); //退出蓝牙低功耗
 	
 	all_data_update(); //更新蓝牙数据
 	

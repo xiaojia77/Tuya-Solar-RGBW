@@ -106,8 +106,8 @@ int main(void)
 	L1_RESET;L2_RESET;L3_RESET; 
 
 	
-	//
-	//APP_ConfigUsart(USART1,115200);
+	
+	APP_ConfigUsart(USART1,115200);
 	#if DEBUG
 	LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_ALL);
 	DEBUG_PRINTF("\r\n");
@@ -124,7 +124,6 @@ int main(void)
 	}
 	else DEBUG_INFO("RST_PORT is used as GPIO");
 	
-	//APP_EnterStop();
 	
 	//GPIO_Init();	    // 引脚初始化
 	
@@ -142,7 +141,7 @@ int main(void)
 	
 	bt_protocol_init(); // 涂鸦蓝牙初始化
 	
-//	Lptim_Init(); 		// 低功耗定时器唤醒
+	Lptim_Init(); 		// 低功耗定时器唤醒
 	
 //	APP_IwdgConfig();	// 看门狗
 	
@@ -152,6 +151,8 @@ int main(void)
 	Sys.LowVoltageFlag = 0;
 	Bat.SolarMode = 1;	   //太阳能功能开启
 	Bat.SaveEnergMode = 1; //节能开启
+	
+	RGB.W_Mode = 1; //默认RGBW模式
 
 	Ir_Power_ON();  //开启红外
 	BLE_Power_ON(); //开启蓝牙
@@ -162,8 +163,7 @@ int main(void)
     disable_low_power(); //不使能低功耗 TY发送心跳包
 
 	RGB.LastCommand = IR_WRITE_MODE;
-	
-	
+
 	while (1)
 	{
 		bt_uart_service(); 			 //串口消息队列服务函数

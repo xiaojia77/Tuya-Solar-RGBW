@@ -173,8 +173,8 @@ void APP_AdcConfig(void)
 	
 	Bat.Status  = 0;
 	Bat.Gera = 1;
-	Bat.Percent = 0; //从第五格开始 
-	for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = 0;
+	Bat.Percent = 10; //从第五格开始 
+	for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = 10;
 	
 }
 void APP_AdcGrpRegularUnitaryConvCompleteCallback()
@@ -184,6 +184,7 @@ void APP_AdcGrpRegularUnitaryConvCompleteCallback()
     Adc.Temp += temp ;
 	if(Adc.TempMax < temp)Adc.TempMax = temp;
 	if(Adc.TempMin > temp)Adc.TempMin = temp;
+	Adc.NewBatVoltage = temp * 1500 * 3 / 4096;
 	Adc.TempCnt ++;
 //	DEBUG_INFO("%d ", Adc.Temp);
 }
@@ -307,12 +308,13 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 {
 	uint8_t i ;
 	static uint16_t filter_cnt= 0,filter_cnt1 = 0; //滤波计数
+	static uint16_t low_voltage_cnt = 0;
 	switch(Bat.Status)
 	{
 		case BAT_DISCHARGE: //放电处理v
 			if(BAT_CDS_RX)
 			{
-				if(++filter_cnt >= 6) // 100MS进一次
+				if(++filter_cnt >= 10) // 100MS进一次
 				{
 					filter_cnt = 0;
 					Bat.Status = BAT_CHARGE;
@@ -329,7 +331,7 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 		case BAT_FULL:	
 			if(!BAT_CDS_RX)
 			{
-				if(++filter_cnt >= 6) // 100MS进一次
+				if(++filter_cnt >= 10) // 100MS进一次
 				{
 					filter_cnt = 0;
 					if(Bat.SolarMode) //太阳能模式
@@ -345,7 +347,7 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 			else filter_cnt = 0;
 			if(Bat.Percent > 95) //默认满电
 			{
-				if(++filter_cnt1 >= 250) // 10MS进一次
+				if(++filter_cnt1 >= 10) // 10MS进一次
 				{
 					filter_cnt1 = 0;
 					Bat.Status = BAT_FULL;
@@ -354,14 +356,35 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 			else filter_cnt1 = 0;
 			break;
 	}
-	if(Bat.Status == BAT_DISCHARGE) //低压保护
+	
+	if(Adc.NewBatVoltage < BAT_Protect_Voltage)  //小于2.56
 	{
-		if(!Bat.Gera)
+		if(++low_voltage_cnt > 10)
 		{
-			if(Bat.Percent <= 6)Sys.LowVoltageFlag = 1;
-			else Sys.LowVoltageFlag = 0;
+			low_voltage_cnt = 0;
+			if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0) )Sys.LowVoltageFlag = 1;
+			else 
+			{
+				Sys.LowVoltageFlag = 0;
+//				if(Led.LampOnFlag)
+//				{
+//					Led_Lmap_Light_OFF();
+//					Led.LampLightDisplayValue = 300;
+//				}
+			}
 		}
-		else Sys.LowVoltageFlag = 0;
 	}
-	else Sys.LowVoltageFlag = 0;
+	else low_voltage_cnt = 0;
+	
+	
+//	if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0 ) ) //低压保护
+//	{
+//		if(!Bat.Gera)
+//		{
+//			if(Bat.Percent <= 5)Sys.LowVoltageFlag = 1;
+//			else Sys.LowVoltageFlag = 0;
+//		}
+//		else Sys.LowVoltageFlag = 0;
+//	}
+//	else Sys.LowVoltageFlag = 0;
 }

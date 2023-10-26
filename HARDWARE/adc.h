@@ -16,6 +16,8 @@
 #define BAT_CDS_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE3
 #define BAT_CDS_EXTI_IRQn	EXTI2_3_IRQn
 
+#define BAT_Protect_Voltage 2560 // 低压保护电压
+
 typedef struct _xADC
 {
 	//累加值
@@ -26,6 +28,8 @@ typedef struct _xADC
 	uint16_t TempCnt;
 	//电池电压
 	uint16_t BatVoltage;
+	
+	uint16_t NewBatVoltage;
 }xADC;
 
 #define BAT_DISCHARGE 0 

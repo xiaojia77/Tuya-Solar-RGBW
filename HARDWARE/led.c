@@ -247,7 +247,7 @@ void LED_RGB_init(void)
 {
 	APP_ConfigTIM1();
 	APP_ConfigPWMChannel();
-	//开机默认90%的白光
+	//开机默认100%的白光
 	memset(&RGB,0,sizeof(xRGB));
 	RGB.h = 0;
 	RGB.s = 0;
@@ -428,7 +428,6 @@ void RGB_App_Handle(void) // 5MS时间
 			LED_RGB_Off_Handle();
 			RGB.Command = IR_LEDOFF;
 		}
-	
 	}
 	static uint8_t TY_Reset_Mode_Status = 0;
 	if(bt_work_state == 0) //未配网模式
@@ -486,15 +485,23 @@ void RGB_App_Handle(void) // 5MS时间
 //					else RGB.Dispaly_w=0;
 					if(RGB.LastCommand == IR_WRITE_MODE)
 					{
-						LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/3);
-						LED_RGB_W_display(RGB.Dispaly_v);
+						if(RGB.W_Mode)
+						{
+							LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/3);
+							LED_RGB_W_display(RGB.Dispaly_v);
+							//LED_RGB_HSVdisplay(RGB.h,RGB.s,100);
+						}
+						else
+						{
+							LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+							LED_RGB_W_display(0);
+						}
 					}
 					else 
 					{
 						LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
 						LED_RGB_W_display(0);
 					}
-				
 				}		
 				break;
 
@@ -518,8 +525,16 @@ void RGB_App_Handle(void) // 5MS时间
 			case TY_bright_MODE:	
 				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v+=5;
 				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v-=5;
-				LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/2);
-				LED_RGB_W_display(RGB.Dispaly_v);
+				if(RGB.W_Mode)
+				{
+					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/3);
+					LED_RGB_W_display(RGB.Dispaly_v);
+				}
+				else
+				{
+					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+					LED_RGB_W_display(0);
+				}
 				break;
 
 			//音乐律动 渐变

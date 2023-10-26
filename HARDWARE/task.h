@@ -23,16 +23,15 @@
 #define TY_RST_0  LL_GPIO_ResetOutputPin(GPIO_TY_RST_PORT,GPIO_TY_RST_PIN);
 
 
-
 typedef struct _xSys
 {
 	uint8_t EnterSleepFlag;
 	uint8_t LowVoltageFlag;
 	
-	uint16_t EntreSleepTimeCount;  //
-	uint8_t SleepTimeCount;  //睡锟斤拷时锟戒超锟斤拷24h 锟酵关闭猴拷锟斤拷 锟斤拷锟斤拷使锟斤拷
+	uint16_t EntreSleepTimeCount;  
+	uint8_t SleepTimeCount;  
 	
-	uint8_t IrWakeUPFlag;		// 4锟斤拷锟斤拷锟斤拷源
+	uint8_t IrWakeUPFlag;		
 	uint8_t ChargWakeUPFlag;
 	uint8_t LPTIMWakeUPFlag;
 	uint8_t UartMWakeUPFlag;

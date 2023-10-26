@@ -149,8 +149,8 @@ void Ir_CommandReceiv(uint8_t key)
 		switch(key)
 		{
 			case IR_COMMAND_POWEROFF:
-			if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
-			{
+				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+				{
 				//	BLE_Power_OFF();
 					LED_RGB_Off_Handle();
 				//	Sys_EntreSleep();
@@ -159,10 +159,13 @@ void Ir_CommandReceiv(uint8_t key)
 				}
 				if(Ir.RepeatCount>3)
 				{
-					BLE_Power_OFF();
-					Ir_Power_OFF();
+					if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0 ) )
+					{
+						BLE_Power_OFF();
+						Ir_Power_OFF();
+						Sys_EntreSleep();
+					}
 					LED_RGB_Off_Handle();
-					Sys_EntreSleep();
 					Ir_ReScan();
 					DEBUG_INFO("BLE OFF and IR OFF");
 				}	
@@ -273,12 +276,24 @@ void Ir_CommandReceiv(uint8_t key)
 				DEBUG_INFO("5H");
 				break;
 			case IR_COMMAND_WRITE_MODE:
-				LED_RGB_SetHSV(0,0,RGB.vTemp);
-				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
-				LED_RGB_On_Handle();
-				RGB.Command = IR_WRITE_MODE;
-				RGB.LastCommand = IR_WRITE_MODE;
-				DEBUG_INFO("WRITE_MODE");
+				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+				{
+					LED_RGB_SetHSV(0,0,RGB.vTemp);
+					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+					LED_RGB_On_Handle();
+					RGB.Command = IR_WRITE_MODE;
+					RGB.LastCommand = IR_WRITE_MODE;
+					DEBUG_INFO("WRITE_MODE");
+					Ir_ReScan();
+				}
+				if(Ir.RepeatCount>10)
+				{
+					RGB.Dispaly_v = 0;
+					if(RGB.W_Mode) RGB.W_Mode = 0;
+					else RGB.W_Mode = 1;
+					DEBUG_INFO("WRITE_MODE Switch");
+					Ir_ReScan();
+				}
 				break;
 			case IR_COMMAND_RGB_MODE:
 				RGB.OnFlag = 1;
@@ -314,8 +329,8 @@ void Ir_CommandReceiv(uint8_t key)
 		}
 	//	DEBUG_INFO("IR key %X",key);
 	//	DEBUG_INFO("Ir.DataTemp %x",Ir.DataTemp);
-		if( (key != IR_COMMAND_LIAGHUP)   && ( key != IR_COMMAND_LIAGHDONW  )  && \
-			(key != IR_COMMAND_POWEROFF) 	)Ir_ReScan();
+		if( (key != IR_COMMAND_LIAGHUP )   && ( key != IR_COMMAND_LIAGHDONW )  && \
+			(key != IR_COMMAND_POWEROFF )  && ( key != IR_COMMAND_WRITE_MODE )	)Ir_ReScan();
 			
 	}
 	

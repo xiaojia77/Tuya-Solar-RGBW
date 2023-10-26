@@ -2,6 +2,8 @@
     "files.associations": {
         "adc.h": "c",
         "led.h": "c",
-        "system.h": "c"
+        "system.h": "c",
+        "debug.h": "c",
+        "ir.h": "c"
     }
 }
