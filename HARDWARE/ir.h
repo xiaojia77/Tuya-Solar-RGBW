@@ -7,8 +7,8 @@
 #include "time.h"
 #include "debug.h"
 
-#define IR_EN_ENANBLE 1  //IR Ê¹ÄÜ¿ØÖÆ
-//IRÃüÁî
+#define IR_EN_ENANBLE 1  //IR ä½¿èƒ½æ§åˆ¶
+//IRå‘½ä»¤
 #define  IR_COMMAND_POWEROFF 0XA2
 #define  IR_COMMAND_LEDON 0X62
 #define  IR_COMMAND_LEDOFF 0x22
@@ -21,9 +21,9 @@
 #define  IR_COMMAND_RED_MODE 0xA8
 #define  IR_COMMAND_GREEN_MODE 0x68
 #define  IR_COMMAND_BLUE_MODE 0X18
-//ÖĞ¶ÏÓÅÏÈ¼¶
+//ä¸­æ–­ä¼˜å…ˆçº§
 #define Ir_Priority 1 
-//Òıµ¼Âë
+//å¼•å¯¼ç 
 #define Ir_GUIDE 0x01
 
 
@@ -37,15 +37,15 @@
 #define  IR_REDATA_TH_L       26
 
 #define GPIO_IR_PORT GPIOA
-#define GPIO_IR_PIN LL_GPIO_PIN_5
-#define IR_EXTI_LINE	LL_EXTI_LINE_5
+#define GPIO_IR_PIN LL_GPIO_PIN_6
+#define IR_EXTI_LINE	LL_EXTI_LINE_6
 #define IR_EXTI_CONFIG_PORT	LL_EXTI_CONFIG_PORTA
-#define IR_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE5
+#define IR_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE6
 #define IR_EXTI_IRQn	EXTI4_15_IRQn
 
 #if IR_EN_ENANBLE == 1
 #define GPIO_IR_EN_PORT GPIOA
-#define GPIO_IR_EN_PIN LL_GPIO_PIN_6
+#define GPIO_IR_EN_PIN LL_GPIO_PIN_5
 #define IR_ENANBLE   LL_GPIO_SetOutputPin(GPIO_IR_EN_PORT,GPIO_IR_EN_PIN);
 #define IR_DISANBLE	 LL_GPIO_ResetOutputPin(GPIO_IR_EN_PORT,GPIO_IR_EN_PIN);
 #else 
@@ -53,32 +53,32 @@
 #define IR_DISANBLE
 #endif 
 
-// TO Ìæ»»³É PY32F002B T4µÄ¼ÆÊıÆ÷
+// TO æ›¿æ¢æˆ PY32F002B T4çš„è®¡æ•°å™¨
 #define TIME_COUNT TIM14->CNT
-#define IR_RX_PORT LL_GPIO_IsInputPinSet(GPIO_IR_PORT,GPIO_IR_PIN)						//Ö»¶Á
+#define IR_RX_PORT LL_GPIO_IsInputPinSet(GPIO_IR_PORT,GPIO_IR_PIN)						//åªè¯»
 
 typedef struct _Ir
 {
-	//Êı¾İ»º´æ
+	//æ•°æ®ç¼“å­˜
 	uint32_t DataTemp;
-	//ÖØ¸´¼ÆÊı µ¥Î»´ó¸Å8-9ms
+	//é‡å¤è®¡æ•° å•ä½å¤§æ¦‚8-9ms
 	uint16_t RepeatCount;
-	//Òıµ¼Âë±êÖ¾Î»
+	//å¼•å¯¼ç æ ‡å¿—ä½
 	uint8_t GuideFlag;
-	//Êı¾İ½ÓÊÕÍê³É±êÖ¾Î»
+	//æ•°æ®æ¥æ”¶å®Œæˆæ ‡å¿—ä½
 	uint8_t ReceiveDataFlag;
-	//³¬Ê±±êÖ¾Î» £¨Ã»ÓĞĞÅºÅÊäÈëÁË£©
+	//è¶…æ—¶æ ‡å¿—ä½ ï¼ˆæ²¡æœ‰ä¿¡å·è¾“å…¥äº†ï¼‰
 	uint8_t TimeOutFlag ;
-	//³¬Ê±Ê±¼ä 
+	//è¶…æ—¶æ—¶é—´ 
 	uint8_t Timeout;
-	//¸ßµçÆ½Ê±¼ä  (ÓÃÀ´ÅĞ¶ÏĞÅºÅ¸ßµÍ)
+	//é«˜ç”µå¹³æ—¶é—´  (ç”¨æ¥åˆ¤æ–­ä¿¡å·é«˜ä½)
 	uint8_t HighLevelTime;
 }Ir_s;
 extern Ir_s Ir;
 
-extern void Ir_ExtiCallback(void);		//Íâ²¿ÖĞ¶Ï»Øµ÷
-extern void Ir_Time14IRQCallback(void);	//¶¨Ê±Æ÷Òç³ö»Øµ÷
-extern void Ir_Init(void);				//ºìÍâ³õÊ¼»¯
-extern uint8_t Ir_Scan(void);				//ºìÍâÉ¨Ãè
+extern void Ir_ExtiCallback(void);		//å¤–éƒ¨ä¸­æ–­å›è°ƒ
+extern void Ir_Time14IRQCallback(void);	//å®šæ—¶å™¨æº¢å‡ºå›è°ƒ
+extern void Ir_Init(void);				//çº¢å¤–åˆå§‹åŒ–
+extern uint8_t Ir_Scan(void);				//çº¢å¤–æ‰«æ
 extern void Ir_CommandReceiv(uint8_t key);
 #endif

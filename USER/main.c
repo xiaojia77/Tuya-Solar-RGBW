@@ -145,30 +145,34 @@ int main(void)
 	
 //	APP_IwdgConfig();	// 看门狗
 	
-	TAKS_IT_ON; 	    // 开启任务中断  
+	TAKS_IT_ON; 	       // 开启任务中断  
 	
 	Bat.ChargeUpFlag = 0;  //只降不升关闭
 	Sys.LowVoltageFlag = 0;
 	Bat.SolarMode = 1;	   //太阳能功能开启
 	Bat.SaveEnergMode = 1; //节能开启
 	
-	RGB.W_Mode = 1; //默认RGBW模式
+	RGB.W_Mode = 1; //默认RGBW模式	
+	RGB.wflash = 1;
+	
+	RGB.LastCommand = IR_WRITE_MODE;
+
+	Flash_Init_Rdata(); //获取之前的数据
 
 	Ir_Power_ON();  //开启红外
 	BLE_Power_ON(); //开启蓝牙
 	
 	LL_mDelay(50);
 	
+	
 //	enable_low_power();  //使能低功耗
     disable_low_power(); //不使能低功耗 TY发送心跳包
-
-	RGB.LastCommand = IR_WRITE_MODE;
 
 	while (1)
 	{
 		bt_uart_service(); 			 //串口消息队列服务函数
-	
-		#ifdef DEBUG
+		
+		#if DEBUG == 1
 		if( HAL_GetTick() > debugtick)
 		{		
 		//	if( bt_work_state != 2)bt_uart_write_frame( 2, 0);
@@ -177,9 +181,12 @@ int main(void)
 //			DEBUG_INFO("Bat.Percent = %d%%  Bat.Voltage %dMV",Bat.Percent,Adc.BatVoltage);
 //			DEBUG_INFO("bt_work_state = %d ",bt_work_state);
 //			DEBUG_INFO("Sys.LowVoltageFlag = %d",Sys.LowVoltageFlag);
+			
+			//if(RGB.Command != IR_COMMAND_RGB_MODE  )
 			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
 		}
 		#endif
+		
 		if( HAL_GetTick() > LEDtick) //100ms
 		{
 			LEDtick = HAL_GetTick() + 100;
@@ -187,7 +194,7 @@ int main(void)
 		}
 		if( HAL_GetTick() > BatChecktick)
 		{
-			BatChecktick = HAL_GetTick() + 20;
+			BatChecktick = HAL_GetTick() + 5;
 			Bat_StatusCheck_Handle();			//电池状态检测
 			Adc_BatVolatageCollection_handle(); //电量采集
 		}

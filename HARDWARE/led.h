@@ -95,6 +95,8 @@ typedef struct _xRGB
 	//W 白光
 	uint16_t w;
 	uint16_t wTemp; //明度 0 - 1000  用来保存亮度的数据	
+	uint16_t wflash;
+	
 	//RGB色彩空间
 	uint8_t Rvalue; 
 	uint8_t Gvalue;

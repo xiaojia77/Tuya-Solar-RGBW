@@ -6,6 +6,7 @@
 #include "bluetooth.h"
 #include "system.h"
 #include "task.h"
+#include "flash.h"
 
 Ir_s Ir;
 void APP_ConfigTIM14(void)
@@ -149,15 +150,15 @@ void Ir_CommandReceiv(uint8_t key)
 		switch(key)
 		{
 			case IR_COMMAND_POWEROFF:
-				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
-				{
-				//	BLE_Power_OFF();
-					LED_RGB_Off_Handle();
-				//	Sys_EntreSleep();
-					Ir_ReScan();
-					DEBUG_INFO("Power OFF");
-				}
-				if(Ir.RepeatCount>3)
+//				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+//				{
+//				//	BLE_Power_OFF();
+//					LED_RGB_Off_Handle();
+//				//	Sys_EntreSleep();
+//					Ir_ReScan();
+//					DEBUG_INFO("Power OFF");
+//				}
+				if(Ir.RepeatCount>20)
 				{
 					if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0 ) )
 					{
@@ -168,13 +169,14 @@ void Ir_CommandReceiv(uint8_t key)
 					LED_RGB_Off_Handle();
 					Ir_ReScan();
 					DEBUG_INFO("BLE OFF and IR OFF");
+					RGB.Command = IR_POWEROFF;
 				}	
-				RGB.Command = IR_POWEROFF;
+				
 				break;
 			case IR_COMMAND_LEDON:
 				if(RGB.OnFlag == 0)
 				{
-					if(++RGB.ResetCnt>= 4)
+					if(++RGB.ResetCnt>= 10)
 					{
 						RGB.ResetCnt = 0;
 						bt_uart_write_frame(4, 0);
@@ -182,7 +184,9 @@ void Ir_CommandReceiv(uint8_t key)
 					DEBUG_INFO("RGB.ResetCnt %d",RGB.ResetCnt);
 				}
 				LED_RGB_On_Handle();
-				//RGB.Command = IR_LEDON;
+				//RGB.Command = IR_LEDON;	
+				LED_RGB_SetHSV(RGB.h,RGB.s,RGB.vTemp);
+				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 				RGB.Command = RGB.LastCommand;
 				DEBUG_INFO("LEDON");
 				break;
@@ -214,8 +218,9 @@ void Ir_CommandReceiv(uint8_t key)
 						if(RGB.v<1000)RGB.v+=5;	
 						else 
 						{
-							Ir_ReScan();
 							RGB.v = 1000;
+							TY_Updata_Bright();
+							Ir_ReScan();
 							RGB.Dispaly_v = 0; //刷新
 						}
 						if(Ir.TimeOutFlag) 
@@ -249,6 +254,7 @@ void Ir_CommandReceiv(uint8_t key)
 						else
 						{
 							RGB.v = 100;
+							TY_Updata_Bright();
 							Ir_ReScan();
 							RGB.Dispaly_v = 0; //刷新
 						}
@@ -283,14 +289,24 @@ void Ir_CommandReceiv(uint8_t key)
 					LED_RGB_On_Handle();
 					RGB.Command = IR_WRITE_MODE;
 					RGB.LastCommand = IR_WRITE_MODE;
+					
 					DEBUG_INFO("WRITE_MODE");
 					Ir_ReScan();
 				}
-				if(Ir.RepeatCount>10)
+				if(Ir.RepeatCount>50)
 				{
-					RGB.Dispaly_v = 0;
+					LED_RGB_SetHSV(0,0,RGB.vTemp);
+					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+					LED_RGB_On_Handle();
 					if(RGB.W_Mode) RGB.W_Mode = 0;
-					else RGB.W_Mode = 1;
+					else 
+					{
+						RGB.wflash = 0;
+						RGB.W_Mode = 1;
+					}
+					
+					RGB.Command = IR_WRITE_MODE;
+					RGB.LastCommand = IR_WRITE_MODE;
 					DEBUG_INFO("WRITE_MODE Switch");
 					Ir_ReScan();
 				}

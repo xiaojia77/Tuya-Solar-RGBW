@@ -240,6 +240,7 @@ void Sys_EnterSleep_Handle(void)
 	
 	LL_IWDG_ReloadCounter(IWDG); // IWDG 清零
 	
+	Flash_Data_Write(); 
 	
 	Sys.EnterSleepFlag = 0;
 	Sys.IrWakeUPFlag = 0;
@@ -273,11 +274,13 @@ void Sys_EnterSleep_Handle(void)
 	LL_LPTIM_StartCounter(LPTIM, LL_LPTIM_OPERATING_MODE_CONTINUOUS);
 	LL_mDelay(1);
 	
+	
 	LED_RGB_Off_Handle(); //关闭灯
 	
 	Led_Off(); //关闭LED指示灯
 	
 	Adc_RefVoltage_OFF(); //参考电压关闭
+	
 	
 Resleep:
 	APP_EnterStop();	//进入睡眠
@@ -285,7 +288,7 @@ Resleep:
 	{
 		DEBUG_INFO("LPTIMWakeUP");
 		Sys.SleepTimeCount++; //1分钟加一
-		if(Sys.SleepTimeCount > 5)  //大于24小时 关闭红外蓝牙  60 * 24 = 1440 
+		if(Sys.SleepTimeCount > 1440)  //大于24小时 关闭红外蓝牙  60 * 24 = 1440 
 		{
 			Sys.SleepTimeCount = 0;
 			//关闭红外  

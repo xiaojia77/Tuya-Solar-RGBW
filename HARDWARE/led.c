@@ -78,14 +78,14 @@ void LED_RGB_display(uint8_t r,uint8_t g,uint8_t b) //RGB 888 显示
 	RGB.Gpwm = g * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
 	RGB.Bpwm = b * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
 	LL_TIM_OC_SetCompareCH4(TIM1 , RGB_PWM - RGB.Rpwm ); //RED
-	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM - RGB.Gpwm ); //GREEN
-	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM - RGB.Bpwm ); //BLUE
+	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM - RGB.Gpwm ); //GREEN
+	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM - RGB.Bpwm ); //BLUE
 }
 void LED_RGB_W_display(uint16_t w) //白光亮度设置
 {
 	RGB.Wvalue = w;
 	RGB.Wpwm =  w * RGB_Light_MAX / 1000   ; //r/255*RGB_Light_MAX
-	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM - RGB.Wpwm ); //RED
+	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM - RGB.Wpwm ); //W
 }
 
 void LED_Init()	
@@ -291,7 +291,7 @@ void LED_RGB_On_Handle(void)
 	LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 
 	
-	if(RGB.OnFlag == 0)
+	//if(RGB.OnFlag == 0)
 	{
 		RGB.OnFlag = 1;
 		
@@ -308,7 +308,7 @@ void LED_RGB_On_Handle(void)
 		Sys.SleepTimeCount = 0;
 		
 		mcu_dp_bool_update(DPID_SWITCH_LED,RGB.OnFlag);
-		RGB.Command = IR_LEDON;
+		//RGB.Command = IR_LEDON;
 	}
 }
 void LED_DisplayBatGear_Handle(void)  // 100ms
@@ -352,17 +352,17 @@ void IR_RGB_MODE_handle()
 		case 0:
 			LED_RGB_SetHSV(0,1000,RGB.vTemp);
 			LED_RGB_SetDisplayHSV(120,1000,RGB.vTemp);
-			LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.v);
+			LED_RGB_HSVdisplay(0,1000,RGB.v);
 			break;
 		case 1:
 			LED_RGB_SetHSV(120,1000,RGB.vTemp);
 			LED_RGB_SetDisplayHSV(120,1000,RGB.vTemp);
-			LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.v);
+			LED_RGB_HSVdisplay(120,1000,RGB.v);
 			break;
 		case 2:
 			LED_RGB_SetHSV(240,1000,RGB.vTemp);
 			LED_RGB_SetDisplayHSV(240,1000,RGB.vTemp);
-			LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.v);
+			LED_RGB_HSVdisplay(240,1000,RGB.v);
 			break;
 	}
 }
@@ -439,19 +439,22 @@ void RGB_App_Handle(void) // 5MS时间
 				case 0:
 					if(RGB.Dispaly_v>2)RGB.Dispaly_v-=2;
 					else TY_Reset_Mode_Status = 1;
-					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+					//LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+					LED_RGB_HSVdisplay(0,1000,RGB.Dispaly_v);
 					break;
 				case 1:	
 					if(RGB.Dispaly_v<600)RGB.Dispaly_v+=2;
 					else TY_Reset_Mode_Status = 0;
-					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+					LED_RGB_HSVdisplay(0,1000,RGB.Dispaly_v);
 					break;
 			}
+			LED_RGB_W_display(0);
 		}
 		else 
 		{
 			LED_RGB_display(0,0,0);
 			RGB.Dispaly_v = 0;
+			LED_RGB_W_display(0);
 		}
 	}
 	else
@@ -489,7 +492,6 @@ void RGB_App_Handle(void) // 5MS时间
 						{
 							LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/3);
 							LED_RGB_W_display(RGB.Dispaly_v);
-							//LED_RGB_HSVdisplay(RGB.h,RGB.s,100);
 						}
 						else
 						{
@@ -525,6 +527,14 @@ void RGB_App_Handle(void) // 5MS时间
 			case TY_bright_MODE:	
 				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v+=5;
 				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v-=5;
+			
+				if(!RGB.wflash && RGB.Time > 75)
+				{
+					RGB.wflash = 1;
+					RGB.Dispaly_v = 0;
+					
+				}
+			
 				if(RGB.W_Mode)
 				{
 					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v/3);

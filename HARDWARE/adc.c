@@ -28,7 +28,7 @@ void Adc_ReScan(void)
 }
 void Bat_GpioInit(void)
 {
-	LL_GPIO_InitTypeDef GPIO_InitStruct;
+	LL_GPIO_InitTypeDef GPIO_InitStruct={0};
 	// 配置PA0输入模式 
 	GPIO_InitStruct.Pin = BAT_CDS_PIN;
 	GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
@@ -196,7 +196,7 @@ void Adc_BatVolatageCollection_handle(void) //10MS 采样一次电压
 		Adc.BatVoltage = ( Adc.Temp - Adc.TempMax - Adc.TempMin ) / 8;
 		Adc.BatVoltage =  Adc.BatVoltage * 1500 * 3 / 4096 ;
 	//	DEBUG_PRINTF("bat = %d \r\n",Adc.BatVoltage);
-		PRINT(B,"%d",Adc.BatVoltage);
+	//	PRINT(B,"%d",Adc.BatVoltage);
 		BatVolatageToPercent_handle();
 		Adc.Temp = 0;
 		Adc.TempMax = 0X0000;
@@ -311,10 +311,10 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 	static uint16_t low_voltage_cnt = 0;
 	switch(Bat.Status)
 	{
-		case BAT_DISCHARGE: //放电处理v
+		case BAT_DISCHARGE: //放电处理
 			if(BAT_CDS_RX)
 			{
-				if(++filter_cnt >= 10) // 100MS进一次
+				if(++filter_cnt >= 100) // 100MS进一次
 				{
 					filter_cnt = 0;
 					Bat.Status = BAT_CHARGE;
@@ -331,7 +331,7 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 		case BAT_FULL:	
 			if(!BAT_CDS_RX)
 			{
-				if(++filter_cnt >= 10) // 100MS进一次
+				if(++filter_cnt >= 100) // 100MS进一次
 				{
 					filter_cnt = 0;
 					if(Bat.SolarMode) //太阳能模式
@@ -347,7 +347,7 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 			else filter_cnt = 0;
 			if(Bat.Percent > 95) //默认满电
 			{
-				if(++filter_cnt1 >= 10) // 10MS进一次
+				if(++filter_cnt1 >= 100) // 10MS进一次
 				{
 					filter_cnt1 = 0;
 					Bat.Status = BAT_FULL;
@@ -376,15 +376,5 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 	}
 	else low_voltage_cnt = 0;
 	
-	
-//	if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0 ) ) //低压保护
-//	{
-//		if(!Bat.Gera)
-//		{
-//			if(Bat.Percent <= 5)Sys.LowVoltageFlag = 1;
-//			else Sys.LowVoltageFlag = 0;
-//		}
-//		else Sys.LowVoltageFlag = 0;
-//	}
-//	else Sys.LowVoltageFlag = 0;
+
 }

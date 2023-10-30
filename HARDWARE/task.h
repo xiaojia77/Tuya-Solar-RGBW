@@ -29,7 +29,7 @@ typedef struct _xSys
 	uint8_t LowVoltageFlag;
 	
 	uint16_t EntreSleepTimeCount;  
-	uint8_t SleepTimeCount;  
+	uint16_t SleepTimeCount;  
 	
 	uint8_t IrWakeUPFlag;		
 	uint8_t ChargWakeUPFlag;

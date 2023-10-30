@@ -18,13 +18,6 @@
 // 电测检测开关
 #define GPIO_BAT_EN_PORT GPIOB
 #define GPIO_BAT_EN_PIN  LL_GPIO_PIN_4
-// WB_EN
-#define GPIO_WB_EN_PORT GPIOB
-#define GPIO_WB_EN_PIN LL_GPIO_PIN_3
-// WB_PORT
-#define GPIO_WB_PORT GPIOB
-#define GPIO_WB_PIN LL_GPIO_PIN_2
-#define WB_PORT LL_GPIO_IsInputPinSet(GPIO_WB_PORT,GPIO_WB_PIN)		
 
 #define MOS_ON 0
 #define MOS_OFF 1
