@@ -132,10 +132,21 @@ uint8_t Ir_Scan(void)
 	uint8_t key = 0;
 	if(Ir.ReceiveDataFlag  /* &&  IrData[3] == Ir_GUIDE */)
 	{
-		if( ( IrData[3] == (uint8_t)(~IrData[2])) && ( IrData[1] == (uint8_t)(~IrData[0]) ))
+		if( /*( IrData[3] == (uint8_t)(~IrData[2]))  && */ ( IrData[1] == (uint8_t)(~IrData[0]) ))
 		{
-			key = IrData[1];
+			if(IrData[3] == IR_1_GUID_KEY)
+			{
+				Ir.GuidKey = IrData[3];
+				key = IrData[1];	
+			}
+			else if(IrData[3] == GUID_KEY0 ) 
+			{
+				Ir.GuidKey = IrData[3];
+				key = IrData[1];
+			}	
+		
 		}
+
 		if(!key || !Ir.GuideFlag)
 		{
 			Ir.ReceiveDataFlag = 0;
@@ -145,208 +156,255 @@ uint8_t Ir_Scan(void)
 }
 void Ir_CommandReceiv(uint8_t key)
 {
+	
+	//	DEBUG_INFO("IR key %X",key);
+	//	DEBUG_INFO("Ir.DataTemp %x",Ir.DataTemp);
 	if(key)
 	{
-		switch(key)
-		{
-			case IR_COMMAND_POWEROFF:
-//				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
-//				{
-//				//	BLE_Power_OFF();
-//					LED_RGB_Off_Handle();
-//				//	Sys_EntreSleep();
-//					Ir_ReScan();
-//					DEBUG_INFO("Power OFF");
-//				}
-				if(Ir.RepeatCount>20)
-				{
-					if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0 ) )
+		if(Ir.GuidKey == IR_1_GUID_KEY)
+		{	
+			switch(key)
+			{
+				case IR_COMMAND_POWEROFF:
+	//				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+	//				{
+	//				//	BLE_Power_OFF();
+	//					LED_RGB_Off_Handle();
+	//				//	Sys_EntreSleep();
+	//					Ir_ReScan();
+	//					DEBUG_INFO("Power OFF");
+	//				}
+					if(Ir.RepeatCount>20)
 					{
-						BLE_Power_OFF();
-						Ir_Power_OFF();
-						Sys_EntreSleep();
+						if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0 ) )
+						{
+							BLE_Power_OFF();
+							Ir_Power_OFF();
+							Sys_EntreSleep();
+						}
+						LED_RGB_Off_Handle();
+						Ir_ReScan();
+						DEBUG_INFO("BLE OFF and IR OFF");
+						RGB.Command = IR_POWEROFF;
+					}	
+					
+					break;
+				case IR_COMMAND_LEDON:
+					if(RGB.OnFlag == 0)
+					{
+						if(++RGB.ResetCnt>= 10)
+						{
+							RGB.ResetCnt = 0;
+							bt_uart_write_frame(4, 0);
+						}
+						DEBUG_INFO("RGB.ResetCnt %d",RGB.ResetCnt);
 					}
+					LED_RGB_On_Handle();
+					//RGB.Command = IR_LEDON;	
+					LED_RGB_SetHSV(RGB.h,RGB.s,RGB.vTemp);
+					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+					RGB.Command = RGB.LastCommand;
+					DEBUG_INFO("LEDON");
+					break;
+				case IR_COMMAND_LEDOFF:	
+					if(RGB.OnFlag == 1)	RGB.ResetCnt++; //配网用
 					LED_RGB_Off_Handle();
-					Ir_ReScan();
-					DEBUG_INFO("BLE OFF and IR OFF");
-					RGB.Command = IR_POWEROFF;
-				}	
-				
-				break;
-			case IR_COMMAND_LEDON:
-				if(RGB.OnFlag == 0)
-				{
-					if(++RGB.ResetCnt>= 10)
+					RGB.Command = IR_LEDOFF;
+					DEBUG_INFO("LEDOFF");
+					break;
+				case IR_COMMAND_LIAGHUP: 
+					if(RGB.OnFlag)
 					{
-						RGB.ResetCnt = 0;
-						bt_uart_write_frame(4, 0);
+						if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+						{
+							if( ( RGB.v + 150) < 1000 )
+							{
+								RGB.v+=150;
+							}
+							else 
+							{
+								RGB.Dispaly_v = 0;
+								RGB.v = 1000;
+							}
+							TY_Updata_Bright();
+							Ir_ReScan();
+						}
+						if(Ir.RepeatCount>3)
+						{
+							if(RGB.v<1000)RGB.v+=5;	
+							else 
+							{
+								RGB.v = 1000;
+								TY_Updata_Bright();
+								Ir_ReScan();
+								RGB.Dispaly_v = 0; //刷新
+							}
+							if(Ir.TimeOutFlag) 
+							{
+								TY_Updata_Bright();
+								Ir_ReScan();
+							}
+						}	
+						//DEBUG_INFO("LIAGHUP");	
+						
+						RGB.vTemp = RGB.v;
 					}
-					DEBUG_INFO("RGB.ResetCnt %d",RGB.ResetCnt);
+					break;
+				case IR_COMMAND_LIAGHDONW:
+					if(RGB.OnFlag)
+					{
+						if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+						{
+							if( (RGB.v - 150 )>100)RGB.v-=150;
+							else 
+							{
+								RGB.v = 100;
+								RGB.Dispaly_v = 0;
+							}
+							TY_Updata_Bright();
+							Ir_ReScan();
+						}
+						if(Ir.RepeatCount>3)
+						{
+							if(RGB.v>100)RGB.v-=5;
+							else
+							{
+								RGB.v = 100;
+								TY_Updata_Bright();
+								Ir_ReScan();
+								RGB.Dispaly_v = 0; //刷新
+							}
+							if(Ir.TimeOutFlag) 
+							{
+								TY_Updata_Bright();
+								Ir_ReScan();
+							}
+						}				
+						RGB.vTemp = RGB.v;
+					}
+					break;
+				case IR_COMMAND_3H:
+					RGB.Dispaly_v = 0;
+					LED_RGB_On_Handle();
+					RGB.SetOffTime = TIME_3H; 
+					RGB.Command = RGB.LastCommand;
+					DEBUG_INFO("3H");
+					break;
+				case IR_COMMAND_5H:
+					RGB.Dispaly_v = 0;
+					LED_RGB_On_Handle();
+					RGB.SetOffTime = TIME_5H; 
+					RGB.Command = RGB.LastCommand;
+					DEBUG_INFO("5H");
+					break;
+				case IR_COMMAND_WRITE_MODE:
+					if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+					{
+						LED_RGB_SetHSV(0,0,RGB.vTemp);
+						LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+						LED_RGB_On_Handle();
+						RGB.Command = IR_WRITE_MODE;
+						RGB.LastCommand = IR_WRITE_MODE;
+						
+						DEBUG_INFO("WRITE_MODE");
+						Ir_ReScan();
+					}
+					if(Ir.RepeatCount>50)
+					{
+						LED_RGB_SetHSV(0,0,RGB.vTemp);
+						LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+						LED_RGB_On_Handle();
+						if(RGB.W_Mode) RGB.W_Mode = 0;
+						else 
+						{
+							RGB.wflash = 0;
+							RGB.W_Mode = 1;
+						}
+						
+						RGB.Command = IR_WRITE_MODE;
+						RGB.LastCommand = IR_WRITE_MODE;
+						DEBUG_INFO("WRITE_MODE Switch");
+						Ir_ReScan();
+					}
+					break;
+				case IR_COMMAND_RGB_MODE:
+					RGB.OnFlag = 1;
+					LED_RGB_On_Handle();
+					RGB.Command =IR_RGB_MODE;
+					RGB.LastCommand = IR_RGB_MODE;
+					DEBUG_INFO("RGB_MODE");
+					break;
+				case IR_COMMAND_RED_MODE:
+					LED_RGB_SetHSV(0,1000,RGB.vTemp);
+					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+					LED_RGB_On_Handle();
+					RGB.Command =IR_RED_MODE;
+					RGB.LastCommand = IR_RED_MODE;
+					DEBUG_INFO("RED_MODE");
+					break;
+				case IR_COMMAND_GREEN_MODE:	
+					LED_RGB_SetHSV(120,1000,RGB.vTemp);
+					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+					LED_RGB_On_Handle();
+					RGB.Command =IR_GREEN_MODE;
+					RGB.LastCommand = IR_GREEN_MODE;
+					DEBUG_INFO("GREEN_MODE");
+					break;
+				case IR_COMMAND_BLUE_MODE:
+					LED_RGB_SetHSV(240,1000,RGB.vTemp);
+					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+					LED_RGB_On_Handle();
+					RGB.Command =IR_BLUE_MODE;
+					RGB.LastCommand = IR_BLUE_MODE;
+					DEBUG_INFO("IR_BLUE_MODE");
+					break;
+			}
+			if( (key != IR_COMMAND_LIAGHUP )   && ( key != IR_COMMAND_LIAGHDONW )  && \
+				(key != IR_COMMAND_POWEROFF )  && ( key != IR_COMMAND_WRITE_MODE )	)Ir_ReScan();
+		}
+		else if(Ir.GuidKey == GUID_KEY0)
+		{
+			if(RGB.OnFlag)
+			{
+				switch(key)
+				{
+					case 185: LED_RGB_Off_Handle();RGB.Command = IR_LEDOFF;DEBUG_INFO("IR_COMMAND_LEDOFF");break;		
+					case P01: RGB.CurrentGear = 1;  RGB.Dispaly_v = 0; break;
+					case P02: RGB.CurrentGear = 2;  RGB.Dispaly_v = 0; break;
+					case P03: RGB.CurrentGear = 3;  RGB.Dispaly_v = 0; break;
+					case P04: RGB.CurrentGear = 4;  RGB.Dispaly_v = 0; break;
+					case P05: RGB.CurrentGear = 5;  RGB.Dispaly_v = 0; break;
+					case P06: RGB.CurrentGear = 6;  RGB.Dispaly_v = 0; break;
+					case P07: RGB.CurrentGear = 7;  RGB.Dispaly_v = 0; break;
+					case P08: RGB.CurrentGear = 8;  RGB.Dispaly_v = 0; break;
+					case P09: RGB.CurrentGear = 9;  RGB.Dispaly_v = 0; break;
+					case P10: RGB.CurrentGear = 10; RGB.Dispaly_v = 0; break;
+					case P11: RGB.CurrentGear = 11; RGB.Dispaly_v = 0; break;
+					case P12: RGB.CurrentGear = 12; RGB.Dispaly_v = 0; break;
+					case P13: RGB.CurrentGear = 13; RGB.Dispaly_v = 0; break;
+					case P14: RGB.CurrentGear = 14; RGB.Dispaly_v = 0; break;
+					case P15: RGB.CurrentGear = 15; RGB.Dispaly_v = 0; break;
+					case P16: RGB.CurrentGear = 16; RGB.Dispaly_v = 0; break;
+					case P17: RGB.CurrentGear = 17; RGB.Dispaly_v = 0; break;
+					case P18: RGB.CurrentGear = 18; RGB.Dispaly_v = 0; break;
+					case P19: RGB.CurrentGear = 19; RGB.Dispaly_v = 0; break;
+					case P20: RGB.CurrentGear = 20; RGB.Dispaly_v = 0; break;	
 				}
+			}
+			if(key == 57 )
+			{
 				LED_RGB_On_Handle();
 				//RGB.Command = IR_LEDON;	
 				LED_RGB_SetHSV(RGB.h,RGB.s,RGB.vTemp);
 				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 				RGB.Command = RGB.LastCommand;
 				DEBUG_INFO("LEDON");
-				break;
-			case IR_COMMAND_LEDOFF:	
-				if(RGB.OnFlag == 1)	RGB.ResetCnt++; //配网用
-				LED_RGB_Off_Handle();
-				RGB.Command = IR_LEDOFF;
-				DEBUG_INFO("LEDOFF");
-				break;
-			case IR_COMMAND_LIAGHUP: 
-				if(RGB.OnFlag)
-				{
-					if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
-					{
-						if( ( RGB.v + 150) < 1000 )
-						{
-							RGB.v+=150;
-						}
-						else 
-						{
-							RGB.Dispaly_v = 0;
-							RGB.v = 1000;
-						}
-						TY_Updata_Bright();
-						Ir_ReScan();
-					}
-					if(Ir.RepeatCount>3)
-					{
-						if(RGB.v<1000)RGB.v+=5;	
-						else 
-						{
-							RGB.v = 1000;
-							TY_Updata_Bright();
-							Ir_ReScan();
-							RGB.Dispaly_v = 0; //刷新
-						}
-						if(Ir.TimeOutFlag) 
-						{
-							TY_Updata_Bright();
-							Ir_ReScan();
-						}
-					}	
-					//DEBUG_INFO("LIAGHUP");	
-					
-					RGB.vTemp = RGB.v;
-				}
-				break;
-			case IR_COMMAND_LIAGHDONW:
-				if(RGB.OnFlag)
-				{
-					if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
-					{
-						if( (RGB.v - 150 )>100)RGB.v-=150;
-						else 
-						{
-							RGB.v = 100;
-							RGB.Dispaly_v = 0;
-						}
-						TY_Updata_Bright();
-						Ir_ReScan();
-					}
-					if(Ir.RepeatCount>3)
-					{
-						if(RGB.v>100)RGB.v-=5;
-						else
-						{
-							RGB.v = 100;
-							TY_Updata_Bright();
-							Ir_ReScan();
-							RGB.Dispaly_v = 0; //刷新
-						}
-						if(Ir.TimeOutFlag) 
-						{
-							TY_Updata_Bright();
-							Ir_ReScan();
-						}
-					}				
-					RGB.vTemp = RGB.v;
-				}
-				break;
-			case IR_COMMAND_3H:
-				RGB.Dispaly_v = 0;
-				LED_RGB_On_Handle();
-				RGB.SetOffTime = TIME_3H; 
-				RGB.Command = RGB.LastCommand;
-				DEBUG_INFO("3H");
-				break;
-			case IR_COMMAND_5H:
-				RGB.Dispaly_v = 0;
-				LED_RGB_On_Handle();
-				RGB.SetOffTime = TIME_5H; 
-				RGB.Command = RGB.LastCommand;
-				DEBUG_INFO("5H");
-				break;
-			case IR_COMMAND_WRITE_MODE:
-				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
-				{
-					LED_RGB_SetHSV(0,0,RGB.vTemp);
-					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
-					LED_RGB_On_Handle();
-					RGB.Command = IR_WRITE_MODE;
-					RGB.LastCommand = IR_WRITE_MODE;
-					
-					DEBUG_INFO("WRITE_MODE");
-					Ir_ReScan();
-				}
-				if(Ir.RepeatCount>50)
-				{
-					LED_RGB_SetHSV(0,0,RGB.vTemp);
-					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
-					LED_RGB_On_Handle();
-					if(RGB.W_Mode) RGB.W_Mode = 0;
-					else 
-					{
-						RGB.wflash = 0;
-						RGB.W_Mode = 1;
-					}
-					
-					RGB.Command = IR_WRITE_MODE;
-					RGB.LastCommand = IR_WRITE_MODE;
-					DEBUG_INFO("WRITE_MODE Switch");
-					Ir_ReScan();
-				}
-				break;
-			case IR_COMMAND_RGB_MODE:
-				RGB.OnFlag = 1;
-				LED_RGB_On_Handle();
-				RGB.Command =IR_RGB_MODE;
-				RGB.LastCommand = IR_RGB_MODE;
-				DEBUG_INFO("RGB_MODE");
-				break;
-			case IR_COMMAND_RED_MODE:
-				LED_RGB_SetHSV(0,1000,RGB.vTemp);
-				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
-				LED_RGB_On_Handle();
-				RGB.Command =IR_RED_MODE;
-				RGB.LastCommand = IR_RED_MODE;
-				DEBUG_INFO("RED_MODE");
-				break;
-			case IR_COMMAND_GREEN_MODE:	
-				LED_RGB_SetHSV(120,1000,RGB.vTemp);
-				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
-				LED_RGB_On_Handle();
-				RGB.Command =IR_GREEN_MODE;
-				RGB.LastCommand = IR_GREEN_MODE;
-				DEBUG_INFO("GREEN_MODE");
-				break;
-			case IR_COMMAND_BLUE_MODE:
-				LED_RGB_SetHSV(240,1000,RGB.vTemp);
-				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
-				LED_RGB_On_Handle();
-				RGB.Command =IR_BLUE_MODE;
-				RGB.LastCommand = IR_BLUE_MODE;
-				DEBUG_INFO("IR_BLUE_MODE");
-				break;
+			}
+			//if(Led.LampOnFlag && key != 57)Led_Lamp_Light_Set(Led.LampLightDisplayValueTemp);
+			Ir_ReScan();
+			DEBUG_INFO("CurrentGear %d",RGB.CurrentGear);	
+
 		}
-	//	DEBUG_INFO("IR key %X",key);
-	//	DEBUG_INFO("Ir.DataTemp %x",Ir.DataTemp);
-		if( (key != IR_COMMAND_LIAGHUP )   && ( key != IR_COMMAND_LIAGHDONW )  && \
-			(key != IR_COMMAND_POWEROFF )  && ( key != IR_COMMAND_WRITE_MODE )	)Ir_ReScan();
 			
 	}
 	

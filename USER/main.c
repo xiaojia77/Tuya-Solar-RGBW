@@ -158,17 +158,20 @@ int main(void)
 	Flash_Init_Rdata(); //获取之前的数据
 
 	Ir_Power_ON();  //开启红外
+	
 	BLE_Power_ON(); //开启蓝牙
 	
 	LL_mDelay(50);
 	
-//	APP_IwdgConfig();	// 看门狗
+	APP_IwdgConfig();	// 看门狗
 	
-//	enable_low_power();  //使能低功耗
-    disable_low_power(); //不使能低功耗 TY发送心跳包
+	enable_low_power();  //使能低功耗
+//    disable_low_power(); //不使能低功耗 TY发送心跳包
 
 	while (1)
 	{
+		LL_IWDG_ReloadCounter(IWDG); 			// IWDG 清零
+		
 		bt_uart_service(); 			 //串口消息队列服务函数
 		
 		#if DEBUG == 1
@@ -180,7 +183,7 @@ int main(void)
 //			DEBUG_INFO("Bat.Percent = %d%%  Bat.Voltage %dMV",Bat.Percent,Adc.BatVoltage);
 //			DEBUG_INFO("bt_work_state = %d ",bt_work_state);
 //			DEBUG_INFO("Sys.LowVoltageFlag = %d",Sys.LowVoltageFlag);
-			
+			Flash_Data_Write(); 
 			//if(RGB.Command != IR_COMMAND_RGB_MODE  )
 			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
 		}
@@ -207,7 +210,6 @@ int main(void)
 		{
 			Sys_EnterSleep_Handle();			//睡眠处理函数
 		}
-		LL_IWDG_ReloadCounter(IWDG); 			// IWDG 清零
 	}
 }
 static void APP_SystemClockConfig(void)

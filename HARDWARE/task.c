@@ -223,6 +223,12 @@ void Sys_EnterSleep_Handle(void)
 	
 	TAKS_IT_OFF; //关闭任务中断
 	
+	LL_IWDG_ReloadCounter(IWDG);
+	while (LL_IWDG_IsActiveFlag_RVU(IWDG)) {;}
+	LL_IWDG_EnableWriteAccess(IWDG);
+	LL_IWDG_SetReloadCounter(IWDG, 4095);
+	LL_IWDG_ReloadCounter(IWDG);
+	
 	LED_RGB_Off_Handle();
 	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM  ); //RED
 	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM  ); //BLUE
@@ -234,9 +240,7 @@ void Sys_EnterSleep_Handle(void)
 	enable_low_power();
 	
 	//延迟一会	
-	LL_mDelay(50);
-
-	//处理信息  data_handle();
+	LL_mDelay(100);
 	
 	LL_IWDG_ReloadCounter(IWDG); // IWDG 清零
 	
@@ -261,18 +265,14 @@ void Sys_EnterSleep_Handle(void)
 		//关闭蓝牙
 		BLE_Power_OFF();
 		//关闭LPTIME唤醒
-		LL_LPTIM_Disable(LPTIM);
+		//LL_LPTIM_Disable(LPTIM);
 	}
 	else 
 	{
-		LL_LPTIM_Enable(LPTIM);
+		//LL_LPTIM_Enable(LPTIM);
 		
 		LL_EXTI_EnableIT(LL_EXTI_LINE_4);
 	}
-	
-	LL_LPTIM_SetAutoReload(LPTIM,15360 );  //1分钟
-	LL_LPTIM_StartCounter(LPTIM, LL_LPTIM_OPERATING_MODE_CONTINUOUS);
-	LL_mDelay(1);
 	
 	
 	LED_RGB_Off_Handle(); //关闭灯
@@ -288,7 +288,7 @@ Resleep:
 	{
 		DEBUG_INFO("LPTIMWakeUP");
 		Sys.SleepTimeCount++; //1分钟加一
-		if(Sys.SleepTimeCount > 1440)  //大于24小时 关闭红外蓝牙  60 * 24 = 1440 
+		if(Sys.SleepTimeCount > 1440 * 4)  //大于24小时 关闭红外蓝牙  60 * 24 = 1440 
 		{
 			Sys.SleepTimeCount = 0;
 			//关闭红外  
@@ -296,12 +296,13 @@ Resleep:
 			//关闭蓝牙
 			BLE_Power_OFF();	
 			//关闭LPTIME
-			LL_LPTIM_Disable(LPTIM);
+			//LL_LPTIM_Disable(LPTIM);
 			//只有CDS可以唤醒
 			DEBUG_INFO("entry shut down mode");
 		}
 	}
-	
+	LL_mDelay(5); //不加延迟会复位？  目前不清楚原因 可能是唤醒时情清看门狗不能马上响应
+	LL_IWDG_ReloadCounter(IWDG); // IWDG 清零
 	if( !Sys.ChargWakeUPFlag && !Sys.IrWakeUPFlag && !Sys.UartMWakeUPFlag)goto Resleep;
 	DEBUG_INFO("IrWakeUPFlag %d",Sys.IrWakeUPFlag);
 	DEBUG_INFO("ChargWakeUPFlag %d",Sys.ChargWakeUPFlag);
@@ -315,22 +316,17 @@ Resleep:
 	//开启蓝牙
 	BLE_Power_ON();
 	LL_mDelay(1);
-	//延迟一会
-	
-	//处理信息
-	
-	//使能LPTIM读清零  
-	LL_LPTIM_EnableResetAfterRead(LPTIM);
-	LL_LPTIM_GetCounter(LPTIM); //清零计数器
-	LL_LPTIM_GetCounter(LPTIM); //读两次清零计数器
-    LL_LPTIM_DisableResetAfterRead(LPTIM);
-	LL_mDelay(1);
-	LL_LPTIM_Disable(LPTIM);
+
 	LL_EXTI_DisableIT(LL_EXTI_LINE_4);
 	
-	disable_low_power(); //退出蓝牙低功耗
+	//disable_low_power(); //退出蓝牙低功耗
 	
 	all_data_update(); //更新蓝牙数据
+	
+	while (LL_IWDG_IsActiveFlag_RVU(IWDG)) 
+	LL_IWDG_EnableWriteAccess(IWDG);
+	LL_IWDG_SetReloadCounter(IWDG, 30);
+	LL_IWDG_ReloadCounter(IWDG);
 	
 	TAKS_IT_ON; //开启任务中断
 }

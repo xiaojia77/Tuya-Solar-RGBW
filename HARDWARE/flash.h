@@ -11,7 +11,7 @@
 #define SET_V 2
 #define SET_W_MODE 3
 #define SET_RGB_MODE 4
-
+#define SET_CurrentGear 5
 #define MODE_PC0 OB_SWD_PB6_GPIO_PC0
 
 
@@ -25,7 +25,7 @@ typedef struct
 } NewDataType;                                                      /* 结构体定义 */
 #define VarA (*(volatile NewDataType *)FLASH_USER_START_ADDR)       /* Flash存储地址定义 */
 
-extern uint32_t FlashData[5];
+extern uint32_t FlashData[6];
 
 extern void Flash_Write(void);
 

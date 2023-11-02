@@ -152,14 +152,14 @@ void APP_UsartIRQCallback(USART_TypeDef *USARTx)
 {
 	
   /* 接收数据寄存器不为空 */
-	
+
 	//接收
 	if ((LL_USART_IsActiveFlag_RXNE(USARTx) != RESET) && (LL_USART_IsEnabledIT_RXNE(USARTx) != RESET))
 	{
 		uart_receive_input(LL_USART_ReceiveData8(USARTx)); 
 		return ;
 	}
-
+	LL_USART_ClearFlag_ORE(USARTx); //防止死机
 
 	/* 发送数据寄存器空 */ 
 	if ((LL_USART_IsActiveFlag_TXE(USARTx) != RESET) && (LL_USART_IsEnabledIT_TXE(USARTx) != RESET))

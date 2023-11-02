@@ -32,10 +32,10 @@ static void APP_ConfigLptim(void)
   LL_LPTIM_EnableIT_ARRM(LPTIM);
   
   /* 使能LPTIM */
-  //LL_LPTIM_Enable(LPTIM);
+  LL_LPTIM_Enable(LPTIM);
   
   /* 设置重载值 */
-  //LL_LPTIM_SetAutoReload(LPTIM,1000); //7680 2分钟唤醒一次
+  LL_LPTIM_SetAutoReload(LPTIM,30718); //7680 2分钟唤醒一次
   
   /* 启动连续次模式 */
   LL_LPTIM_StartCounter(LPTIM, LL_LPTIM_OPERATING_MODE_CONTINUOUS);
@@ -52,7 +52,7 @@ void Lptim_Init(void)
 	APP_ConfigLptimClock();
 
 	// 初始化LPTIM //
-	LPTIM_InitStruct.Prescaler = LL_LPTIM_PRESCALER_DIV128;        // 128分频 //
+	LPTIM_InitStruct.Prescaler = LL_LPTIM_PRESCALER_DIV16;        // 128分频 //
 	LPTIM_InitStruct.UpdateMode = LL_LPTIM_UPDATE_MODE_IMMEDIATE;  // 立即更新模式 //
 	if (LL_LPTIM_Init(LPTIM, &LPTIM_InitStruct) != SUCCESS)
 	{

@@ -74,9 +74,9 @@ void LED_RGB_display(uint8_t r,uint8_t g,uint8_t b) //RGB 888 显示
 	RGB.Rvalue = r;
 	RGB.Gvalue = g;
 	RGB.Bvalue = b;
-	RGB.Rpwm = r * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
-	RGB.Gpwm = g * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
-	RGB.Bpwm = b * RGB_Light_MAX / 255   ; //r/255*RGB_Light_MAX
+	RGB.Rpwm = (r * RGB_Light_MAX / 255)  * RGB.CurrentGear / 20  ; //r/255*RGB_Light_MAX
+	RGB.Gpwm = (g * RGB_Light_MAX / 255)  * RGB.CurrentGear / 20 ; //r/255*RGB_Light_MAX
+	RGB.Bpwm = (b * RGB_Light_MAX / 255)  * RGB.CurrentGear / 20 ; //r/255*RGB_Light_MAX
 	LL_TIM_OC_SetCompareCH4(TIM1 , RGB_PWM - RGB.Rpwm ); //RED
 	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM - RGB.Gpwm ); //GREEN
 	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM - RGB.Bpwm ); //BLUE
@@ -84,7 +84,7 @@ void LED_RGB_display(uint8_t r,uint8_t g,uint8_t b) //RGB 888 显示
 void LED_RGB_W_display(uint16_t w) //白光亮度设置
 {
 	RGB.Wvalue = w;
-	RGB.Wpwm =  w * RGB_Light_MAX / 1000   ; //r/255*RGB_Light_MAX
+	RGB.Wpwm =  (w * RGB_Light_MAX / 1000 )  * RGB.CurrentGear / 20; //r/255*RGB_Light_MAX
 	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM - RGB.Wpwm ); //W
 }
 
@@ -342,7 +342,7 @@ void LED_DisplayBatGear_Handle(void)  // 100ms
 void IR_RGB_MODE_handle()
 {
 	static uint8_t status=0,time_cnt;
-	if(++time_cnt >= 100)
+	if(++time_cnt >= 200)
 	{
 		time_cnt = 0;
 		if(++status>2)status = 0;
@@ -351,17 +351,17 @@ void IR_RGB_MODE_handle()
 			case 0:
 				LED_RGB_SetHSV(0,1000,RGB.vTemp);
 				LED_RGB_SetDisplayHSV(0,1000,RGB.vTemp);
-				LED_RGB_HSVdisplay(0,1000,RGB.v);
+			//	LED_RGB_HSVdisplay(0,1000,RGB.vTemp);
 				break;
 			case 1:
 				LED_RGB_SetHSV(120,1000,RGB.vTemp);
 				LED_RGB_SetDisplayHSV(120,1000,RGB.vTemp);
-				LED_RGB_HSVdisplay(120,1000,RGB.v);
+				//LED_RGB_HSVdisplay(120,1000,RGB.vTemp);
 				break;
 			case 2:
 				LED_RGB_SetHSV(240,1000,RGB.vTemp);
 				LED_RGB_SetDisplayHSV(240,1000,RGB.vTemp);
-				LED_RGB_HSVdisplay(240,1000,RGB.v);
+				//LED_RGB_HSVdisplay(240,1000,RGB.vTemp);
 				break;
 		}
 	}
@@ -513,6 +513,9 @@ void RGB_App_Handle(void) // 5MS时间
 			case IR_RGB_MODE: 
 				IR_RGB_MODE_handle();
 				LED_RGB_W_display(0); //W灯关闭
+				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v+=5;
+				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v-=5;
+				LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
 				break;	
 
 			//RGB 调色

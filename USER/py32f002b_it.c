@@ -147,7 +147,6 @@ void EXTI2_3_IRQHandler(void)
 {
 	if(LL_EXTI_IsActiveFlag(BAT_CDS_EXTI_LINE))
 	{
-			
 		LL_EXTI_ClearFlag(BAT_CDS_EXTI_LINE);
 		Sys.ChargWakeUPFlag = 1;
 	}

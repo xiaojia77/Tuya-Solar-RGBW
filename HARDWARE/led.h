@@ -128,6 +128,8 @@ typedef struct _xRGB
 	uint32_t StepTimecnt; //步进时间计数
 	uint16_t Powersaving_set_v; //要去的亮度
 	
+	uint8_t CurrentGear;
+	
 }xRGB;
 
 extern xRGB RGB;

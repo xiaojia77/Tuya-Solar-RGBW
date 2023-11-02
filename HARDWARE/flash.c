@@ -2,7 +2,7 @@
 #include "flash.h"
 #include "led.h"
 
-uint32_t FlashData[5] = {0x10000000, 0x20000000, 0x30000000, 0x40000000,  0x50000000};
+uint32_t FlashData[6] = {0x10000000, 0x20000000, 0x30000000, 0x40000000,  0x50000000,  0x60000000};
 static void APP_FlashErase(void)
 {
   uint32_t PAGEError = 0;
@@ -84,12 +84,14 @@ void Flash_Init_Rdata()
     FlashData[SET_V] = HW32_REG(FLASH_USER_START_ADDR + 8);
     FlashData[SET_W_MODE] = HW32_REG(FLASH_USER_START_ADDR + 12);
     FlashData[SET_RGB_MODE] = HW32_REG(FLASH_USER_START_ADDR + 16);
+    FlashData[SET_CurrentGear] = HW32_REG(FLASH_USER_START_ADDR + 20);
     DEBUG_INFO("----------------------------Rread FLASH Data----------------------------");
     DEBUG_INFO("FLASH Data[SET_H] = %d", FlashData[SET_H]);
     DEBUG_INFO("FLASH Data[SET_S] = %d", FlashData[SET_S]);
     DEBUG_INFO("FLASH Data[SET_DSET_VLDW] = %d", FlashData[SET_V]);
     DEBUG_INFO("FLASH Data[SET_W_MODE] = %d", FlashData[SET_W_MODE]);
     DEBUG_INFO("FLASH Data[SET_RGB_MODE] = %d", FlashData[SET_RGB_MODE]);
+    DEBUG_INFO("FLASH Data[SET_CurrentGear] = %d", FlashData[SET_CurrentGear]);
     RGB.h = FlashData[SET_H]; 
     if (RGB.h > 360 )
     {
@@ -115,6 +117,12 @@ void Flash_Init_Rdata()
     {
         RGB.LastCommand = IR_WRITE_MODE;
     }
+	RGB.CurrentGear = FlashData[SET_CurrentGear];
+	if(RGB.CurrentGear > 20)
+	{
+		RGB.CurrentGear = 20;
+	}
+	
 }
 
 void Flash_Data_Write()
@@ -140,7 +148,6 @@ void Flash_Data_Write()
 		}
  
 	}
-		
     if(FlashData[SET_W_MODE] != RGB.W_Mode)
     {  
         Flash_Write();
@@ -149,7 +156,10 @@ void Flash_Data_Write()
     {
         Flash_Write();
     }
-
+	if(FlashData[SET_CurrentGear] != RGB.CurrentGear )
+    {
+        Flash_Write();
+    }
 }
 
 void Flash_Write()
@@ -160,6 +170,7 @@ void Flash_Write()
    FlashData[SET_V] = RGB.vTemp;
    FlashData[SET_W_MODE] = RGB.W_Mode;
    FlashData[SET_RGB_MODE] =  RGB.LastCommand ;
+   FlashData[SET_CurrentGear] = RGB.CurrentGear; 
 
   /*解锁FLASH*/
   HAL_FLASH_Unlock();
@@ -191,7 +202,7 @@ void Flash_Write()
    DEBUG_INFO("FLASH Data[SET_DSET_VLDW] = %d", FlashData[SET_V]);
    DEBUG_INFO("FLASH Data[SET_W_MODE] = %d", FlashData[SET_W_MODE]);
    DEBUG_INFO("FLASH Data[SET_RGB_MODE] = %d", FlashData[SET_RGB_MODE]);
-  
+  DEBUG_INFO("FLASH Data[SET_CurrentGear] = %d", FlashData[SET_CurrentGear]);
 }
 
 /**

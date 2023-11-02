@@ -24,7 +24,32 @@
 //中断优先级
 #define Ir_Priority 1 
 //引导码
-#define Ir_GUIDE 0x01
+#define IR_1_GUID_KEY 0x00
+
+
+#define P01 0x01
+#define P02 0x81
+#define P03 0x41
+#define P04 0xC1
+#define P05 0x21
+#define P06 0xA1
+#define P07 0x61
+#define P08 0xE1
+#define P09 0x11
+#define P10 0x91
+#define P11 0x51
+#define P12 0xD1
+#define P13 0x31
+#define P14 0xB1
+#define P15 0x71
+#define P16 0xF1	
+#define P17 0x09
+#define P18 0x89
+#define P19 0x49
+#define P20 0xC9
+#define GUID_KEY0 0x86
+#define GUID_KEY1 0x1B
+#define DEFAULT_KEY 0xFF // 默认的无效命令
 
 
 #define  IR_DATA0_TH_H        19 
@@ -73,9 +98,10 @@ typedef struct _Ir
 	uint8_t Timeout;
 	//高电平时间  (用来判断信号高低)
 	uint8_t HighLevelTime;
+
+	uint8_t GuidKey;
 }Ir_s;
 extern Ir_s Ir;
-
 extern void Ir_ExtiCallback(void);		//外部中断回调
 extern void Ir_Time14IRQCallback(void);	//定时器溢出回调
 extern void Ir_Init(void);				//红外初始化
