@@ -346,25 +346,27 @@ void IR_RGB_MODE_handle()
 	{
 		time_cnt = 0;
 		if(++status>2)status = 0;
+		switch(status)
+		{
+			case 0:
+				LED_RGB_SetHSV(0,1000,RGB.vTemp);
+				LED_RGB_SetDisplayHSV(0,1000,RGB.vTemp);
+				LED_RGB_HSVdisplay(0,1000,RGB.v);
+				break;
+			case 1:
+				LED_RGB_SetHSV(120,1000,RGB.vTemp);
+				LED_RGB_SetDisplayHSV(120,1000,RGB.vTemp);
+				LED_RGB_HSVdisplay(120,1000,RGB.v);
+				break;
+			case 2:
+				LED_RGB_SetHSV(240,1000,RGB.vTemp);
+				LED_RGB_SetDisplayHSV(240,1000,RGB.vTemp);
+				LED_RGB_HSVdisplay(240,1000,RGB.v);
+				break;
+		}
 	}
-	switch(status)
-	{
-		case 0:
-			LED_RGB_SetHSV(0,1000,RGB.vTemp);
-			LED_RGB_SetDisplayHSV(120,1000,RGB.vTemp);
-			LED_RGB_HSVdisplay(0,1000,RGB.v);
-			break;
-		case 1:
-			LED_RGB_SetHSV(120,1000,RGB.vTemp);
-			LED_RGB_SetDisplayHSV(120,1000,RGB.vTemp);
-			LED_RGB_HSVdisplay(120,1000,RGB.v);
-			break;
-		case 2:
-			LED_RGB_SetHSV(240,1000,RGB.vTemp);
-			LED_RGB_SetDisplayHSV(240,1000,RGB.vTemp);
-			LED_RGB_HSVdisplay(240,1000,RGB.v);
-			break;
-	}
+
+
 }
 void RGB_App_Handle(void) // 5MS时间
 {

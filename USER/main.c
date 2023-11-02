@@ -143,8 +143,6 @@ int main(void)
 	
 	Lptim_Init(); 		// 低功耗定时器唤醒
 	
-//	APP_IwdgConfig();	// 看门狗
-	
 	TAKS_IT_ON; 	       // 开启任务中断  
 	
 	Bat.ChargeUpFlag = 0;  //只降不升关闭
@@ -164,6 +162,7 @@ int main(void)
 	
 	LL_mDelay(50);
 	
+//	APP_IwdgConfig();	// 看门狗
 	
 //	enable_low_power();  //使能低功耗
     disable_low_power(); //不使能低功耗 TY发送心跳包
