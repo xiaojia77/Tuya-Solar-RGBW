@@ -134,7 +134,8 @@ typedef struct _xRGB
 
 extern xRGB RGB;
 
-extern uint8_t LED_DisplayTemp; // 0 全灭  1-L1 2-L2 3-L3 4-L4 5-L5
+extern uint8_t LED_DisplayTemp; 		// 0 全灭  1-L1 2-L2 3-L3 4-L4 5-L5
+extern uint8_t LED_IndicatorOnFlag; 	//指示灯开启 标志位
 
 extern void LED_Init(void); 
 extern void LED_Scan_Handle(void);

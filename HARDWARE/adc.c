@@ -8,7 +8,7 @@ xADC Adc;
 xBat Bat;
 
 static uint8_t percent_temp[10]={0,0,0,0,0,0,0,0,0,0};
-
+static uint8_t last_percent = 0,current_percent = 0 , gear_changetemp = 0;
 /* Private define ------------------------------------------------------------*/
 #define ADC_CALIBRATION_TIMEOUT_MS       ((uint32_t) 1)
 #define VDDA_APPLI                       ((uint32_t)3300)
@@ -211,28 +211,38 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 {
 	uint8_t i;
 	int16_t percent;
-	static uint8_t last_percent = 0,current_percent = 0 , gear_changetemp = 0;
-//	static uint8_t percent_temp[10]={0,0,0,0,0,0,0,0,0,0};
+	
 	uint8_t const BatGear_thread[] = {10,20,40,64,81,101};  // percent-voltage   9 -2.65V   30-3.04V   65 - 3.15V  81 - 3.22  93 - 3.27
 	uint8_t const BatGear_threadCharge[] = {0,24,41,66,82,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
 	uint32_t add_temp = 0;
 	
 	if( Adc.BatVoltage )
 	{
-			if(Bat.Status == BAT_DISCHARGE) //放电百分比
+		if(Bat.Status == BAT_DISCHARGE) //放电百分比
 		{
 			if( Adc.BatVoltage < 3000) // 2.5-3.0
-				percent =  ( Adc.BatVoltage - 2500 ) * 30 / 500 ;
+			{
+				if(Adc.BatVoltage > 2500)
+				{
+					percent =  ( Adc.BatVoltage - 2500 ) * 30 / 500 ;
+				}	
+				else percent = 0;
+			}	
 			else  // 3-3.27
 				percent =  30 + ( Adc.BatVoltage - 3000 )  *70 / 300;
 		}
 		else						//充电百分比
 		{
 			if( Adc.BatVoltage < 3300) 							// 2.80-3.3
-				percent =  ( Adc.BatVoltage - 2800 ) * 30 / 500;
+			{
+				if(Adc.BatVoltage> 2800)
+				{
+					percent =  ( Adc.BatVoltage - 2800 ) * 60 / 500;
+				}
+				else percent = 0;
+			}		
 			else 												// 3.33-3.58
-				percent = 30 + ( Adc.BatVoltage - 3300 )  *70 / 300;
-				
+				percent = 60 + ( Adc.BatVoltage - 3300 )  *40 / 300;			
 		}
 	}
 	else  percent  = 0;
@@ -246,18 +256,17 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 	for(i=0;i<sizeof(percent_temp);i++)add_temp += percent_temp[i];
 	current_percent = add_temp /  sizeof(percent_temp) ;
 	//DEBUG_PRINTF("current_percent = %d last_percent %d \r\n",current_percent,last_percent);
-	if(Bat.Status == BAT_DISCHARGE) //放电状态下的 默认只降不升除非波动超过 6%
+	if(Bat.Status == BAT_DISCHARGE) //放电状态下的 默认只降不升除非波动超过 10%
 	{
 		//上次的电压大于当前的电压 只降低不升
 		if (last_percent >= current_percent  \
-			|| ( (current_percent  - last_percent >= 6) && (current_percent > last_percent) && !Bat.ChargeUpFlag) )
+			|| ( (current_percent  - last_percent >= 6) && (current_percent > last_percent) && (!Bat.ChargeUpFlag) && (!RGB.OnFlag) )  )
 		{
 			Bat.ChargeUpFlag = 0;
 			last_percent = current_percent;
 			if (current_percent == 0)
 						current_percent = 1;
 			Bat.Percent = current_percent;
-			//mcu_dp_value_update(DPID_BATTERY_PERCENTAGE,Bat.Percent);
 		}
 	}
 	else //只升不降
@@ -266,10 +275,8 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 		{
 			last_percent = current_percent;
 			Bat.Percent = current_percent;
-			//mcu_dp_value_update(DPID_BATTERY_PERCENTAGE,Bat.Percent);
 		}
 	}
-	
 	//挡位判断
 	if(Bat.Status == BAT_DISCHARGE)
 	{ 
@@ -281,6 +288,7 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 				break;
 			}
 		}	
+		if(Bat.Gera >= 6)Bat.Gera =  0;
 	}
 	else
 	{
@@ -292,6 +300,7 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 				break;
 			}
 		}	
+		if(Bat.Gera >= 6)Bat.Gera =  0;
 	}
 	
 	//上报数据
@@ -318,8 +327,16 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 				{
 					filter_cnt = 0;
 					Bat.Status = BAT_CHARGE;
+					//开启红外
+					Ir_Power_ON();
+					//开启蓝牙
+					BLE_Power_ON();
+					LED_IndicatorOnFlag = 1;
 					//Adc_ReScan();
 					//for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = 0;
+					current_percent = last_percent;
+					Bat.Percent = current_percent;
+					for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = Bat.Percent;
 					Bat.ChargeUpFlag = 1; //只降不升开始
 					if(Bat.SolarMode) //太阳能模式
 						LED_RGB_Off_Handle(); //关灯
@@ -340,7 +357,10 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 						RGB.Command = RGB.LastCommand;
 					}
 					Bat.Status = BAT_DISCHARGE;
-					Adc_ReScan();
+					//Adc_ReScan();
+					//for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = Bat.Percent;
+					current_percent = last_percent;
+					Bat.Percent = current_percent;
 					for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = Bat.Percent;
 				}
 			}
@@ -359,19 +379,23 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 	
 	if(Adc.NewBatVoltage < BAT_Protect_Voltage)  //小于2.56
 	{
-		if(++low_voltage_cnt > 10)
+		if(++low_voltage_cnt > 100)
 		{
 			low_voltage_cnt = 0;
-			if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0) )Sys.LowVoltageFlag = 1;
-			else 
-			{
-				Sys.LowVoltageFlag = 0;
-//				if(Led.LampOnFlag)
-//				{
-//					Led_Lmap_Light_OFF();
-//					Led.LampLightDisplayValue = 300;
-//				}
-			}
+			Sys.LowVoltageFlag = 1;
+			LED_RGB_Off_Handle();
+		//if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0) )//Sys.LowVoltageFlag = 1;		
+		//	else 
+			// {
+			// 	Sys.LowVoltageFlag = 0;
+			// 	if(RGB.OnFlag)  //充电保护
+			// 	{
+					
+			// 		//BLE_Power_OFF();
+			// 		//Led_Lmap_Light_OFF();
+			// 		// Led.LampLightDisplayValue = 300;
+			// 	}
+			// }
 		}
 	}
 	else low_voltage_cnt = 0;

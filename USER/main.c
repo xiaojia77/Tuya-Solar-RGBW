@@ -69,8 +69,8 @@ int main(void)
 {
 	#ifdef DEBUG
 //	uint32_t i =0;
-	uint32_t debugtick=0;
 	#endif
+	uint32_t debugtick=0;
 	uint32_t LEDtick=0;      //100ms
 	uint32_t BatChecktick=0; //20ms
 	uint32_t RGBApptick=0;   //5ms
@@ -117,6 +117,12 @@ int main(void)
 	DEBUG_INFO("----------------------------RST_PORT CHECK----------------------------");
 
 	#endif	
+
+	if(READ_BIT(FLASH->OPTR, OB_USER_IWDG_STOP) != OB_IWDG_STOP_FREEZE )	//检测端口信息 如果复位脚没用则复用
+	{	
+		DEBUG_INFO("IWDG_STOP When Sleep");
+		APP_FlashOBProgram(); //把复位脚复用成普通引脚
+	}
 	if(READ_BIT(FLASH->OPTR, OB_USER_SWD_NRST_MODE) != OB_SWD_PB6_GPIO_PC0 )	//检测端口信息  
 	{	
 		DEBUG_INFO("RST_PORT is reused as GPIO");
@@ -145,12 +151,14 @@ int main(void)
 	
 	TAKS_IT_ON; 	       // 开启任务中断  
 	
+	LED_IndicatorOnFlag = 1; //指示灯开启
+
 	Bat.ChargeUpFlag = 0;  //只降不升关闭
 	Sys.LowVoltageFlag = 0;
 	Bat.SolarMode = 1;	   //太阳能功能开启
 	Bat.SaveEnergMode = 1; //节能开启
 	
-	RGB.W_Mode = 1; //默认RGBW模式	
+	RGB.W_Mode = 0; //默认RGBW模式	
 	RGB.wflash = 1;
 	
 	RGB.LastCommand = IR_WRITE_MODE;
@@ -166,7 +174,8 @@ int main(void)
 	APP_IwdgConfig();	// 看门狗
 	
 	enable_low_power();  //使能低功耗
-//    disable_low_power(); //不使能低功耗 TY发送心跳包
+
+//  disable_low_power(); //不使能低功耗 TY发送心跳包
 
 	while (1)
 	{
@@ -174,7 +183,7 @@ int main(void)
 		
 		bt_uart_service(); 			 //串口消息队列服务函数
 		
-		#if DEBUG == 1
+		//#if DEBUG == 1
 		if( HAL_GetTick() > debugtick)
 		{		
 		//	if( bt_work_state != 2)bt_uart_write_frame( 2, 0);
@@ -187,7 +196,7 @@ int main(void)
 			//if(RGB.Command != IR_COMMAND_RGB_MODE  )
 			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
 		}
-		#endif
+		//#endif
 		
 		if( HAL_GetTick() > LEDtick) //100ms
 		{

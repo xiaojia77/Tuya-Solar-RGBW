@@ -157,32 +157,31 @@ void APP_UsartIRQCallback(USART_TypeDef *USARTx)
 	if ((LL_USART_IsActiveFlag_RXNE(USARTx) != RESET) && (LL_USART_IsEnabledIT_RXNE(USARTx) != RESET))
 	{
 		uart_receive_input(LL_USART_ReceiveData8(USARTx)); 
-		return ;
 	}
 	LL_USART_ClearFlag_ORE(USARTx); //防止死机
 
 	/* 发送数据寄存器空 */ 
-	if ((LL_USART_IsActiveFlag_TXE(USARTx) != RESET) && (LL_USART_IsEnabledIT_TXE(USARTx) != RESET))
-	{
-	LL_USART_TransmitData8(USARTx, *TxBuff);
-	TxBuff++;
-	if (--TxCount == 0U)
-	{ 
-		LL_USART_DisableIT_TXE(USARTx);
-		
-		LL_USART_EnableIT_TC(USARTx);
-	}
-	return;
-	}
+//	if ((LL_USART_IsActiveFlag_TXE(USARTx) != RESET) && (LL_USART_IsEnabledIT_TXE(USARTx) != RESET))
+//	{
+//	LL_USART_TransmitData8(USARTx, *TxBuff);
+//	TxBuff++;
+//	if (--TxCount == 0U)
+//	{ 
+//		LL_USART_DisableIT_TXE(USARTx);
+//		
+//		LL_USART_EnableIT_TC(USARTx);
+//	}
+//	return;
+//	}
 
-	/* 发送完成 */
-	if ((LL_USART_IsActiveFlag_TC(USARTx) != RESET) && (LL_USART_IsEnabledIT_TC(USARTx) != RESET))
-	{
-	LL_USART_DisableIT_TC(USARTx);
-	UartReady = SET;
+//	/* 发送完成 */
+//	if ((LL_USART_IsActiveFlag_TC(USARTx) != RESET) && (LL_USART_IsEnabledIT_TC(USARTx) != RESET))
+//	{
+//	LL_USART_DisableIT_TC(USARTx);
+//	UartReady = SET;
 
-	return;
-	}
+//	return;
+//	}
 }
 #if (defined (__CC_ARM)) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
 /**

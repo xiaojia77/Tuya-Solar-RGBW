@@ -223,12 +223,6 @@ void Sys_EnterSleep_Handle(void)
 	
 	TAKS_IT_OFF; //关闭任务中断
 	
-	LL_IWDG_ReloadCounter(IWDG);
-	while (LL_IWDG_IsActiveFlag_RVU(IWDG)) {;}
-	LL_IWDG_EnableWriteAccess(IWDG);
-	LL_IWDG_SetReloadCounter(IWDG, 4095);
-	LL_IWDG_ReloadCounter(IWDG);
-	
 	LED_RGB_Off_Handle();
 	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM  ); //RED
 	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM  ); //BLUE
@@ -236,8 +230,15 @@ void Sys_EnterSleep_Handle(void)
 	LL_TIM_OC_SetCompareCH4(TIM1 , RGB_PWM  ); //GREEN
 	RGB.Dispaly_v = 0;
 	
+	
+	LED_RGB_Off_Handle(); //关闭灯
+	
+	Led_Off(); //关闭LED指示灯
+	
+	Adc_RefVoltage_OFF(); //参考电压关闭
+	
 	//使能蓝牙低功耗
-	enable_low_power();
+	//enable_low_power();
 	
 	//延迟一会	
 	LL_mDelay(100);
@@ -252,6 +253,7 @@ void Sys_EnterSleep_Handle(void)
 	Sys.LPTIMWakeUPFlag = 0;
 	Sys.UartMWakeUPFlag = 0;
 	Sys.EntreSleepTimeCount = 0;
+
 	DEBUG_INFO("IrWakeUPFlag %d",Sys.IrWakeUPFlag);
 	DEBUG_INFO("ChargWakeUPFlag %d",Sys.ChargWakeUPFlag);
 	DEBUG_INFO("UartMWakeUPFlag %d",Sys.UartMWakeUPFlag);
@@ -271,16 +273,8 @@ void Sys_EnterSleep_Handle(void)
 	{
 		//LL_LPTIM_Enable(LPTIM);
 		
-		LL_EXTI_EnableIT(LL_EXTI_LINE_4);
+		LL_EXTI_EnableIT(LL_EXTI_LINE_4); //开启串口中断唤醒
 	}
-	
-	
-	LED_RGB_Off_Handle(); //关闭灯
-	
-	Led_Off(); //关闭LED指示灯
-	
-	Adc_RefVoltage_OFF(); //参考电压关闭
-	
 	
 Resleep:
 	APP_EnterStop();	//进入睡眠
@@ -301,20 +295,23 @@ Resleep:
 			DEBUG_INFO("entry shut down mode");
 		}
 	}
-	LL_mDelay(5); //不加延迟会复位？  目前不清楚原因 可能是唤醒时情清看门狗不能马上响应
-	LL_IWDG_ReloadCounter(IWDG); // IWDG 清零
+	
+
 	if( !Sys.ChargWakeUPFlag && !Sys.IrWakeUPFlag && !Sys.UartMWakeUPFlag)goto Resleep;
+
+	if(Sys.ChargWakeUPFlag)Sys.SleepTimeCount = 0; // 清空计时
+
 	DEBUG_INFO("IrWakeUPFlag %d",Sys.IrWakeUPFlag);
 	DEBUG_INFO("ChargWakeUPFlag %d",Sys.ChargWakeUPFlag);
 	DEBUG_INFO("UartMWakeUPFlag %d",Sys.UartMWakeUPFlag);
 	
 	Adc_RefVoltage_ON(); //参考电压开启
 	
-	//开启红外
-	Ir_Power_ON();
+	// //开启红外
+	// Ir_Power_ON();
 	
-	//开启蓝牙
-	BLE_Power_ON();
+	// //开启蓝牙
+	// BLE_Power_ON();
 	LL_mDelay(1);
 
 	LL_EXTI_DisableIT(LL_EXTI_LINE_4);
@@ -322,11 +319,6 @@ Resleep:
 	//disable_low_power(); //退出蓝牙低功耗
 	
 	all_data_update(); //更新蓝牙数据
-	
-	while (LL_IWDG_IsActiveFlag_RVU(IWDG)) 
-	LL_IWDG_EnableWriteAccess(IWDG);
-	LL_IWDG_SetReloadCounter(IWDG, 30);
-	LL_IWDG_ReloadCounter(IWDG);
-	
+
 	TAKS_IT_ON; //开启任务中断
 }

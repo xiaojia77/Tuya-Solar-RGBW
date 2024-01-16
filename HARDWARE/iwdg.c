@@ -15,10 +15,10 @@ void APP_IwdgConfig(void)
 	LL_IWDG_EnableWriteAccess(IWDG);
 
 	/* 设置IWDG分频 */
-	LL_IWDG_SetPrescaler(IWDG, LL_IWDG_PRESCALER_256); /* T=1MS */
+	LL_IWDG_SetPrescaler(IWDG, LL_IWDG_PRESCALER_32); /* T=1MS */
 
 	/* 设置喂狗事件*/
-	LL_IWDG_SetReloadCounter(IWDG, 4095); /* 1ms*6000=6s */ //7.6MS
+	LL_IWDG_SetReloadCounter(IWDG, 300 ); /* 1ms*6000=6s */ //7.6MS
 		
 
 		

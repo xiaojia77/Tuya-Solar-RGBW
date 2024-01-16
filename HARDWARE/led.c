@@ -5,6 +5,7 @@
 #include "string.h"
 
 uint8_t LED_DisplayTemp = 0;   
+uint8_t LED_IndicatorOnFlag = 0;
 
 xRGB RGB;
 
@@ -121,43 +122,47 @@ void LED_Scan_Handle()
 	static uint8_t ScanCount = 0;
 
 	L1_RESET;L2_RESET;L3_RESET;
-	switch(ScanCount)
-	{	
-		case 0:  // L1
-			if(LED_DisplayTemp<1)break;
-			L1_OUTPUT;L2_OUTPUT;L3_INPUT; // L1
-			L2_SET;L1_RESET;  
-			break;
-		case 1:  // L2
-			if(LED_DisplayTemp<2)break;
-			L1_OUTPUT;L2_OUTPUT;L3_INPUT; // L2
-			L1_SET;L2_RESET;  
-			break;
-		case 2:  // L3
-			if(LED_DisplayTemp<3)break;
-			L2_OUTPUT;L3_OUTPUT;L1_INPUT; // L3
-			L3_SET;L2_RESET;  
-			break;
-		case 3:  // L4
-			if(LED_DisplayTemp<4)break;
-			L2_OUTPUT;L3_OUTPUT;L1_INPUT; // L4 
-			L2_SET;L3_RESET;  
-			break;
-		case 4:  // L5
-			if(LED_DisplayTemp<5)break;
-			L1_OUTPUT;L3_OUTPUT;L2_INPUT; // L5
-			L3_SET;L1_RESET;  	
-			break;
-		default: 
-			ScanCount = 0;
-			break;
+	if(LED_IndicatorOnFlag )
+	{
+		switch(ScanCount)
+		{	
+			case 0:  // L1
+				if(LED_DisplayTemp<1)break;
+				L1_OUTPUT;L2_OUTPUT;L3_INPUT; // L1
+				L2_SET;L1_RESET;  
+				break;
+			case 1:  // L2
+				if(LED_DisplayTemp<2)break;
+				L1_OUTPUT;L2_OUTPUT;L3_INPUT; // L2
+				L1_SET;L2_RESET;  
+				break;
+			case 2:  // L3
+				if(LED_DisplayTemp<3)break;
+				L2_OUTPUT;L3_OUTPUT;L1_INPUT; // L3
+				L3_SET;L2_RESET;  
+				break;
+			case 3:  // L4
+				if(LED_DisplayTemp<4)break;
+				L2_OUTPUT;L3_OUTPUT;L1_INPUT; // L4 
+				L2_SET;L3_RESET;  
+				break;
+			case 4:  // L5
+				if(LED_DisplayTemp<5)break;
+				L1_OUTPUT;L3_OUTPUT;L2_INPUT; // L5
+				L3_SET;L1_RESET;  	
+				break;
+			default: 
+				ScanCount = 0;
+				break;
+		}
+		if(++ScanCount > 4)ScanCount = 0;
 	}
-	if(++ScanCount > 4)ScanCount = 0;
 }
 void Led_Off(void)
 {
 	L1_OUTPUT;L2_OUTPUT;L3_OUTPUT; 
 	L1_RESET;L2_RESET;L3_RESET;  
+	LED_IndicatorOnFlag = 0;
 }
 void APP_ConfigTIM1(void) //1500
 {
@@ -275,6 +280,7 @@ void LED_RGB_To_OnStatus()
 	if(RGB.OnFlag == 0)
 	{
 		RGB.OnFlag = 1;
+		LED_IndicatorOnFlag = 1;
 		
 		RGB.ResetTime = 0;
 		RGB.Time = 0;
@@ -294,6 +300,7 @@ void LED_RGB_On_Handle(void)
 	//if(RGB.OnFlag == 0)
 	{
 		RGB.OnFlag = 1;
+		LED_IndicatorOnFlag = 1;//开启指示灯
 		
 		//配网间隔
 		RGB.ResetTime = 0;
@@ -441,13 +448,14 @@ void RGB_App_Handle(void) // 5MS时间
 				case 0:
 					if(RGB.Dispaly_v>2)RGB.Dispaly_v-=2;
 					else TY_Reset_Mode_Status = 1;
-					//LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
-					LED_RGB_HSVdisplay(0,1000,RGB.Dispaly_v);
+					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+					//LED_RGB_HSVdisplay(0,1000,RGB.Dispaly_v);
 					break;
 				case 1:	
 					if(RGB.Dispaly_v<600)RGB.Dispaly_v+=2;
 					else TY_Reset_Mode_Status = 0;
-					LED_RGB_HSVdisplay(0,1000,RGB.Dispaly_v);
+					LED_RGB_HSVdisplay(RGB.h,RGB.s,RGB.Dispaly_v);
+					//LED_RGB_HSVdisplay(0,1000,RGB.Dispaly_v);
 					break;
 			}
 			LED_RGB_W_display(0);

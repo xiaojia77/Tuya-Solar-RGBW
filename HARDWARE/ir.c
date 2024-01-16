@@ -190,7 +190,7 @@ void Ir_CommandReceiv(uint8_t key)
 					
 					break;
 				case IR_COMMAND_LEDON:
-					if(RGB.OnFlag == 0)
+					/*if(RGB.OnFlag == 0)
 					{
 						if(++RGB.ResetCnt>= 10)
 						{
@@ -198,16 +198,27 @@ void Ir_CommandReceiv(uint8_t key)
 							bt_uart_write_frame(4, 0);
 						}
 						DEBUG_INFO("RGB.ResetCnt %d",RGB.ResetCnt);
+					}*/
+					if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
+					{
+						
+						LED_RGB_On_Handle();
+						//RGB.Command = IR_LEDON;	
+						LED_RGB_SetHSV(RGB.h,RGB.s,RGB.vTemp);
+						LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
+						RGB.Command = RGB.LastCommand;
+						Ir_ReScan();
+						DEBUG_INFO("LEDON");
 					}
-					LED_RGB_On_Handle();
-					//RGB.Command = IR_LEDON;	
-					LED_RGB_SetHSV(RGB.h,RGB.s,RGB.vTemp);
-					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
-					RGB.Command = RGB.LastCommand;
-					DEBUG_INFO("LEDON");
+					if(Ir.RepeatCount>20)
+					{
+						bt_uart_write_frame(4, 0);
+						Ir_ReScan();
+						DEBUG_INFO("Blue reconenct");
+					}
 					break;
 				case IR_COMMAND_LEDOFF:	
-					if(RGB.OnFlag == 1)	RGB.ResetCnt++; //配网用
+					//if(RGB.OnFlag == 1)	RGB.ResetCnt++; //配网用
 					LED_RGB_Off_Handle();
 					RGB.Command = IR_LEDOFF;
 					DEBUG_INFO("LEDOFF");
@@ -360,7 +371,7 @@ void Ir_CommandReceiv(uint8_t key)
 					break;
 			}
 			if( (key != IR_COMMAND_LIAGHUP )   && ( key != IR_COMMAND_LIAGHDONW )  && \
-				(key != IR_COMMAND_POWEROFF )  && ( key != IR_COMMAND_WRITE_MODE )	)Ir_ReScan();
+				(key != IR_COMMAND_POWEROFF )  && ( key != IR_COMMAND_WRITE_MODE )	 && ( key != IR_COMMAND_LEDON )	)Ir_ReScan();
 		}
 		else if(Ir.GuidKey == GUID_KEY0)
 		{
