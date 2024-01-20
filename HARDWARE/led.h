@@ -91,7 +91,7 @@ typedef struct _xRGB
 	uint16_t h; //色相 0 -360
 	uint16_t s; //饱和 0 - 1000
 	uint16_t v; //明度 0 - 1000
-	uint16_t vTemp; //明度 0 - 1000  用来保存亮度的数据
+	uint16_t Setv; //明度 0 - 1000  用来保存亮度的数据
 	//W 白光
 	uint16_t w;
 	uint16_t wTemp; //明度 0 - 1000  用来保存亮度的数据	

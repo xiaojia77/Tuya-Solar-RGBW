@@ -159,9 +159,11 @@ int main(void)
 	Bat.SaveEnergMode = 1; //节能开启
 	
 	RGB.W_Mode = 0; //默认RGBW模式	
-	RGB.wflash = 1;
+	RGB.wflash = 1;	//闪烁关闭
+
+	RGB.CurrentGear = 20; //默认20档
 	
-	RGB.LastCommand = IR_WRITE_MODE;
+	RGB.LastCommand = IR_WRITE_MODE; //默认白光
 
 	Flash_Init_Rdata(); //获取之前的数据
 

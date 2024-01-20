@@ -21,7 +21,7 @@
 /* Private variables ---------------------------------------------------------*/
 typedef struct
 {
-  uint32_t arrA[4];
+  uint32_t arrA[6];
 } NewDataType;                                                      /* 结构体定义 */
 #define VarA (*(volatile NewDataType *)FLASH_USER_START_ADDR)       /* Flash存储地址定义 */
 

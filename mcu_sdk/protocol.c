@@ -288,7 +288,7 @@ static unsigned char dp_download_temp_value_handle(const unsigned char value[], 
     temp_value = mcu_get_dp_download_value(value,length);
     TY.TempValue = temp_value;
 	LED_RGB_To_OnStatus();
-	LED_RGB_SetHSV(0,0,RGB.vTemp);	
+	LED_RGB_SetHSV(0,0,RGB.Setv);	
 	
     //There should be a report after processing the DP
     ret = mcu_dp_value_update(DPID_TEMP_VALUE,temp_value);
@@ -398,22 +398,22 @@ static unsigned char dp_download_scene_data_handle(const unsigned char value[], 
 	switch(scence)
 	{
 		case 0:
-			LED_RGB_SetHSV(58,763,RGB.vTemp);
+			LED_RGB_SetHSV(58,763,RGB.Setv);
 			break;
 		case 3:
-			LED_RGB_SetHSV(0,0,RGB.vTemp);
+			LED_RGB_SetHSV(0,0,RGB.Setv);
 			break;
 		case 4:
-			LED_RGB_SetHSV(120,1000,RGB.vTemp);
+			LED_RGB_SetHSV(120,1000,RGB.Setv);
 			break;
 		case 5:
-			LED_RGB_SetHSV(360,670,RGB.vTemp);
+			LED_RGB_SetHSV(360,670,RGB.Setv);
 			break;
 		case 6:
-			LED_RGB_SetHSV(277,622,RGB.vTemp);
+			LED_RGB_SetHSV(277,622,RGB.Setv);
 			break;
 		case 7:
-			LED_RGB_SetHSV(333,532,RGB.vTemp);
+			LED_RGB_SetHSV(333,532,RGB.Setv);
 			break;
 	}
 

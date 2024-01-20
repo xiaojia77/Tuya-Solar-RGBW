@@ -204,7 +204,7 @@ void Ir_CommandReceiv(uint8_t key)
 						
 						LED_RGB_On_Handle();
 						//RGB.Command = IR_LEDON;	
-						LED_RGB_SetHSV(RGB.h,RGB.s,RGB.vTemp);
+						LED_RGB_SetHSV(RGB.h,RGB.s,RGB.Setv);
 						LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 						RGB.Command = RGB.LastCommand;
 						Ir_ReScan();
@@ -258,7 +258,7 @@ void Ir_CommandReceiv(uint8_t key)
 						}	
 						//DEBUG_INFO("LIAGHUP");	
 						
-						RGB.vTemp = RGB.v;
+						RGB.Setv = RGB.v;
 					}
 					break;
 				case IR_COMMAND_LIAGHDONW:
@@ -291,7 +291,7 @@ void Ir_CommandReceiv(uint8_t key)
 								Ir_ReScan();
 							}
 						}				
-						RGB.vTemp = RGB.v;
+						RGB.Setv = RGB.v;
 					}
 					break;
 				case IR_COMMAND_3H:
@@ -311,7 +311,7 @@ void Ir_CommandReceiv(uint8_t key)
 				case IR_COMMAND_WRITE_MODE:
 					if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
 					{
-						LED_RGB_SetHSV(0,0,RGB.vTemp);
+						LED_RGB_SetHSV(0,0,RGB.Setv);
 						LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 						LED_RGB_On_Handle();
 						RGB.Command = IR_WRITE_MODE;
@@ -322,7 +322,7 @@ void Ir_CommandReceiv(uint8_t key)
 					}
 					if(Ir.RepeatCount>50)
 					{
-						LED_RGB_SetHSV(0,0,RGB.vTemp);
+						LED_RGB_SetHSV(0,0,RGB.Setv);
 						LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 						LED_RGB_On_Handle();
 						if(RGB.W_Mode) RGB.W_Mode = 0;
@@ -346,7 +346,7 @@ void Ir_CommandReceiv(uint8_t key)
 					DEBUG_INFO("RGB_MODE");
 					break;
 				case IR_COMMAND_RED_MODE:
-					LED_RGB_SetHSV(0,1000,RGB.vTemp);
+					LED_RGB_SetHSV(0,1000,RGB.Setv);
 					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 					LED_RGB_On_Handle();
 					RGB.Command =IR_RED_MODE;
@@ -354,7 +354,7 @@ void Ir_CommandReceiv(uint8_t key)
 					DEBUG_INFO("RED_MODE");
 					break;
 				case IR_COMMAND_GREEN_MODE:	
-					LED_RGB_SetHSV(120,1000,RGB.vTemp);
+					LED_RGB_SetHSV(120,1000,RGB.Setv);
 					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 					LED_RGB_On_Handle();
 					RGB.Command =IR_GREEN_MODE;
@@ -362,7 +362,7 @@ void Ir_CommandReceiv(uint8_t key)
 					DEBUG_INFO("GREEN_MODE");
 					break;
 				case IR_COMMAND_BLUE_MODE:
-					LED_RGB_SetHSV(240,1000,RGB.vTemp);
+					LED_RGB_SetHSV(240,1000,RGB.Setv);
 					LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 					LED_RGB_On_Handle();
 					RGB.Command =IR_BLUE_MODE;
@@ -406,7 +406,7 @@ void Ir_CommandReceiv(uint8_t key)
 			{
 				LED_RGB_On_Handle();
 				//RGB.Command = IR_LEDON;	
-				LED_RGB_SetHSV(RGB.h,RGB.s,RGB.vTemp);
+				LED_RGB_SetHSV(RGB.h,RGB.s,RGB.Setv);
 				LED_RGB_SetDisplayHSV(RGB.h,RGB.s,0);
 				RGB.Command = RGB.LastCommand;
 				DEBUG_INFO("LEDON");

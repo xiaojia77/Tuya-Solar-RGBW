@@ -102,23 +102,25 @@ void Flash_Init_Rdata()
     {
       RGB.s = 0;
     }
-    RGB.vTemp = FlashData[SET_V];
-    if (RGB.vTemp > 1000)
+    RGB.Setv = FlashData[SET_V];
+    if (RGB.Setv > 1000)
     {
-      RGB.vTemp = 1000;
+      RGB.Setv = 1000;
     }
+    if(RGB.Setv <100)RGB.Setv = 100;
     RGB.W_Mode = FlashData[SET_W_MODE];
     if (RGB.W_Mode > 1)
     {
       RGB.W_Mode = 1;
     }
     RGB.LastCommand = FlashData[SET_RGB_MODE];
-    if (RGB.LastCommand > 21)
+    if (RGB.LastCommand > 20)
     {
       RGB.LastCommand = IR_WRITE_MODE;
     }
+	
     RGB.CurrentGear = FlashData[SET_CurrentGear];
-    if (RGB.CurrentGear > 20)
+    if (RGB.CurrentGear > 20 || RGB.CurrentGear == 0)
     {
       RGB.CurrentGear = 20;
     }
@@ -140,7 +142,7 @@ void Flash_Data_Write()
     }
     if (RGB.Command != TY_MUSIC_MODE)
     {
-        if (FlashData[SET_V] != RGB.vTemp)
+        if (FlashData[SET_V] != RGB.Setv)
         {
           Flash_Write();
         }
@@ -163,7 +165,7 @@ void Flash_Write()
 {
     FlashData[SET_H] = RGB.h;
     FlashData[SET_S] = RGB.s;
-    FlashData[SET_V] = RGB.vTemp;
+    FlashData[SET_V] = RGB.Setv;
     FlashData[SET_W_MODE] = RGB.W_Mode;
     FlashData[SET_RGB_MODE] = RGB.LastCommand;
     FlashData[SET_CurrentGear] = RGB.CurrentGear;
