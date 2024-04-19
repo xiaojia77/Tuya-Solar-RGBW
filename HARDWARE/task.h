@@ -25,16 +25,16 @@
 
 typedef struct _xSys
 {
-	uint8_t EnterSleepFlag;
-	uint8_t LowVoltageFlag;
+	volatile uint8_t EnterSleepFlag;
+	volatile uint8_t LowVoltageFlag;
+
+	volatile uint8_t IrWakeUPFlag;		
+	volatile uint8_t ChargWakeUPFlag;
+	volatile uint8_t LPTIMWakeUPFlag;
+	volatile uint8_t UartMWakeUPFlag;
 	
-	uint16_t EntreSleepTimeCount;  
-	uint16_t SleepTimeCount;  
-	
-	uint8_t IrWakeUPFlag;		
-	uint8_t ChargWakeUPFlag;
-	uint8_t LPTIMWakeUPFlag;
-	uint8_t UartMWakeUPFlag;
+	volatile uint16_t EntreSleepTimeCount;  
+	volatile uint16_t SleepTimeCount;  
 }xSys;
 
 typedef struct _TY
@@ -66,6 +66,8 @@ extern void Ir_Power_ON(void);
 
 extern void BLE_Power_OFF(void);
 extern void BLE_Power_ON(void);
+
+extern void APP_DeConfigPWMChannel();
 
 
 #endif

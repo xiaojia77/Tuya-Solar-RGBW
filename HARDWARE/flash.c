@@ -111,7 +111,7 @@ void Flash_Init_Rdata()
     RGB.W_Mode = FlashData[SET_W_MODE];
     if (RGB.W_Mode > 1)
     {
-      RGB.W_Mode = 1;
+      RGB.W_Mode = 0;
     }
     RGB.LastCommand = FlashData[SET_RGB_MODE];
     if (RGB.LastCommand > 20)

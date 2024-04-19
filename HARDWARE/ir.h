@@ -97,21 +97,21 @@
 typedef struct _Ir
 {
 	//数据缓存
-	uint32_t DataTemp;
+	volatile uint32_t DataTemp;
 	//重复计数 单位大概8-9ms
-	uint16_t RepeatCount;
+	volatile uint16_t RepeatCount;
 	//引导码标志位
-	uint8_t GuideFlag;
+	volatile uint8_t GuideFlag;
 	//数据接收完成标志位
-	uint8_t ReceiveDataFlag;
+	volatile uint8_t ReceiveDataFlag;
 	//超时标志位 （没有信号输入了）
-	uint8_t TimeOutFlag ;
+	volatile uint8_t TimeOutFlag ;
 	//超时时间 
-	uint8_t Timeout;
+	volatile uint8_t Timeout;
 	//高电平时间  (用来判断信号高低)
-	uint8_t HighLevelTime;
+	volatile uint8_t HighLevelTime;
 
-	uint8_t GuidKey;
+	volatile uint8_t GuidKey;
 }Ir_s;
 extern Ir_s Ir;
 extern void Ir_ExtiCallback(void);		//外部中断回调
@@ -119,4 +119,5 @@ extern void Ir_Time14IRQCallback(void);	//定时器溢出回调
 extern void Ir_Init(void);				//红外初始化
 extern uint8_t Ir_Scan(void);				//红外扫描
 extern void Ir_CommandReceiv(uint8_t key);
+extern void Ir_ReScan();
 #endif

@@ -149,7 +149,6 @@ int main(void)
 	
 	Lptim_Init(); 		// 低功耗定时器唤醒
 	
-	TAKS_IT_ON; 	       // 开启任务中断  
 	
 	LED_IndicatorOnFlag = 1; //指示灯开启
 
@@ -176,8 +175,13 @@ int main(void)
 	APP_IwdgConfig();	// 看门狗
 	
 	enable_low_power();  //使能低功耗
+	
+	//  disable_low_power(); //不使能低功耗 TY发送心跳包
+	
+	Bat.ReCheckFlag = 1;
+	
+	TAKS_IT_ON; 	       // 开启任务中断  
 
-//  disable_low_power(); //不使能低功耗 TY发送心跳包
 
 	while (1)
 	{
@@ -194,26 +198,26 @@ int main(void)
 //			DEBUG_INFO("Bat.Percent = %d%%  Bat.Voltage %dMV",Bat.Percent,Adc.BatVoltage);
 //			DEBUG_INFO("bt_work_state = %d ",bt_work_state);
 //			DEBUG_INFO("Sys.LowVoltageFlag = %d",Sys.LowVoltageFlag);
-			Flash_Data_Write(); 
-			//if(RGB.Command != IR_COMMAND_RGB_MODE  )
+		//	Flash_Data_Write(); 
 			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
 		}
 		//#endif
 		
-		if( HAL_GetTick() > LEDtick) //100ms
+		if( HAL_GetTick() - LEDtick  < UINT32_MAX / 2) //100ms
 		{
 			LEDtick = HAL_GetTick() + 100;
 			LED_DisplayBatGear_Handle();		//LED指示灯显示
+			BatVolatageToPercent_handle();
 		}
-		if( HAL_GetTick() > BatChecktick)
+		if( HAL_GetTick() - BatChecktick  < UINT32_MAX / 2 )
 		{
-			BatChecktick = HAL_GetTick() + 5;
+			BatChecktick = HAL_GetTick() + 1;
 			Bat_StatusCheck_Handle();			//电池状态检测
 			Adc_BatVolatageCollection_handle(); //电量采集
 		}
-		if( HAL_GetTick() > RGBApptick)
+		if( HAL_GetTick() - RGBApptick  < UINT32_MAX / 2)
 		{
-			RGBApptick = HAL_GetTick() + 5;
+			RGBApptick = HAL_GetTick() + 1;
 			RGB_App_Handle();					//RGB灯 控制函数
 			Ir_CommandReceiv(Ir_Scan());		//红外命令解析 函数
 		}

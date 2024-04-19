@@ -154,6 +154,11 @@ uint8_t Ir_Scan(void)
 	}
 	return key;
 }
+void RGB_LampFlash(void)
+{
+	 RGB.Dispaly_v = 0;
+	 RGB.ColourSwTimer = 0;
+}
 void Ir_CommandReceiv(uint8_t key)
 {
 	
@@ -166,15 +171,7 @@ void Ir_CommandReceiv(uint8_t key)
 			switch(key)
 			{
 				case IR_COMMAND_POWEROFF:
-	//				if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
-	//				{
-	//				//	BLE_Power_OFF();
-	//					LED_RGB_Off_Handle();
-	//				//	Sys_EntreSleep();
-	//					Ir_ReScan();
-	//					DEBUG_INFO("Power OFF");
-	//				}
-					if(Ir.RepeatCount>20)
+					if(Ir.RepeatCount>20)	//2秒关机
 					{
 						if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0 ) )
 						{
@@ -190,15 +187,6 @@ void Ir_CommandReceiv(uint8_t key)
 					
 					break;
 				case IR_COMMAND_LEDON:
-					/*if(RGB.OnFlag == 0)
-					{
-						if(++RGB.ResetCnt>= 10)
-						{
-							RGB.ResetCnt = 0;
-							bt_uart_write_frame(4, 0);
-						}
-						DEBUG_INFO("RGB.ResetCnt %d",RGB.ResetCnt);
-					}*/
 					if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
 					{
 						
@@ -226,6 +214,7 @@ void Ir_CommandReceiv(uint8_t key)
 				case IR_COMMAND_LIAGHUP: 
 					if(RGB.OnFlag)
 					{
+						RGB.ColourSwTimer = 0;
 						if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
 						{
 							if( ( RGB.v + 150) < 1000 )
@@ -234,7 +223,7 @@ void Ir_CommandReceiv(uint8_t key)
 							}
 							else 
 							{
-								RGB.Dispaly_v = 0;
+								RGB_LampFlash();
 								RGB.v = 1000;
 							}
 							TY_Updata_Bright();
@@ -242,13 +231,13 @@ void Ir_CommandReceiv(uint8_t key)
 						}
 						if(Ir.RepeatCount>3)
 						{
-							if(RGB.v<1000)RGB.v+=5;	
+							if(RGB.v<1000)RGB.v++;	
 							else 
 							{
 								RGB.v = 1000;
 								TY_Updata_Bright();
 								Ir_ReScan();
-								RGB.Dispaly_v = 0; //刷新
+								RGB_LampFlash(); //刷新
 							}
 							if(Ir.TimeOutFlag) 
 							{
@@ -264,26 +253,28 @@ void Ir_CommandReceiv(uint8_t key)
 				case IR_COMMAND_LIAGHDONW:
 					if(RGB.OnFlag)
 					{
+						RGB.ColourSwTimer = 0; 
 						if(Ir.RepeatCount<=3 && Ir.TimeOutFlag)
 						{
+							
 							if( (RGB.v - 150 )>100)RGB.v-=150;
 							else 
 							{
 								RGB.v = 100;
-								RGB.Dispaly_v = 0;
+								RGB_LampFlash();
 							}
 							TY_Updata_Bright();
 							Ir_ReScan();
 						}
 						if(Ir.RepeatCount>3)
 						{
-							if(RGB.v>100)RGB.v-=5;
+							if(RGB.v>100)RGB.v--;
 							else
 							{
 								RGB.v = 100;
 								TY_Updata_Bright();
 								Ir_ReScan();
-								RGB.Dispaly_v = 0; //刷新
+								RGB_LampFlash(); //刷新
 							}
 							if(Ir.TimeOutFlag) 
 							{
@@ -295,14 +286,14 @@ void Ir_CommandReceiv(uint8_t key)
 					}
 					break;
 				case IR_COMMAND_3H:
-					RGB.Dispaly_v = 0;
+					RGB_LampFlash();
 					LED_RGB_On_Handle();
 					RGB.SetOffTime = TIME_3H; 
 					RGB.Command = RGB.LastCommand;
 					DEBUG_INFO("3H");
 					break;
 				case IR_COMMAND_5H:
-					RGB.Dispaly_v = 0;
+					RGB_LampFlash();
 					LED_RGB_On_Handle();
 					RGB.SetOffTime = TIME_5H; 
 					RGB.Command = RGB.LastCommand;
@@ -380,26 +371,26 @@ void Ir_CommandReceiv(uint8_t key)
 				switch(key)
 				{
 					case 185: LED_RGB_Off_Handle();RGB.Command = IR_LEDOFF;DEBUG_INFO("IR_COMMAND_LEDOFF");break;		
-					case P01: RGB.CurrentGear = 1;  RGB.Dispaly_v = 0; break;
-					case P02: RGB.CurrentGear = 2;  RGB.Dispaly_v = 0; break;
-					case P03: RGB.CurrentGear = 3;  RGB.Dispaly_v = 0; break;
-					case P04: RGB.CurrentGear = 4;  RGB.Dispaly_v = 0; break;
-					case P05: RGB.CurrentGear = 5;  RGB.Dispaly_v = 0; break;
-					case P06: RGB.CurrentGear = 6;  RGB.Dispaly_v = 0; break;
-					case P07: RGB.CurrentGear = 7;  RGB.Dispaly_v = 0; break;
-					case P08: RGB.CurrentGear = 8;  RGB.Dispaly_v = 0; break;
-					case P09: RGB.CurrentGear = 9;  RGB.Dispaly_v = 0; break;
-					case P10: RGB.CurrentGear = 10; RGB.Dispaly_v = 0; break;
-					case P11: RGB.CurrentGear = 11; RGB.Dispaly_v = 0; break;
-					case P12: RGB.CurrentGear = 12; RGB.Dispaly_v = 0; break;
-					case P13: RGB.CurrentGear = 13; RGB.Dispaly_v = 0; break;
-					case P14: RGB.CurrentGear = 14; RGB.Dispaly_v = 0; break;
-					case P15: RGB.CurrentGear = 15; RGB.Dispaly_v = 0; break;
-					case P16: RGB.CurrentGear = 16; RGB.Dispaly_v = 0; break;
-					case P17: RGB.CurrentGear = 17; RGB.Dispaly_v = 0; break;
-					case P18: RGB.CurrentGear = 18; RGB.Dispaly_v = 0; break;
-					case P19: RGB.CurrentGear = 19; RGB.Dispaly_v = 0; break;
-					case P20: RGB.CurrentGear = 20; RGB.Dispaly_v = 0; break;	
+					case P01: RGB.CurrentGear = 1;  RGB_LampFlash(); break;
+					case P02: RGB.CurrentGear = 2;  RGB_LampFlash(); break;
+					case P03: RGB.CurrentGear = 3;  RGB_LampFlash(); break;
+					case P04: RGB.CurrentGear = 4;  RGB_LampFlash(); break;
+					case P05: RGB.CurrentGear = 5;  RGB_LampFlash(); break;
+					case P06: RGB.CurrentGear = 6;  RGB_LampFlash(); break;
+					case P07: RGB.CurrentGear = 7;  RGB_LampFlash(); break;
+					case P08: RGB.CurrentGear = 8;  RGB_LampFlash(); break;
+					case P09: RGB.CurrentGear = 9;  RGB_LampFlash(); break;
+					case P10: RGB.CurrentGear = 10; RGB_LampFlash(); break;
+					case P11: RGB.CurrentGear = 11; RGB_LampFlash(); break;
+					case P12: RGB.CurrentGear = 12; RGB_LampFlash(); break;
+					case P13: RGB.CurrentGear = 13; RGB_LampFlash(); break;
+					case P14: RGB.CurrentGear = 14; RGB_LampFlash(); break;
+					case P15: RGB.CurrentGear = 15; RGB_LampFlash(); break;
+					case P16: RGB.CurrentGear = 16; RGB_LampFlash(); break;
+					case P17: RGB.CurrentGear = 17; RGB_LampFlash(); break;
+					case P18: RGB.CurrentGear = 18; RGB_LampFlash(); break;
+					case P19: RGB.CurrentGear = 19; RGB_LampFlash(); break;
+					case P20: RGB.CurrentGear = 20; RGB_LampFlash(); break;	
 				}
 			}
 			if(key == 57 )
@@ -413,10 +404,8 @@ void Ir_CommandReceiv(uint8_t key)
 			}
 			//if(Led.LampOnFlag && key != 57)Led_Lamp_Light_Set(Led.LampLightDisplayValueTemp);
 			Ir_ReScan();
+			Flash_Data_Write(); 
 			DEBUG_INFO("CurrentGear %d",RGB.CurrentGear);	
-
-		}
-			
+		}	
 	}
-	
 }

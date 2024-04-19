@@ -18,20 +18,11 @@ void APP_IwdgConfig(void)
 	LL_IWDG_SetPrescaler(IWDG, LL_IWDG_PRESCALER_32); /* T=1MS */
 
 	/* 设置喂狗事件*/
-	LL_IWDG_SetReloadCounter(IWDG, 300 ); /* 1ms*6000=6s */ //7.6MS
-		
-
+	LL_IWDG_SetReloadCounter(IWDG, 300 ); 
 		
 	/* IWDG初始化*/
 	while (LL_IWDG_IsReady(IWDG) == 0U) {;}
-		
-	/*
-	DEBUG_INFO("----------------------------IWDG CONFIG----------------------------");
-	DEBUG_INFO("LL_IWDG_MAXtime:%dms",7);	
-	DEBUG_INFO("WAIT LL_IWDG_INIT");	
-	DEBUG_INFO("LL_IWDG_INIT SUCCESS");	
-	*/
-		
+			
 	/* 喂狗 */
 	LL_IWDG_ReloadCounter(IWDG);
 }

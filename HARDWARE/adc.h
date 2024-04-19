@@ -16,20 +16,20 @@
 #define BAT_CDS_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE3
 #define BAT_CDS_EXTI_IRQn	EXTI2_3_IRQn
 
-#define BAT_Protect_Voltage 2560 // 低压保护电压
+#define BAT_Protect_Voltage 2600 // 低压保护电压
 
 typedef struct _xADC
 {
 	//累加值
-	uint16_t Temp; 
-	uint16_t TempMin;
-	uint16_t TempMax;
+	volatile uint16_t Temp; 
+	volatile uint16_t TempMin;
+	volatile uint16_t TempMax;
 	//累加变量
-	uint16_t TempCnt;
+	volatile uint16_t TempCnt;
 	//电池电压
-	uint16_t BatVoltage;
+	volatile uint16_t BatVoltage;
 	
-	uint16_t NewBatVoltage;
+	volatile uint16_t NewBatVoltage;
 }xADC;
 
 #define BAT_DISCHARGE 0 
@@ -38,17 +38,19 @@ typedef struct _xADC
 typedef struct _xBat
 {
 	//挡位
-	uint8_t Gera;  // 0 - 5
+	volatile uint8_t Gera;  // 0 - 5
 	//百分比
-	int16_t Percent;  // 0 - 100  int只是方便计算
+	volatile int16_t Percent;  // 0 - 100  int只是方便计算
 	//状态
-	uint8_t Status;  // 0 放电 1 充电 2 充满 3 低压保护
+	volatile uint8_t Status;  // 0 放电 1 充电 2 充满 3 低压保护
 	//只降不升标志位
-	uint8_t ChargeUpFlag; //只升不降 只降不升开始
+	volatile uint8_t ChargeUpFlag; //只升不降 只降不升开始
 	//太阳能模式
-	uint8_t SolarMode; //太阳能模式 光控开灯 
+	volatile uint8_t SolarMode; //太阳能模式 光控开灯 
 	//节能模式
-	uint8_t SaveEnergMode; //降序 自动调节亮度
+	volatile uint8_t SaveEnergMode; //降序 自动调节亮度
+	
+	volatile uint8_t ReCheckFlag;
 	
 }xBat;
 

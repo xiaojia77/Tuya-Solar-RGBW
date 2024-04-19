@@ -70,17 +70,17 @@ Section Cross References
     main.o(.text.main) refers to system.o(.text.enable_low_power) for enable_low_power
     main.o(.text.main) refers to mcu_api.o(.text.bt_uart_service) for bt_uart_service
     main.o(.text.main) refers to py32f002b_hal.o(.text.HAL_GetTick) for HAL_GetTick
-    main.o(.text.main) refers to flash.o(.text.Flash_Data_Write) for Flash_Data_Write
     main.o(.text.main) refers to led.o(.text.LED_DisplayBatGear_Handle) for LED_DisplayBatGear_Handle
+    main.o(.text.main) refers to adc.o(.text.BatVolatageToPercent_handle) for BatVolatageToPercent_handle
     main.o(.text.main) refers to adc.o(.text.Bat_StatusCheck_Handle) for Bat_StatusCheck_Handle
     main.o(.text.main) refers to adc.o(.text.Adc_BatVolatageCollection_handle) for Adc_BatVolatageCollection_handle
     main.o(.text.main) refers to led.o(.text.RGB_App_Handle) for RGB_App_Handle
     main.o(.text.main) refers to ir.o(.text.Ir_Scan) for Ir_Scan
     main.o(.text.main) refers to ir.o(.text.Ir_CommandReceiv) for Ir_CommandReceiv
     main.o(.text.main) refers to task.o(.text.Sys_EnterSleep_Handle) for Sys_EnterSleep_Handle
-    main.o(.text.main) refers to led.o(.bss.RGB) for RGB
     main.o(.text.main) refers to adc.o(.bss.Bat) for Bat
     main.o(.text.main) refers to task.o(.bss.Sys) for Sys
+    main.o(.text.main) refers to led.o(.bss.RGB) for RGB
     main.o(.text.main) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
     main.o(.ARM.exidx.text.main) refers to main.o(.text.main) for [Anonymous Symbol]
     main.o(.ARM.exidx.text.APP_ErrorHandler) refers to main.o(.text.APP_ErrorHandler) for [Anonymous Symbol]
@@ -272,7 +272,6 @@ Section Cross References
     adc.o(.ARM.exidx.text.APP_AdcConfig) refers to adc.o(.text.APP_AdcConfig) for [Anonymous Symbol]
     adc.o(.text.APP_AdcGrpRegularUnitaryConvCompleteCallback) refers to adc.o(.bss.Adc) for Adc
     adc.o(.ARM.exidx.text.APP_AdcGrpRegularUnitaryConvCompleteCallback) refers to adc.o(.text.APP_AdcGrpRegularUnitaryConvCompleteCallback) for [Anonymous Symbol]
-    adc.o(.text.Adc_BatVolatageCollection_handle) refers to adc.o(.text.BatVolatageToPercent_handle) for BatVolatageToPercent_handle
     adc.o(.text.Adc_BatVolatageCollection_handle) refers to adc.o(.bss.Adc) for Adc
     adc.o(.ARM.exidx.text.Adc_BatVolatageCollection_handle) refers to adc.o(.text.Adc_BatVolatageCollection_handle) for [Anonymous Symbol]
     adc.o(.text.BatVolatageToPercent_handle) refers to idiv_div0.o(.text) for __aeabi_idiv
@@ -282,23 +281,25 @@ Section Cross References
     adc.o(.text.BatVolatageToPercent_handle) refers to adc.o(.bss.Bat) for Bat
     adc.o(.text.BatVolatageToPercent_handle) refers to adc.o(.bss.percent_temp) for [Anonymous Symbol]
     adc.o(.text.BatVolatageToPercent_handle) refers to adc.o(.bss.last_percent) for [Anonymous Symbol]
-    adc.o(.text.BatVolatageToPercent_handle) refers to led.o(.bss.RGB) for RGB
+    adc.o(.text.BatVolatageToPercent_handle) refers to adc.o(.bss.BatVolatageToPercent_handle.Recheck_Timer) for [Anonymous Symbol]
     adc.o(.text.BatVolatageToPercent_handle) refers to adc.o(.bss.gear_changetemp) for [Anonymous Symbol]
     adc.o(.ARM.exidx.text.BatVolatageToPercent_handle) refers to adc.o(.text.BatVolatageToPercent_handle) for [Anonymous Symbol]
     adc.o(.text.Bat_StatusCheck_Handle) refers to led.o(.text.LED_RGB_On_Handle) for LED_RGB_On_Handle
     adc.o(.text.Bat_StatusCheck_Handle) refers to led.o(.text.LED_RGB_Off_Handle) for LED_RGB_Off_Handle
+    adc.o(.text.Bat_StatusCheck_Handle) refers to task.o(.text.Ir_Power_OFF) for Ir_Power_OFF
+    adc.o(.text.Bat_StatusCheck_Handle) refers to task.o(.text.BLE_Power_OFF) for BLE_Power_OFF
     adc.o(.text.Bat_StatusCheck_Handle) refers to task.o(.text.Ir_Power_ON) for Ir_Power_ON
     adc.o(.text.Bat_StatusCheck_Handle) refers to task.o(.text.BLE_Power_ON) for BLE_Power_ON
     adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Bat) for Bat
     adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt) for [Anonymous Symbol]
+    adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Adc) for Adc
+    adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt1) for [Anonymous Symbol]
     adc.o(.text.Bat_StatusCheck_Handle) refers to led.o(.bss.RGB) for RGB
     adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.last_percent) for [Anonymous Symbol]
     adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.percent_temp) for [Anonymous Symbol]
-    adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt1) for [Anonymous Symbol]
-    adc.o(.text.Bat_StatusCheck_Handle) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
-    adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Adc) for Adc
-    adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Bat_StatusCheck_Handle.low_voltage_cnt) for [Anonymous Symbol]
     adc.o(.text.Bat_StatusCheck_Handle) refers to task.o(.bss.Sys) for Sys
+    adc.o(.text.Bat_StatusCheck_Handle) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
+    adc.o(.text.Bat_StatusCheck_Handle) refers to adc.o(.bss.Bat_StatusCheck_Handle.low_voltage_cnt) for [Anonymous Symbol]
     adc.o(.ARM.exidx.text.Bat_StatusCheck_Handle) refers to adc.o(.text.Bat_StatusCheck_Handle) for [Anonymous Symbol]
     flash.o(.text.Flash_Init_Rdata) refers to flash.o(.data.FlashData) for FlashData
     flash.o(.text.Flash_Init_Rdata) refers to led.o(.bss.RGB) for RGB
@@ -339,6 +340,10 @@ Section Cross References
     ir.o(.ARM.exidx.text.Ir_ReScan) refers to ir.o(.text.Ir_ReScan) for [Anonymous Symbol]
     ir.o(.text.Ir_Scan) refers to ir.o(.bss.Ir) for Ir
     ir.o(.ARM.exidx.text.Ir_Scan) refers to ir.o(.text.Ir_Scan) for [Anonymous Symbol]
+    ir.o(.text.RGB_LampFlash) refers to led.o(.bss.RGB) for RGB
+    ir.o(.ARM.exidx.text.RGB_LampFlash) refers to ir.o(.text.RGB_LampFlash) for [Anonymous Symbol]
+    ir.o(.text.Ir_CommandReceiv) refers to ir.o(.bss.Ir) for Ir
+    ir.o(.text.Ir_CommandReceiv) refers to led.o(.bss.RGB) for RGB
     ir.o(.text.Ir_CommandReceiv) refers to led.o(.text.LED_RGB_Off_Handle) for LED_RGB_Off_Handle
     ir.o(.text.Ir_CommandReceiv) refers to led.o(.text.LED_RGB_SetHSV) for LED_RGB_SetHSV
     ir.o(.text.Ir_CommandReceiv) refers to led.o(.text.LED_RGB_SetDisplayHSV) for LED_RGB_SetDisplayHSV
@@ -347,9 +352,8 @@ Section Cross References
     ir.o(.text.Ir_CommandReceiv) refers to task.o(.text.Ir_Power_OFF) for Ir_Power_OFF
     ir.o(.text.Ir_CommandReceiv) refers to task.o(.text.Sys_EntreSleep) for Sys_EntreSleep
     ir.o(.text.Ir_CommandReceiv) refers to system.o(.text.bt_uart_write_frame) for bt_uart_write_frame
+    ir.o(.text.Ir_CommandReceiv) refers to flash.o(.text.Flash_Data_Write) for Flash_Data_Write
     ir.o(.text.Ir_CommandReceiv) refers to task.o(.text.TY_Updata_Bright) for TY_Updata_Bright
-    ir.o(.text.Ir_CommandReceiv) refers to ir.o(.bss.Ir) for Ir
-    ir.o(.text.Ir_CommandReceiv) refers to led.o(.bss.RGB) for RGB
     ir.o(.text.Ir_CommandReceiv) refers to adc.o(.bss.Bat) for Bat
     ir.o(.ARM.exidx.text.Ir_CommandReceiv) refers to ir.o(.text.Ir_CommandReceiv) for [Anonymous Symbol]
     iwdg.o(.ARM.exidx.text.APP_IwdgConfig) refers to iwdg.o(.text.APP_IwdgConfig) for [Anonymous Symbol]
@@ -384,6 +388,8 @@ Section Cross References
     led.o(.text.LED_Scan_Handle) refers to led.o(.bss.LED_Scan_Handle.ScanCount) for [Anonymous Symbol]
     led.o(.text.LED_Scan_Handle) refers to led.o(.bss.LED_DisplayTemp) for LED_DisplayTemp
     led.o(.ARM.exidx.text.LED_Scan_Handle) refers to led.o(.text.LED_Scan_Handle) for [Anonymous Symbol]
+    led.o(.text.Led_On) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
+    led.o(.ARM.exidx.text.Led_On) refers to led.o(.text.Led_On) for [Anonymous Symbol]
     led.o(.text.Led_Off) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
     led.o(.ARM.exidx.text.Led_Off) refers to led.o(.text.Led_Off) for [Anonymous Symbol]
     led.o(.text.APP_ConfigTIM1) refers to memseta.o(.text) for __aeabi_memclr4
@@ -393,6 +399,10 @@ Section Cross References
     led.o(.text.APP_ConfigPWMChannel) refers to py32f002b_ll_gpio.o(.text.LL_GPIO_Init) for LL_GPIO_Init
     led.o(.text.APP_ConfigPWMChannel) refers to py32f002b_ll_tim.o(.text.LL_TIM_OC_Init) for LL_TIM_OC_Init
     led.o(.ARM.exidx.text.APP_ConfigPWMChannel) refers to led.o(.text.APP_ConfigPWMChannel) for [Anonymous Symbol]
+    led.o(.text.APP_DeConfigPWMChannel) refers to memseta.o(.text) for __aeabi_memclr4
+    led.o(.text.APP_DeConfigPWMChannel) refers to py32f002b_ll_gpio.o(.text.LL_GPIO_Init) for LL_GPIO_Init
+    led.o(.text.APP_DeConfigPWMChannel) refers to py32f002b_ll_tim.o(.text.LL_TIM_OC_Init) for LL_TIM_OC_Init
+    led.o(.ARM.exidx.text.APP_DeConfigPWMChannel) refers to led.o(.text.APP_DeConfigPWMChannel) for [Anonymous Symbol]
     led.o(.text.LED_RGB_init) refers to led.o(.text.APP_ConfigTIM1) for APP_ConfigTIM1
     led.o(.text.LED_RGB_init) refers to led.o(.text.APP_ConfigPWMChannel) for APP_ConfigPWMChannel
     led.o(.text.LED_RGB_init) refers to memseta.o(.text) for __aeabi_memclr4
@@ -400,15 +410,18 @@ Section Cross References
     led.o(.ARM.exidx.text.LED_RGB_init) refers to led.o(.text.LED_RGB_init) for [Anonymous Symbol]
     led.o(.text.LED_RGB_Off_Handle) refers to mcu_api.o(.text.mcu_dp_bool_update) for mcu_dp_bool_update
     led.o(.text.LED_RGB_Off_Handle) refers to led.o(.bss.RGB) for RGB
+    led.o(.text.LED_RGB_Off_Handle) refers to adc.o(.bss.Bat) for Bat
+    led.o(.text.LED_RGB_Off_Handle) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
     led.o(.ARM.exidx.text.LED_RGB_Off_Handle) refers to led.o(.text.LED_RGB_Off_Handle) for [Anonymous Symbol]
     led.o(.text.LED_RGB_To_OnStatus) refers to mcu_api.o(.text.mcu_dp_bool_update) for mcu_dp_bool_update
     led.o(.text.LED_RGB_To_OnStatus) refers to led.o(.bss.RGB) for RGB
+    led.o(.text.LED_RGB_To_OnStatus) refers to task.o(.bss.Sys) for Sys
     led.o(.text.LED_RGB_To_OnStatus) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
     led.o(.ARM.exidx.text.LED_RGB_To_OnStatus) refers to led.o(.text.LED_RGB_To_OnStatus) for [Anonymous Symbol]
     led.o(.text.LED_RGB_On_Handle) refers to mcu_api.o(.text.mcu_dp_bool_update) for mcu_dp_bool_update
     led.o(.text.LED_RGB_On_Handle) refers to led.o(.bss.RGB) for RGB
-    led.o(.text.LED_RGB_On_Handle) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
     led.o(.text.LED_RGB_On_Handle) refers to task.o(.bss.Sys) for Sys
+    led.o(.text.LED_RGB_On_Handle) refers to led.o(.bss.LED_IndicatorOnFlag) for LED_IndicatorOnFlag
     led.o(.ARM.exidx.text.LED_RGB_On_Handle) refers to led.o(.text.LED_RGB_On_Handle) for [Anonymous Symbol]
     led.o(.text.LED_DisplayBatGear_Handle) refers to led.o(.bss.LED_DisplayBatGear_Handle.flash_cnt) for [Anonymous Symbol]
     led.o(.text.LED_DisplayBatGear_Handle) refers to led.o(.bss.LED_DisplayBatGear_Handle.low_flash) for [Anonymous Symbol]
@@ -416,19 +429,20 @@ Section Cross References
     led.o(.text.LED_DisplayBatGear_Handle) refers to adc.o(.bss.Bat) for Bat
     led.o(.text.LED_DisplayBatGear_Handle) refers to led.o(.bss.LED_DisplayTemp) for LED_DisplayTemp
     led.o(.ARM.exidx.text.LED_DisplayBatGear_Handle) refers to led.o(.text.LED_DisplayBatGear_Handle) for [Anonymous Symbol]
-    led.o(.text.IR_RGB_MODE_handle) refers to led.o(.bss.IR_RGB_MODE_handle.time_cnt) for [Anonymous Symbol]
-    led.o(.text.IR_RGB_MODE_handle) refers to led.o(.bss.IR_RGB_MODE_handle.status) for [Anonymous Symbol]
     led.o(.text.IR_RGB_MODE_handle) refers to led.o(.bss.RGB) for RGB
+    led.o(.text.IR_RGB_MODE_handle) refers to led.o(.bss.IR_RGB_MODE_handle.status) for [Anonymous Symbol]
     led.o(.ARM.exidx.text.IR_RGB_MODE_handle) refers to led.o(.text.IR_RGB_MODE_handle) for [Anonymous Symbol]
     led.o(.text.RGB_App_Handle) refers to task.o(.text.TY_Updata_Bright) for TY_Updata_Bright
-    led.o(.text.RGB_App_Handle) refers to mcu_api.o(.text.mcu_dp_bool_update) for mcu_dp_bool_update
-    led.o(.text.RGB_App_Handle) refers to uidiv_div0.o(.text) for __aeabi_uidiv
-    led.o(.text.RGB_App_Handle) refers to led.o(.text.LED_RGB_HSVdisplay) for LED_RGB_HSVdisplay
-    led.o(.text.RGB_App_Handle) refers to led.o(.text.LED_RGB_W_display) for LED_RGB_W_display
+    led.o(.text.RGB_App_Handle) refers to led.o(.text.LED_RGB_Off_Handle) for LED_RGB_Off_Handle
+    led.o(.text.RGB_App_Handle) refers to led.o(.text.LED_RGB_display) for LED_RGB_display
     led.o(.text.RGB_App_Handle) refers to led.o(.text.IR_RGB_MODE_handle) for IR_RGB_MODE_handle
+    led.o(.text.RGB_App_Handle) refers to led.o(.text.LED_RGB_HSVdisplay) for LED_RGB_HSVdisplay
+    led.o(.text.RGB_App_Handle) refers to uidiv_div0.o(.text) for __aeabi_uidiv
+    led.o(.text.RGB_App_Handle) refers to led.o(.text.LED_RGB_W_display) for LED_RGB_W_display
     led.o(.text.RGB_App_Handle) refers to led.o(.bss.RGB) for RGB
     led.o(.text.RGB_App_Handle) refers to adc.o(.bss.Bat) for Bat
     led.o(.text.RGB_App_Handle) refers to system.o(.bss.bt_work_state) for bt_work_state
+    led.o(.text.RGB_App_Handle) refers to led.o(.bss.RGB_App_Handle.Timer5ms) for [Anonymous Symbol]
     led.o(.text.RGB_App_Handle) refers to led.o(.bss.RGB_App_Handle.TY_Reset_Mode_Status) for [Anonymous Symbol]
     led.o(.ARM.exidx.text.RGB_App_Handle) refers to led.o(.text.RGB_App_Handle) for [Anonymous Symbol]
     task.o(.ARM.exidx.text.hex2str) refers to task.o(.text.hex2str) for [Anonymous Symbol]
@@ -439,8 +453,6 @@ Section Cross References
     task.o(.text.TY_Init) refers to memseta.o(.text) for __aeabi_memclr4
     task.o(.text.TY_Init) refers to task.o(.bss.TY) for TY
     task.o(.ARM.exidx.text.TY_Init) refers to task.o(.text.TY_Init) for [Anonymous Symbol]
-    task.o(.text.Sys_Timer1ms_Handle) refers to led.o(.bss.RGB) for RGB
-    task.o(.text.Sys_Timer1ms_Handle) refers to adc.o(.bss.Bat) for Bat
     task.o(.text.Sys_Timer1ms_Handle) refers to task.o(.bss.Sys) for Sys
     task.o(.ARM.exidx.text.Sys_Timer1ms_Handle) refers to task.o(.text.Sys_Timer1ms_Handle) for [Anonymous Symbol]
     task.o(.text.TY_Updata_Bright) refers to idiv_div0.o(.text) for __aeabi_idiv
@@ -462,11 +474,14 @@ Section Cross References
     task.o(.text.Adc_RefVoltage_ON) refers to system_py32f002b.o(.data.SystemCoreClock) for SystemCoreClock
     task.o(.ARM.exidx.text.Adc_RefVoltage_ON) refers to task.o(.text.Adc_RefVoltage_ON) for [Anonymous Symbol]
     task.o(.ARM.exidx.text.Adc_RefVoltage_OFF) refers to task.o(.text.Adc_RefVoltage_OFF) for [Anonymous Symbol]
-    task.o(.text.Sys_EnterSleep_Handle) refers to led.o(.text.LED_RGB_Off_Handle) for LED_RGB_Off_Handle
+    task.o(.text.Sys_EnterSleep_Handle) refers to flash.o(.text.Flash_Data_Write) for Flash_Data_Write
     task.o(.text.Sys_EnterSleep_Handle) refers to led.o(.text.Led_Off) for Led_Off
     task.o(.text.Sys_EnterSleep_Handle) refers to py32f002b_ll_utils.o(.text.LL_mDelay) for LL_mDelay
-    task.o(.text.Sys_EnterSleep_Handle) refers to flash.o(.text.Flash_Data_Write) for Flash_Data_Write
+    task.o(.text.Sys_EnterSleep_Handle) refers to led.o(.text.APP_DeConfigPWMChannel) for APP_DeConfigPWMChannel
+    task.o(.text.Sys_EnterSleep_Handle) refers to ir.o(.text.Ir_ReScan) for Ir_ReScan
+    task.o(.text.Sys_EnterSleep_Handle) refers to led.o(.text.LED_RGB_Off_Handle) for LED_RGB_Off_Handle
     task.o(.text.Sys_EnterSleep_Handle) refers to task.o(.text.BLE_Power_OFF) for BLE_Power_OFF
+    task.o(.text.Sys_EnterSleep_Handle) refers to led.o(.text.APP_ConfigPWMChannel) for APP_ConfigPWMChannel
     task.o(.text.Sys_EnterSleep_Handle) refers to task.o(.text.Adc_RefVoltage_ON) for Adc_RefVoltage_ON
     task.o(.text.Sys_EnterSleep_Handle) refers to protocol.o(.text.all_data_update) for all_data_update
     task.o(.text.Sys_EnterSleep_Handle) refers to led.o(.bss.RGB) for RGB
@@ -894,7 +909,7 @@ Removing Unused input sections from the image.
     Removing py32f002b_ll_lptim.o(.ARM.exidx.text.LL_LPTIM_StructInit), (8 bytes).
     Removing py32f002b_ll_lptim.o(.ARM.exidx.text.LL_LPTIM_Init), (8 bytes).
     Removing adc.o(.text), (0 bytes).
-    Removing adc.o(.text.Adc_ReScan), (24 bytes).
+    Removing adc.o(.text.Adc_ReScan), (28 bytes).
     Removing adc.o(.ARM.exidx.text.Adc_ReScan), (8 bytes).
     Removing adc.o(.ARM.exidx.text.Bat_GpioInit), (8 bytes).
     Removing adc.o(.ARM.exidx.text.APP_AdcCalibrate), (8 bytes).
@@ -918,9 +933,10 @@ Removing Unused input sections from the image.
     Removing ir.o(.ARM.exidx.text.Ir_Init), (8 bytes).
     Removing ir.o(.ARM.exidx.text.Ir_ExtiCallback), (8 bytes).
     Removing ir.o(.ARM.exidx.text.Ir_Time14IRQCallback), (8 bytes).
-    Removing ir.o(.text.Ir_ReScan), (16 bytes).
     Removing ir.o(.ARM.exidx.text.Ir_ReScan), (8 bytes).
     Removing ir.o(.ARM.exidx.text.Ir_Scan), (8 bytes).
+    Removing ir.o(.text.RGB_LampFlash), (16 bytes).
+    Removing ir.o(.ARM.exidx.text.RGB_LampFlash), (8 bytes).
     Removing ir.o(.ARM.exidx.text.Ir_CommandReceiv), (8 bytes).
     Removing iwdg.o(.text), (0 bytes).
     Removing iwdg.o(.ARM.exidx.text.APP_IwdgConfig), (8 bytes).
@@ -933,9 +949,12 @@ Removing Unused input sections from the image.
     Removing led.o(.ARM.exidx.text.LED_RGB_W_display), (8 bytes).
     Removing led.o(.ARM.exidx.text.LED_Init), (8 bytes).
     Removing led.o(.ARM.exidx.text.LED_Scan_Handle), (8 bytes).
+    Removing led.o(.text.Led_On), (12 bytes).
+    Removing led.o(.ARM.exidx.text.Led_On), (8 bytes).
     Removing led.o(.ARM.exidx.text.Led_Off), (8 bytes).
     Removing led.o(.ARM.exidx.text.APP_ConfigTIM1), (8 bytes).
     Removing led.o(.ARM.exidx.text.APP_ConfigPWMChannel), (8 bytes).
+    Removing led.o(.ARM.exidx.text.APP_DeConfigPWMChannel), (8 bytes).
     Removing led.o(.ARM.exidx.text.LED_RGB_init), (8 bytes).
     Removing led.o(.ARM.exidx.text.LED_RGB_Off_Handle), (8 bytes).
     Removing led.o(.ARM.exidx.text.LED_RGB_To_OnStatus), (8 bytes).
@@ -1035,7 +1054,7 @@ Removing Unused input sections from the image.
     Removing system.o(.ARM.exidx.text.Queue_Read_Byte), (8 bytes).
     Removing system.o(.bss.set_btmode_flag), (1 bytes).
 
-355 unused section(s) (total 6628 bytes) removed from the image.
+359 unused section(s) (total 6668 bytes) removed from the image.
 
 ==============================================================================
 
@@ -1174,415 +1193,419 @@ Image Symbol Table
     [Anonymous Symbol]                       0x08000818   Section        0  adc.o(.text.APP_AdcGrpRegularUnitaryConvCompleteCallback)
     __arm_cp.5_0                             0x08000848   Number         4  adc.o(.text.APP_AdcGrpRegularUnitaryConvCompleteCallback)
     __arm_cp.5_1                             0x0800084c   Number         4  adc.o(.text.APP_AdcGrpRegularUnitaryConvCompleteCallback)
-    [Anonymous Symbol]                       0x08000850   Section        0  led.o(.text.APP_ConfigPWMChannel)
-    [Anonymous Symbol]                       0x080008f4   Section        0  led.o(.text.APP_ConfigTIM1)
-    __arm_cp.9_1                             0x08000958   Number         4  led.o(.text.APP_ConfigTIM1)
-    __arm_cp.9_2                             0x0800095c   Number         4  led.o(.text.APP_ConfigTIM1)
-    __arm_cp.9_4                             0x08000960   Number         4  led.o(.text.APP_ConfigTIM1)
-    [Anonymous Symbol]                       0x08000964   Section        0  ir.o(.text.APP_ConfigTIM14)
-    __arm_cp.0_0                             0x080009c8   Number         4  ir.o(.text.APP_ConfigTIM14)
-    __arm_cp.0_1                             0x080009cc   Number         4  ir.o(.text.APP_ConfigTIM14)
-    __arm_cp.0_2                             0x080009d0   Number         4  ir.o(.text.APP_ConfigTIM14)
-    __arm_cp.0_4                             0x080009d4   Number         4  ir.o(.text.APP_ConfigTIM14)
-    [Anonymous Symbol]                       0x080009d8   Section        0  usart.o(.text.APP_ConfigUsart)
-    __arm_cp.0_0                             0x08000ab8   Number         4  usart.o(.text.APP_ConfigUsart)
-    __arm_cp.0_1                             0x08000abc   Number         4  usart.o(.text.APP_ConfigUsart)
-    __arm_cp.0_2                             0x08000ac0   Number         4  usart.o(.text.APP_ConfigUsart)
-    __arm_cp.0_3                             0x08000ac4   Number         4  usart.o(.text.APP_ConfigUsart)
-    __arm_cp.0_4                             0x08000ac8   Number         4  usart.o(.text.APP_ConfigUsart)
-    __arm_cp.0_5                             0x08000acc   Number         4  usart.o(.text.APP_ConfigUsart)
-    __arm_cp.0_6                             0x08000ad0   Number         4  usart.o(.text.APP_ConfigUsart)
-    [Anonymous Symbol]                       0x08000ad4   Section        0  main.o(.text.APP_ErrorHandler)
-    [Anonymous Symbol]                       0x08000ad6   Section        0  flash.o(.text.APP_FlashOBProgram)
-    [Anonymous Symbol]                       0x08000b08   Section        0  iwdg.o(.text.APP_IwdgConfig)
-    __arm_cp.0_0                             0x08000b38   Number         4  iwdg.o(.text.APP_IwdgConfig)
-    __arm_cp.0_1                             0x08000b3c   Number         4  iwdg.o(.text.APP_IwdgConfig)
-    __arm_cp.0_2                             0x08000b40   Number         4  iwdg.o(.text.APP_IwdgConfig)
-    __arm_cp.0_3                             0x08000b44   Number         4  iwdg.o(.text.APP_IwdgConfig)
-    __arm_cp.0_4                             0x08000b48   Number         4  iwdg.o(.text.APP_IwdgConfig)
-    [Anonymous Symbol]                       0x08000b4c   Section        0  usart.o(.text.APP_UsartIRQCallback)
-    [Anonymous Symbol]                       0x08000b78   Section        0  adc.o(.text.Adc_BatVolatageCollection_handle)
-    __arm_cp.6_0                             0x08000bc4   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
-    __arm_cp.6_1                             0x08000bc8   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
-    __arm_cp.6_2                             0x08000bcc   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
-    __arm_cp.6_3                             0x08000bd0   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
-    __arm_cp.6_4                             0x08000bd4   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
-    [Anonymous Symbol]                       0x08000bd8   Section        0  task.o(.text.Adc_RefVoltage_ON)
-    __arm_cp.10_0                            0x08000c20   Number         4  task.o(.text.Adc_RefVoltage_ON)
-    __arm_cp.10_1                            0x08000c24   Number         4  task.o(.text.Adc_RefVoltage_ON)
-    __arm_cp.10_2                            0x08000c28   Number         4  task.o(.text.Adc_RefVoltage_ON)
-    __arm_cp.10_3                            0x08000c2c   Number         4  task.o(.text.Adc_RefVoltage_ON)
-    __arm_cp.10_4                            0x08000c30   Number         4  task.o(.text.Adc_RefVoltage_ON)
-    [Anonymous Symbol]                       0x08000c34   Section        0  task.o(.text.BLE_Power_OFF)
-    __arm_cp.7_0                             0x08000c78   Number         4  task.o(.text.BLE_Power_OFF)
-    __arm_cp.7_1                             0x08000c7c   Number         4  task.o(.text.BLE_Power_OFF)
-    [Anonymous Symbol]                       0x08000c80   Section        0  task.o(.text.BLE_Power_ON)
-    __arm_cp.8_0                             0x08000cc0   Number         4  task.o(.text.BLE_Power_ON)
-    __arm_cp.8_1                             0x08000cc4   Number         4  task.o(.text.BLE_Power_ON)
-    [Anonymous Symbol]                       0x08000cc8   Section        0  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_0                             0x08000df4   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_1                             0x08000df8   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_2                             0x08000dfc   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_3                             0x08000e00   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_4                             0x08000e04   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_5                             0x08000e08   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_6                             0x08000e0c   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_7                             0x08000e10   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_8                             0x08000e14   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_9                             0x08000e18   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_11                            0x08000e24   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    __arm_cp.7_13                            0x08000e30   Number         4  adc.o(.text.BatVolatageToPercent_handle)
-    [Anonymous Symbol]                       0x08000e34   Section        0  adc.o(.text.Bat_GpioInit)
-    __arm_cp.1_0                             0x08000e88   Number         4  adc.o(.text.Bat_GpioInit)
-    __arm_cp.1_1                             0x08000e8c   Number         4  adc.o(.text.Bat_GpioInit)
-    __arm_cp.1_2                             0x08000e90   Number         4  adc.o(.text.Bat_GpioInit)
-    __arm_cp.1_3                             0x08000e94   Number         4  adc.o(.text.Bat_GpioInit)
-    [Anonymous Symbol]                       0x08000e98   Section        0  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_0                             0x08000fa0   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_1                             0x08000fa4   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_2                             0x08000fa8   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_4                             0x08000fac   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_5                             0x08000fb0   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_6                             0x08000fb4   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_7                             0x08000fb8   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_8                             0x08000fbc   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_9                             0x08000fc0   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    __arm_cp.8_10                            0x08000fc4   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
-    [Anonymous Symbol]                       0x08000fc8   Section        0  py32f002b_it.o(.text.EXTI0_1_IRQHandler)
-    [Anonymous Symbol]                       0x08000fcc   Section        0  py32f002b_it.o(.text.EXTI2_3_IRQHandler)
-    [Anonymous Symbol]                       0x08000fe0   Section        0  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
-    __arm_cp.11_0                            0x0800100c   Number         4  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
-    __arm_cp.11_1                            0x08001010   Number         4  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
-    [Anonymous Symbol]                       0x08001014   Section        0  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
-    __arm_cp.6_0                             0x0800103c   Number         4  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
-    __arm_cp.6_1                             0x08001040   Number         4  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
-    [Anonymous Symbol]                       0x08001044   Section        0  flash.o(.text.Flash_Data_Write)
-    [Anonymous Symbol]                       0x080010b0   Section        0  flash.o(.text.Flash_Init_Rdata)
-    [Anonymous Symbol]                       0x0800112c   Section        0  flash.o(.text.Flash_Write)
-    __arm_cp.2_0                             0x080011c8   Number         4  flash.o(.text.Flash_Write)
-    __arm_cp.2_1                             0x080011cc   Number         4  flash.o(.text.Flash_Write)
-    __arm_cp.2_2                             0x080011d0   Number         4  flash.o(.text.Flash_Write)
-    [Anonymous Symbol]                       0x080011d4   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Erase)
-    __arm_cp.7_9                             0x080013c8   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Erase)
-    [Anonymous Symbol]                       0x080013cc   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Lock)
-    [Anonymous Symbol]                       0x080013e0   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_0                            0x0800151c   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_1                            0x08001520   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_2                            0x08001524   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_3                            0x08001528   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_4                            0x0800152c   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_5                            0x08001530   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_6                            0x08001534   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_7                            0x08001538   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    __arm_cp.14_9                            0x0800153c   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    [Anonymous Symbol]                       0x08001540   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Launch)
-    [Anonymous Symbol]                       0x08001550   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Lock)
-    __arm_cp.3_0                             0x08001564   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Lock)
-    [Anonymous Symbol]                       0x08001568   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
-    __arm_cp.2_0                             0x08001584   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
-    __arm_cp.2_1                             0x08001588   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
-    __arm_cp.2_2                             0x0800158c   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
-    [Anonymous Symbol]                       0x08001590   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_0                            0x080016ac   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_1                            0x080016b0   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_2                            0x080016b4   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_3                            0x080016b8   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_4                            0x080016bc   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_5                            0x080016c0   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_6                            0x080016c4   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_7                            0x080016c8   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    __arm_cp.10_8                            0x080016cc   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    [Anonymous Symbol]                       0x080016d0   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
-    __arm_cp.0_0                             0x080016ec   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
-    __arm_cp.0_1                             0x080016f0   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
-    __arm_cp.0_2                             0x080016f4   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
-    [Anonymous Symbol]                       0x080016f8   Section        0  py32f002b_hal.o(.text.HAL_GetTick)
-    [Anonymous Symbol]                       0x08001700   Section        0  py32f002b_hal.o(.text.HAL_IncTick)
-    __arm_cp.5_0                             0x08001710   Number         4  py32f002b_hal.o(.text.HAL_IncTick)
-    __arm_cp.5_1                             0x08001714   Number         4  py32f002b_hal.o(.text.HAL_IncTick)
-    [Anonymous Symbol]                       0x08001718   Section        0  py32f002b_it.o(.text.HardFault_Handler)
-    [Anonymous Symbol]                       0x0800171c   Section        0  led.o(.text.IR_RGB_MODE_handle)
-    __arm_cp.16_0                            0x08001774   Number         4  led.o(.text.IR_RGB_MODE_handle)
-    __arm_cp.16_1                            0x08001778   Number         4  led.o(.text.IR_RGB_MODE_handle)
-    [Anonymous Symbol]                       0x0800177c   Section        0  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_0                             0x08001b34   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_1                             0x08001b38   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_2                             0x08001b3c   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_3                             0x08001b40   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_4                             0x08001b44   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_5                             0x08001b48   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_6                             0x08001b4c   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_7                             0x08001b50   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_8                             0x08001b54   Number         4  ir.o(.text.Ir_CommandReceiv)
-    __arm_cp.6_9                             0x08001b58   Number         4  ir.o(.text.Ir_CommandReceiv)
-    [Anonymous Symbol]                       0x08001b5c   Section        0  ir.o(.text.Ir_ExtiCallback)
-    __arm_cp.2_0                             0x08001bbc   Number         4  ir.o(.text.Ir_ExtiCallback)
-    __arm_cp.2_1                             0x08001bc0   Number         4  ir.o(.text.Ir_ExtiCallback)
-    [Anonymous Symbol]                       0x08001bc4   Section        0  ir.o(.text.Ir_Init)
-    __arm_cp.1_0                             0x08001c38   Number         4  ir.o(.text.Ir_Init)
-    __arm_cp.1_1                             0x08001c3c   Number         4  ir.o(.text.Ir_Init)
-    __arm_cp.1_2                             0x08001c40   Number         4  ir.o(.text.Ir_Init)
-    [Anonymous Symbol]                       0x08001c44   Section        0  task.o(.text.Ir_Power_OFF)
-    __arm_cp.5_0                             0x08001c4c   Number         4  task.o(.text.Ir_Power_OFF)
-    [Anonymous Symbol]                       0x08001c50   Section        0  task.o(.text.Ir_Power_ON)
-    __arm_cp.6_0                             0x08001c58   Number         4  task.o(.text.Ir_Power_ON)
-    [Anonymous Symbol]                       0x08001c5c   Section        0  ir.o(.text.Ir_Scan)
-    [Anonymous Symbol]                       0x08001c9c   Section        0  ir.o(.text.Ir_Time14IRQCallback)
-    __arm_cp.3_0                             0x08001cc4   Number         4  ir.o(.text.Ir_Time14IRQCallback)
-    [Anonymous Symbol]                       0x08001cc8   Section        0  led.o(.text.LED_DisplayBatGear_Handle)
-    __arm_cp.15_0                            0x08001d24   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
-    __arm_cp.15_1                            0x08001d28   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
-    __arm_cp.15_2                            0x08001d2c   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
-    __arm_cp.15_3                            0x08001d30   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
-    __arm_cp.15_4                            0x08001d34   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
-    [Anonymous Symbol]                       0x08001d38   Section        0  led.o(.text.LED_Init)
-    __arm_cp.6_0                             0x08001dac   Number         4  led.o(.text.LED_Init)
-    [Anonymous Symbol]                       0x08001db0   Section        0  led.o(.text.LED_RGB_HSVdisplay)
-    __arm_cp.3_0                             0x08001dd8   Number         4  led.o(.text.LED_RGB_HSVdisplay)
-    [Anonymous Symbol]                       0x08001ddc   Section        0  led.o(.text.LED_RGB_Off_Handle)
-    [Anonymous Symbol]                       0x08001e04   Section        0  led.o(.text.LED_RGB_On_Handle)
-    __arm_cp.14_2                            0x08001e38   Number         4  led.o(.text.LED_RGB_On_Handle)
-    [Anonymous Symbol]                       0x08001e3c   Section        0  led.o(.text.LED_RGB_SetDisplayHSV)
-    [Anonymous Symbol]                       0x08001e48   Section        0  led.o(.text.LED_RGB_SetHSV)
-    [Anonymous Symbol]                       0x08001e54   Section        0  led.o(.text.LED_RGB_To_OnStatus)
-    [Anonymous Symbol]                       0x08001e7c   Section        0  led.o(.text.LED_RGB_W_display)
-    __arm_cp.5_4                             0x08001ed0   Number         4  led.o(.text.LED_RGB_W_display)
-    __arm_cp.5_6                             0x08001ed4   Number         4  led.o(.text.LED_RGB_W_display)
-    [Anonymous Symbol]                       0x08001ed8   Section        0  led.o(.text.LED_RGB_display)
-    __arm_cp.4_0                             0x08001fb8   Number         4  led.o(.text.LED_RGB_display)
-    __arm_cp.4_1                             0x08001fbc   Number         4  led.o(.text.LED_RGB_display)
-    __arm_cp.4_2                             0x08001fc0   Number         4  led.o(.text.LED_RGB_display)
-    __arm_cp.4_3                             0x08001fc4   Number         4  led.o(.text.LED_RGB_display)
-    __arm_cp.4_5                             0x08001fc8   Number         4  led.o(.text.LED_RGB_display)
-    __arm_cp.4_6                             0x08001fcc   Number         4  led.o(.text.LED_RGB_display)
-    [Anonymous Symbol]                       0x08001fd0   Section        0  led.o(.text.LED_RGB_init)
-    __arm_cp.11_0                            0x08001ff0   Number         4  led.o(.text.LED_RGB_init)
-    [Anonymous Symbol]                       0x08001ff4   Section        0  led.o(.text.LED_Scan_Handle)
-    __arm_cp.7_0                             0x08002114   Number         4  led.o(.text.LED_Scan_Handle)
-    __arm_cp.7_1                             0x08002118   Number         4  led.o(.text.LED_Scan_Handle)
-    __arm_cp.7_2                             0x0800211c   Number         4  led.o(.text.LED_Scan_Handle)
-    __arm_cp.7_3                             0x08002120   Number         4  led.o(.text.LED_Scan_Handle)
-    [Anonymous Symbol]                       0x08002124   Section        0  py32f002b_ll_adc.o(.text.LL_ADC_Init)
-    __arm_cp.2_0                             0x08002154   Number         4  py32f002b_ll_adc.o(.text.LL_ADC_Init)
-    [Anonymous Symbol]                       0x08002158   Section        0  py32f002b_ll_adc.o(.text.LL_ADC_REG_Init)
-    __arm_cp.4_0                             0x0800217c   Number         4  py32f002b_ll_adc.o(.text.LL_ADC_REG_Init)
-    [Anonymous Symbol]                       0x08002180   Section        0  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
-    __arm_cp.1_0                             0x0800221c   Number         4  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
-    __arm_cp.1_1                             0x08002220   Number         4  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
-    [Anonymous Symbol]                       0x08002224   Section        0  py32f002b_ll_gpio.o(.text.LL_GPIO_Init)
-    [Anonymous Symbol]                       0x080022d4   Section        0  py32f002b_ll_utils.o(.text.LL_Init1msTick)
-    __arm_cp.0_0                             0x080022f0   Number         4  py32f002b_ll_utils.o(.text.LL_Init1msTick)
-    [Anonymous Symbol]                       0x080022f4   Section        0  py32f002b_ll_lptim.o(.text.LL_LPTIM_Init)
-    __arm_cp.2_0                             0x08002314   Number         4  py32f002b_ll_lptim.o(.text.LL_LPTIM_Init)
-    [Anonymous Symbol]                       0x08002318   Section        0  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
-    __arm_cp.1_0                             0x08002368   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
-    __arm_cp.1_1                             0x0800236c   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
-    __arm_cp.1_2                             0x08002370   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
-    __arm_cp.1_3                             0x08002374   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
-    __arm_cp.1_4                             0x08002378   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
-    [Anonymous Symbol]                       0x0800237c   Section        0  py32f002b_ll_utils.o(.text.LL_SetSystemCoreClock)
-    __arm_cp.2_0                             0x08002384   Number         4  py32f002b_ll_utils.o(.text.LL_SetSystemCoreClock)
-    [Anonymous Symbol]                       0x08002388   Section        0  py32f002b_ll_tim.o(.text.LL_TIM_Init)
-    [Anonymous Symbol]                       0x080023dc   Section        0  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
-    __arm_cp.4_0                             0x080025bc   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
-    __arm_cp.4_1                             0x080025c0   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
-    __arm_cp.4_2                             0x080025c4   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
-    __arm_cp.4_3                             0x080025c8   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
-    __arm_cp.4_4                             0x080025cc   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
-    [Anonymous Symbol]                       0x080025d0   Section        0  py32f002b_ll_usart.o(.text.LL_USART_Init)
-    __arm_cp.1_0                             0x080026ac   Number         4  py32f002b_ll_usart.o(.text.LL_USART_Init)
-    __arm_cp.1_1                             0x080026b0   Number         4  py32f002b_ll_usart.o(.text.LL_USART_Init)
-    [Anonymous Symbol]                       0x080026b4   Section        0  py32f002b_ll_utils.o(.text.LL_mDelay)
-    __arm_cp.1_0                             0x080026d8   Number         4  py32f002b_ll_utils.o(.text.LL_mDelay)
-    [Anonymous Symbol]                       0x080026dc   Section        0  py32f002b_it.o(.text.LPTIM1_IRQHandler)
-    __arm_cp.9_0                             0x080026f0   Number         4  py32f002b_it.o(.text.LPTIM1_IRQHandler)
-    __arm_cp.9_1                             0x080026f4   Number         4  py32f002b_it.o(.text.LPTIM1_IRQHandler)
-    [Anonymous Symbol]                       0x080026f8   Section        0  led.o(.text.Led_Off)
-    __arm_cp.8_0                             0x08002738   Number         4  led.o(.text.Led_Off)
-    __arm_cp.8_1                             0x0800273c   Number         4  led.o(.text.Led_Off)
-    [Anonymous Symbol]                       0x08002740   Section        0  time.o(.text.Lptim_Init)
-    __arm_cp.0_0                             0x080027e4   Number         4  time.o(.text.Lptim_Init)
-    __arm_cp.0_1                             0x080027e8   Number         4  time.o(.text.Lptim_Init)
-    __arm_cp.0_2                             0x080027ec   Number         4  time.o(.text.Lptim_Init)
-    __arm_cp.0_3                             0x080027f0   Number         4  time.o(.text.Lptim_Init)
-    __arm_cp.0_4                             0x080027f4   Number         4  time.o(.text.Lptim_Init)
-    __arm_cp.0_5                             0x080027f8   Number         4  time.o(.text.Lptim_Init)
-    __arm_cp.0_6                             0x080027fc   Number         4  time.o(.text.Lptim_Init)
-    [Anonymous Symbol]                       0x08002800   Section        0  py32f002b_it.o(.text.NMI_Handler)
-    [Anonymous Symbol]                       0x08002802   Section        0  py32f002b_it.o(.text.PendSV_Handler)
-    [Anonymous Symbol]                       0x08002804   Section        0  system.o(.text.Queue_Read_Byte)
-    __arm_cp.8_0                             0x08002828   Number         4  system.o(.text.Queue_Read_Byte)
-    __arm_cp.8_1                             0x0800282c   Number         4  system.o(.text.Queue_Read_Byte)
-    __arm_cp.8_2                             0x08002830   Number         4  system.o(.text.Queue_Read_Byte)
-    [Anonymous Symbol]                       0x08002834   Section        0  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_0                            0x08002b48   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_1                            0x08002b4c   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_2                            0x08002b50   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_3                            0x08002b54   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_4                            0x08002b58   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_5                            0x08002b5c   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_6                            0x08002b60   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_7                            0x08002b64   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_8                            0x08002b68   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_9                            0x08002b6c   Number         4  led.o(.text.RGB_App_Handle)
-    __arm_cp.17_12                           0x08002b70   Number         4  led.o(.text.RGB_App_Handle)
-    [Anonymous Symbol]                       0x08002b74   Section        0  py32f002b_it.o(.text.SVC_Handler)
-    [Anonymous Symbol]                       0x08002b76   Section        0  py32f002b_it.o(.text.SysTick_Handler)
-    [Anonymous Symbol]                       0x08002b88   Section        0  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_0                            0x08002ca4   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_1                            0x08002ca8   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_2                            0x08002cac   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_4                            0x08002cb0   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_7                            0x08002cb4   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_8                            0x08002cb8   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_10                           0x08002cbc   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_11                           0x08002cc0   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_12                           0x08002cc4   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_13                           0x08002cc8   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_14                           0x08002ccc   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    __arm_cp.12_15                           0x08002cd0   Number         4  task.o(.text.Sys_EnterSleep_Handle)
-    [Anonymous Symbol]                       0x08002cd4   Section        0  task.o(.text.Sys_EntreSleep)
-    [Anonymous Symbol]                       0x08002cdc   Section        0  task.o(.text.Sys_Init)
-    [Anonymous Symbol]                       0x08002d08   Section        0  task.o(.text.Sys_Timer1ms_Handle)
-    __arm_cp.3_0                             0x08002d5c   Number         4  task.o(.text.Sys_Timer1ms_Handle)
-    __arm_cp.3_3                             0x08002d60   Number         4  task.o(.text.Sys_Timer1ms_Handle)
-    __arm_cp.3_4                             0x08002d64   Number         4  task.o(.text.Sys_Timer1ms_Handle)
-    [Anonymous Symbol]                       0x08002d68   Section        0  system_py32f002b.o(.text.SystemInit)
-    __arm_cp.1_0                             0x08002d90   Number         4  system_py32f002b.o(.text.SystemInit)
-    __arm_cp.1_1                             0x08002d94   Number         4  system_py32f002b.o(.text.SystemInit)
-    __arm_cp.1_2                             0x08002d98   Number         4  system_py32f002b.o(.text.SystemInit)
-    __arm_cp.1_3                             0x08002d9c   Number         4  system_py32f002b.o(.text.SystemInit)
-    __arm_cp.1_4                             0x08002da0   Number         4  system_py32f002b.o(.text.SystemInit)
-    [Anonymous Symbol]                       0x08002da4   Section        0  py32f002b_it.o(.text.TIM14_IRQHandler)
-    __arm_cp.7_0                             0x08002db4   Number         4  py32f002b_it.o(.text.TIM14_IRQHandler)
-    [Anonymous Symbol]                       0x08002db8   Section        0  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
-    __arm_cp.6_0                             0x08002df0   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
-    __arm_cp.6_1                             0x08002df4   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
-    __arm_cp.6_2                             0x08002df8   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
-    __arm_cp.6_3                             0x08002dfc   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
-    __arm_cp.6_4                             0x08002e00   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
-    [Anonymous Symbol]                       0x08002e04   Section        0  task.o(.text.TY_Init)
-    __arm_cp.2_0                             0x08002e5c   Number         4  task.o(.text.TY_Init)
-    __arm_cp.2_1                             0x08002e60   Number         4  task.o(.text.TY_Init)
-    __arm_cp.2_3                             0x08002e64   Number         4  task.o(.text.TY_Init)
-    [Anonymous Symbol]                       0x08002e68   Section        0  task.o(.text.TY_Updata_Bright)
-    __arm_cp.4_1                             0x08002ed8   Number         4  task.o(.text.TY_Updata_Bright)
-    [Anonymous Symbol]                       0x08002edc   Section        0  py32f002b_it.o(.text.USART1_IRQHandler)
-    __arm_cp.5_0                             0x08002ee8   Number         4  py32f002b_it.o(.text.USART1_IRQHandler)
-    [Anonymous Symbol]                       0x08002eec   Section        0  protocol.o(.text.all_data_update)
-    __arm_cp.1_0                             0x08002f58   Number         4  protocol.o(.text.all_data_update)
-    __arm_cp.1_1                             0x08002f5c   Number         4  protocol.o(.text.all_data_update)
-    __arm_cp.1_2                             0x08002f60   Number         4  protocol.o(.text.all_data_update)
-    [Anonymous Symbol]                       0x08002f64   Section        0  mcu_api.o(.text.bt_protocol_init)
-    __arm_cp.20_0                            0x08002f78   Number         4  mcu_api.o(.text.bt_protocol_init)
-    __arm_cp.20_1                            0x08002f7c   Number         4  mcu_api.o(.text.bt_protocol_init)
-    __arm_cp.20_2                            0x08002f80   Number         4  mcu_api.o(.text.bt_protocol_init)
-    [Anonymous Symbol]                       0x08002f84   Section        0  mcu_api.o(.text.bt_uart_service)
-    __arm_cp.19_0                            0x08003034   Number         4  mcu_api.o(.text.bt_uart_service)
-    [Anonymous Symbol]                       0x08003038   Section        0  system.o(.text.bt_uart_write_frame)
-    [Anonymous Symbol]                       0x08003088   Section        0  system.o(.text.data_handle)
-    __arm_cp.6_0                             0x080031c0   Number         4  system.o(.text.data_handle)
-    __arm_cp.6_1                             0x080031c4   Number         4  system.o(.text.data_handle)
-    __arm_cp.6_2                             0x080031c8   Number         4  system.o(.text.data_handle)
-    __arm_cp.6_3                             0x080031cc   Number         4  system.o(.text.data_handle)
-    __arm_cp.6_4                             0x080031d0   Number         4  system.o(.text.data_handle)
-    __arm_cp.6_5                             0x080031d4   Number         4  system.o(.text.data_handle)
-    __arm_cp.6_6                             0x080031d8   Number         4  system.o(.text.data_handle)
-    __arm_cp.6_7                             0x080031dc   Number         4  system.o(.text.data_handle)
-    [Anonymous Symbol]                       0x080031e0   Section        0  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_0                             0x08003580   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_1                             0x08003584   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_2                             0x08003588   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_3                             0x0800358c   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_4                             0x08003590   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_5                             0x08003594   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_6                             0x08003598   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_7                             0x0800359c   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_8                             0x080035a0   Number         4  protocol.o(.text.dp_download_handle)
-    __arm_cp.2_9                             0x080035a4   Number         4  protocol.o(.text.dp_download_handle)
-    [Anonymous Symbol]                       0x080035a8   Section        0  system.o(.text.enable_low_power)
-    __arm_cp.4_0                             0x080035ec   Number         4  system.o(.text.enable_low_power)
-    [Anonymous Symbol]                       0x080035f0   Section        0  system.o(.text.get_check_sum)
-    [Anonymous Symbol]                       0x0800360a   Section        0  protocol.o(.text.get_download_cmd_total)
-    [Anonymous Symbol]                       0x08003610   Section        0  system.o(.text.get_queue_total_data)
-    __arm_cp.7_0                             0x08003620   Number         4  system.o(.text.get_queue_total_data)
-    __arm_cp.7_1                             0x08003624   Number         4  system.o(.text.get_queue_total_data)
-    [Anonymous Symbol]                       0x08003628   Section        0  led.o(.text.led_strip_hsv2rgb)
-    [Anonymous Symbol]                       0x080036e0   Section        0  main.o(.text.main)
-    __arm_cp.0_0                             0x08003988   Number         4  main.o(.text.main)
-    __arm_cp.0_1                             0x0800398c   Number         4  main.o(.text.main)
-    __arm_cp.0_2                             0x08003990   Number         4  main.o(.text.main)
-    __arm_cp.0_3                             0x08003994   Number         4  main.o(.text.main)
-    __arm_cp.0_4                             0x08003998   Number         4  main.o(.text.main)
-    __arm_cp.0_6                             0x0800399c   Number         4  main.o(.text.main)
-    __arm_cp.0_7                             0x080039a0   Number         4  main.o(.text.main)
-    __arm_cp.0_8                             0x080039a4   Number         4  main.o(.text.main)
-    __arm_cp.0_9                             0x080039a8   Number         4  main.o(.text.main)
-    __arm_cp.0_10                            0x080039ac   Number         4  main.o(.text.main)
-    __arm_cp.0_11                            0x080039b0   Number         4  main.o(.text.main)
-    __arm_cp.0_12                            0x080039b4   Number         4  main.o(.text.main)
-    [Anonymous Symbol]                       0x080039b8   Section        0  mcu_api.o(.text.mcu_dp_bool_update)
-    [Anonymous Symbol]                       0x080039f8   Section        0  mcu_api.o(.text.mcu_dp_enum_update)
-    [Anonymous Symbol]                       0x08003a34   Section        0  mcu_api.o(.text.mcu_dp_raw_update)
-    [Anonymous Symbol]                       0x08003a74   Section        0  mcu_api.o(.text.mcu_dp_string_update)
-    [Anonymous Symbol]                       0x08003ab0   Section        0  mcu_api.o(.text.mcu_dp_value_update)
-    __arm_cp.11_0                            0x08003b00   Number         4  mcu_api.o(.text.mcu_dp_value_update)
-    [Anonymous Symbol]                       0x08003b04   Section        0  mcu_api.o(.text.mcu_get_dp_download_bool)
-    [Anonymous Symbol]                       0x08003b08   Section        0  mcu_api.o(.text.mcu_get_dp_download_enum)
-    [Anonymous Symbol]                       0x08003b0c   Section        0  mcu_api.o(.text.mcu_get_dp_download_value)
-    [Anonymous Symbol]                       0x08003b22   Section        0  mcu_api.o(.text.my_memcpy)
-    [Anonymous Symbol]                       0x08003b62   Section        0  mcu_api.o(.text.my_strlen)
-    [Anonymous Symbol]                       0x08003b80   Section        0  system.o(.text.set_bt_uart_buffer)
-    [Anonymous Symbol]                       0x08003b98   Section        0  system.o(.text.set_bt_uart_byte)
-    __arm_cp.0_0                             0x08003ba4   Number         4  system.o(.text.set_bt_uart_byte)
-    [Anonymous Symbol]                       0x08003ba8   Section        0  mcu_api.o(.text.uart_receive_input)
-    __arm_cp.18_0                            0x08003bd0   Number         4  mcu_api.o(.text.uart_receive_input)
-    __arm_cp.18_1                            0x08003bd4   Number         4  mcu_api.o(.text.uart_receive_input)
-    __arm_cp.18_2                            0x08003bd8   Number         4  mcu_api.o(.text.uart_receive_input)
-    [Anonymous Symbol]                       0x08003bdc   Section        0  protocol.o(.text.uart_transmit_output)
-    __arm_cp.0_0                             0x08003bf0   Number         4  protocol.o(.text.uart_transmit_output)
-    i.__ARM_clz                              0x08003bf4   Section        0  depilogue.o(i.__ARM_clz)
-    i.__aeabi_errno_addr                     0x08003c24   Section        0  errno.o(i.__aeabi_errno_addr)
-    i.__scatterload_copy                     0x08003c2c   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08003c3a   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08003c3c   Section       14  handlers.o(i.__scatterload_zeroinit)
-    .constdata                               0x08003c4a   Section      129  ctype_o.o(.constdata)
-    table                                    0x08003ccc   Data           4  ctype_o.o(.constdata)
-    .constdata                               0x08003ccc   Section        4  ctype_o.o(.constdata)
-    [Anonymous Symbol]                       0x08003d90   Section        0  system.o(.rodata.str1.1)
+    __arm_cp.5_2                             0x08000850   Number         4  adc.o(.text.APP_AdcGrpRegularUnitaryConvCompleteCallback)
+    [Anonymous Symbol]                       0x08000854   Section        0  led.o(.text.APP_ConfigPWMChannel)
+    [Anonymous Symbol]                       0x080008f8   Section        0  led.o(.text.APP_ConfigTIM1)
+    __arm_cp.10_4                            0x0800095c   Number         4  led.o(.text.APP_ConfigTIM1)
+    [Anonymous Symbol]                       0x08000960   Section        0  ir.o(.text.APP_ConfigTIM14)
+    __arm_cp.0_0                             0x080009c4   Number         4  ir.o(.text.APP_ConfigTIM14)
+    __arm_cp.0_1                             0x080009c8   Number         4  ir.o(.text.APP_ConfigTIM14)
+    __arm_cp.0_2                             0x080009cc   Number         4  ir.o(.text.APP_ConfigTIM14)
+    __arm_cp.0_4                             0x080009d0   Number         4  ir.o(.text.APP_ConfigTIM14)
+    [Anonymous Symbol]                       0x080009d4   Section        0  usart.o(.text.APP_ConfigUsart)
+    __arm_cp.0_0                             0x08000ab4   Number         4  usart.o(.text.APP_ConfigUsart)
+    __arm_cp.0_1                             0x08000ab8   Number         4  usart.o(.text.APP_ConfigUsart)
+    __arm_cp.0_3                             0x08000abc   Number         4  usart.o(.text.APP_ConfigUsart)
+    __arm_cp.0_4                             0x08000ac0   Number         4  usart.o(.text.APP_ConfigUsart)
+    __arm_cp.0_5                             0x08000ac4   Number         4  usart.o(.text.APP_ConfigUsart)
+    __arm_cp.0_6                             0x08000ac8   Number         4  usart.o(.text.APP_ConfigUsart)
+    [Anonymous Symbol]                       0x08000acc   Section        0  led.o(.text.APP_DeConfigPWMChannel)
+    __arm_cp.12_0                            0x08000b64   Number         4  led.o(.text.APP_DeConfigPWMChannel)
+    __arm_cp.12_1                            0x08000b68   Number         4  led.o(.text.APP_DeConfigPWMChannel)
+    __arm_cp.12_2                            0x08000b6c   Number         4  led.o(.text.APP_DeConfigPWMChannel)
+    [Anonymous Symbol]                       0x08000b70   Section        0  main.o(.text.APP_ErrorHandler)
+    [Anonymous Symbol]                       0x08000b72   Section        0  flash.o(.text.APP_FlashOBProgram)
+    [Anonymous Symbol]                       0x08000ba4   Section        0  iwdg.o(.text.APP_IwdgConfig)
+    __arm_cp.0_0                             0x08000bd4   Number         4  iwdg.o(.text.APP_IwdgConfig)
+    __arm_cp.0_1                             0x08000bd8   Number         4  iwdg.o(.text.APP_IwdgConfig)
+    __arm_cp.0_2                             0x08000bdc   Number         4  iwdg.o(.text.APP_IwdgConfig)
+    __arm_cp.0_3                             0x08000be0   Number         4  iwdg.o(.text.APP_IwdgConfig)
+    __arm_cp.0_4                             0x08000be4   Number         4  iwdg.o(.text.APP_IwdgConfig)
+    [Anonymous Symbol]                       0x08000be8   Section        0  usart.o(.text.APP_UsartIRQCallback)
+    [Anonymous Symbol]                       0x08000c14   Section        0  adc.o(.text.Adc_BatVolatageCollection_handle)
+    __arm_cp.6_1                             0x08000c5c   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
+    __arm_cp.6_2                             0x08000c60   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
+    __arm_cp.6_3                             0x08000c64   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
+    __arm_cp.6_4                             0x08000c68   Number         4  adc.o(.text.Adc_BatVolatageCollection_handle)
+    [Anonymous Symbol]                       0x08000c6c   Section        0  task.o(.text.Adc_RefVoltage_ON)
+    __arm_cp.10_0                            0x08000cb4   Number         4  task.o(.text.Adc_RefVoltage_ON)
+    __arm_cp.10_1                            0x08000cb8   Number         4  task.o(.text.Adc_RefVoltage_ON)
+    __arm_cp.10_2                            0x08000cbc   Number         4  task.o(.text.Adc_RefVoltage_ON)
+    __arm_cp.10_3                            0x08000cc0   Number         4  task.o(.text.Adc_RefVoltage_ON)
+    __arm_cp.10_4                            0x08000cc4   Number         4  task.o(.text.Adc_RefVoltage_ON)
+    [Anonymous Symbol]                       0x08000cc8   Section        0  task.o(.text.BLE_Power_OFF)
+    __arm_cp.7_1                             0x08000d0c   Number         4  task.o(.text.BLE_Power_OFF)
+    [Anonymous Symbol]                       0x08000d10   Section        0  task.o(.text.BLE_Power_ON)
+    __arm_cp.8_0                             0x08000d50   Number         4  task.o(.text.BLE_Power_ON)
+    __arm_cp.8_1                             0x08000d54   Number         4  task.o(.text.BLE_Power_ON)
+    [Anonymous Symbol]                       0x08000d58   Section        0  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_0                             0x08000ee8   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_1                             0x08000eec   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_2                             0x08000ef0   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_3                             0x08000ef4   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_4                             0x08000ef8   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_5                             0x08000efc   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_6                             0x08000f00   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_7                             0x08000f04   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_8                             0x08000f08   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_9                             0x08000f0c   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_10                            0x08000f10   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    __arm_cp.7_13                            0x08000f24   Number         4  adc.o(.text.BatVolatageToPercent_handle)
+    [Anonymous Symbol]                       0x08000f28   Section        0  adc.o(.text.Bat_GpioInit)
+    __arm_cp.1_0                             0x08000f7c   Number         4  adc.o(.text.Bat_GpioInit)
+    __arm_cp.1_1                             0x08000f80   Number         4  adc.o(.text.Bat_GpioInit)
+    __arm_cp.1_2                             0x08000f84   Number         4  adc.o(.text.Bat_GpioInit)
+    __arm_cp.1_3                             0x08000f88   Number         4  adc.o(.text.Bat_GpioInit)
+    [Anonymous Symbol]                       0x08000f8c   Section        0  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_0                             0x08001094   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_1                             0x08001098   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_2                             0x0800109c   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_3                             0x080010a0   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_4                             0x080010a4   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_5                             0x080010a8   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_7                             0x080010ac   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_8                             0x080010b0   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_10                            0x080010b4   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_11                            0x080010b8   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_12                            0x080010bc   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    __arm_cp.8_13                            0x080010c0   Number         4  adc.o(.text.Bat_StatusCheck_Handle)
+    [Anonymous Symbol]                       0x080010c4   Section        0  py32f002b_it.o(.text.EXTI0_1_IRQHandler)
+    [Anonymous Symbol]                       0x080010c8   Section        0  py32f002b_it.o(.text.EXTI2_3_IRQHandler)
+    [Anonymous Symbol]                       0x080010dc   Section        0  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
+    __arm_cp.11_0                            0x08001108   Number         4  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
+    __arm_cp.11_1                            0x0800110c   Number         4  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
+    [Anonymous Symbol]                       0x08001110   Section        0  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
+    __arm_cp.6_0                             0x08001138   Number         4  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
+    __arm_cp.6_1                             0x0800113c   Number         4  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
+    [Anonymous Symbol]                       0x08001140   Section        0  flash.o(.text.Flash_Data_Write)
+    [Anonymous Symbol]                       0x080011ac   Section        0  flash.o(.text.Flash_Init_Rdata)
+    __arm_cp.0_3                             0x08001234   Number         4  flash.o(.text.Flash_Init_Rdata)
+    [Anonymous Symbol]                       0x08001238   Section        0  flash.o(.text.Flash_Write)
+    __arm_cp.2_0                             0x080012d4   Number         4  flash.o(.text.Flash_Write)
+    __arm_cp.2_1                             0x080012d8   Number         4  flash.o(.text.Flash_Write)
+    __arm_cp.2_2                             0x080012dc   Number         4  flash.o(.text.Flash_Write)
+    [Anonymous Symbol]                       0x080012e0   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Erase)
+    __arm_cp.7_9                             0x080014d4   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Erase)
+    [Anonymous Symbol]                       0x080014d8   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Lock)
+    [Anonymous Symbol]                       0x080014ec   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_0                            0x08001628   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_1                            0x0800162c   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_2                            0x08001630   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_3                            0x08001634   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_4                            0x08001638   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_5                            0x0800163c   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_6                            0x08001640   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_7                            0x08001644   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    __arm_cp.14_9                            0x08001648   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    [Anonymous Symbol]                       0x0800164c   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Launch)
+    [Anonymous Symbol]                       0x0800165c   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Lock)
+    __arm_cp.3_0                             0x08001670   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Lock)
+    [Anonymous Symbol]                       0x08001674   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
+    __arm_cp.2_0                             0x08001690   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
+    __arm_cp.2_1                             0x08001694   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
+    __arm_cp.2_2                             0x08001698   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
+    [Anonymous Symbol]                       0x0800169c   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_0                            0x080017b8   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_1                            0x080017bc   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_2                            0x080017c0   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_3                            0x080017c4   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_4                            0x080017c8   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_5                            0x080017cc   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_6                            0x080017d0   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_7                            0x080017d4   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    __arm_cp.10_8                            0x080017d8   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    [Anonymous Symbol]                       0x080017dc   Section        0  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
+    __arm_cp.0_0                             0x080017f8   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
+    __arm_cp.0_1                             0x080017fc   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
+    __arm_cp.0_2                             0x08001800   Number         4  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
+    [Anonymous Symbol]                       0x08001804   Section        0  py32f002b_hal.o(.text.HAL_GetTick)
+    [Anonymous Symbol]                       0x0800180c   Section        0  py32f002b_hal.o(.text.HAL_IncTick)
+    __arm_cp.5_0                             0x0800181c   Number         4  py32f002b_hal.o(.text.HAL_IncTick)
+    __arm_cp.5_1                             0x08001820   Number         4  py32f002b_hal.o(.text.HAL_IncTick)
+    [Anonymous Symbol]                       0x08001824   Section        0  py32f002b_it.o(.text.HardFault_Handler)
+    [Anonymous Symbol]                       0x08001828   Section        0  led.o(.text.IR_RGB_MODE_handle)
+    __arm_cp.18_0                            0x08001890   Number         4  led.o(.text.IR_RGB_MODE_handle)
+    __arm_cp.18_1                            0x08001894   Number         4  led.o(.text.IR_RGB_MODE_handle)
+    [Anonymous Symbol]                       0x08001898   Section        0  ir.o(.text.Ir_CommandReceiv)
+    __arm_cp.7_6                             0x08001914   Number         4  ir.o(.text.Ir_CommandReceiv)
+    __arm_cp.7_1                             0x08001cbc   Number         4  ir.o(.text.Ir_CommandReceiv)
+    __arm_cp.7_2                             0x08001cc0   Number         4  ir.o(.text.Ir_CommandReceiv)
+    __arm_cp.7_3                             0x08001cc4   Number         4  ir.o(.text.Ir_CommandReceiv)
+    __arm_cp.7_4                             0x08001cc8   Number         4  ir.o(.text.Ir_CommandReceiv)
+    [Anonymous Symbol]                       0x08001ccc   Section        0  ir.o(.text.Ir_ExtiCallback)
+    __arm_cp.2_0                             0x08001d40   Number         4  ir.o(.text.Ir_ExtiCallback)
+    __arm_cp.2_1                             0x08001d44   Number         4  ir.o(.text.Ir_ExtiCallback)
+    [Anonymous Symbol]                       0x08001d48   Section        0  ir.o(.text.Ir_Init)
+    __arm_cp.1_0                             0x08001dbc   Number         4  ir.o(.text.Ir_Init)
+    __arm_cp.1_1                             0x08001dc0   Number         4  ir.o(.text.Ir_Init)
+    __arm_cp.1_2                             0x08001dc4   Number         4  ir.o(.text.Ir_Init)
+    [Anonymous Symbol]                       0x08001dc8   Section        0  task.o(.text.Ir_Power_OFF)
+    __arm_cp.5_0                             0x08001dd0   Number         4  task.o(.text.Ir_Power_OFF)
+    [Anonymous Symbol]                       0x08001dd4   Section        0  task.o(.text.Ir_Power_ON)
+    __arm_cp.6_0                             0x08001ddc   Number         4  task.o(.text.Ir_Power_ON)
+    [Anonymous Symbol]                       0x08001de0   Section        0  ir.o(.text.Ir_ReScan)
+    [Anonymous Symbol]                       0x08001dec   Section        0  ir.o(.text.Ir_Scan)
+    [Anonymous Symbol]                       0x08001e2c   Section        0  ir.o(.text.Ir_Time14IRQCallback)
+    __arm_cp.3_0                             0x08001e58   Number         4  ir.o(.text.Ir_Time14IRQCallback)
+    [Anonymous Symbol]                       0x08001e5c   Section        0  led.o(.text.LED_DisplayBatGear_Handle)
+    __arm_cp.17_0                            0x08001ec0   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
+    __arm_cp.17_1                            0x08001ec4   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
+    __arm_cp.17_2                            0x08001ec8   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
+    __arm_cp.17_4                            0x08001ecc   Number         4  led.o(.text.LED_DisplayBatGear_Handle)
+    [Anonymous Symbol]                       0x08001ed0   Section        0  led.o(.text.LED_Init)
+    __arm_cp.6_0                             0x08001f44   Number         4  led.o(.text.LED_Init)
+    [Anonymous Symbol]                       0x08001f48   Section        0  led.o(.text.LED_RGB_HSVdisplay)
+    [Anonymous Symbol]                       0x08001f70   Section        0  led.o(.text.LED_RGB_Off_Handle)
+    __arm_cp.14_1                            0x08001fdc   Number         4  led.o(.text.LED_RGB_Off_Handle)
+    __arm_cp.14_2                            0x08001fe0   Number         4  led.o(.text.LED_RGB_Off_Handle)
+    [Anonymous Symbol]                       0x08001fe4   Section        0  led.o(.text.LED_RGB_On_Handle)
+    [Anonymous Symbol]                       0x08002034   Section        0  led.o(.text.LED_RGB_SetDisplayHSV)
+    [Anonymous Symbol]                       0x08002040   Section        0  led.o(.text.LED_RGB_SetHSV)
+    [Anonymous Symbol]                       0x0800205c   Section        0  led.o(.text.LED_RGB_To_OnStatus)
+    __arm_cp.15_1                            0x0800208c   Number         4  led.o(.text.LED_RGB_To_OnStatus)
+    [Anonymous Symbol]                       0x08002090   Section        0  led.o(.text.LED_RGB_W_display)
+    __arm_cp.5_3                             0x080020ec   Number         4  led.o(.text.LED_RGB_W_display)
+    __arm_cp.5_6                             0x080020f0   Number         4  led.o(.text.LED_RGB_W_display)
+    [Anonymous Symbol]                       0x080020f4   Section        0  led.o(.text.LED_RGB_display)
+    __arm_cp.4_0                             0x080021ec   Number         4  led.o(.text.LED_RGB_display)
+    __arm_cp.4_1                             0x080021f0   Number         4  led.o(.text.LED_RGB_display)
+    __arm_cp.4_2                             0x080021f4   Number         4  led.o(.text.LED_RGB_display)
+    __arm_cp.4_3                             0x080021f8   Number         4  led.o(.text.LED_RGB_display)
+    __arm_cp.4_5                             0x080021fc   Number         4  led.o(.text.LED_RGB_display)
+    __arm_cp.4_6                             0x08002200   Number         4  led.o(.text.LED_RGB_display)
+    [Anonymous Symbol]                       0x08002204   Section        0  led.o(.text.LED_RGB_init)
+    __arm_cp.13_0                            0x08002228   Number         4  led.o(.text.LED_RGB_init)
+    [Anonymous Symbol]                       0x0800222c   Section        0  led.o(.text.LED_Scan_Handle)
+    __arm_cp.7_0                             0x0800234c   Number         4  led.o(.text.LED_Scan_Handle)
+    __arm_cp.7_1                             0x08002350   Number         4  led.o(.text.LED_Scan_Handle)
+    __arm_cp.7_2                             0x08002354   Number         4  led.o(.text.LED_Scan_Handle)
+    __arm_cp.7_3                             0x08002358   Number         4  led.o(.text.LED_Scan_Handle)
+    [Anonymous Symbol]                       0x0800235c   Section        0  py32f002b_ll_adc.o(.text.LL_ADC_Init)
+    __arm_cp.2_0                             0x0800238c   Number         4  py32f002b_ll_adc.o(.text.LL_ADC_Init)
+    [Anonymous Symbol]                       0x08002390   Section        0  py32f002b_ll_adc.o(.text.LL_ADC_REG_Init)
+    __arm_cp.4_0                             0x080023b4   Number         4  py32f002b_ll_adc.o(.text.LL_ADC_REG_Init)
+    [Anonymous Symbol]                       0x080023b8   Section        0  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
+    __arm_cp.1_0                             0x08002454   Number         4  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
+    __arm_cp.1_1                             0x08002458   Number         4  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
+    [Anonymous Symbol]                       0x0800245c   Section        0  py32f002b_ll_gpio.o(.text.LL_GPIO_Init)
+    [Anonymous Symbol]                       0x0800250c   Section        0  py32f002b_ll_utils.o(.text.LL_Init1msTick)
+    __arm_cp.0_0                             0x08002528   Number         4  py32f002b_ll_utils.o(.text.LL_Init1msTick)
+    [Anonymous Symbol]                       0x0800252c   Section        0  py32f002b_ll_lptim.o(.text.LL_LPTIM_Init)
+    __arm_cp.2_0                             0x0800254c   Number         4  py32f002b_ll_lptim.o(.text.LL_LPTIM_Init)
+    [Anonymous Symbol]                       0x08002550   Section        0  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
+    __arm_cp.1_0                             0x080025a0   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
+    __arm_cp.1_1                             0x080025a4   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
+    __arm_cp.1_2                             0x080025a8   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
+    __arm_cp.1_3                             0x080025ac   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
+    __arm_cp.1_4                             0x080025b0   Number         4  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
+    [Anonymous Symbol]                       0x080025b4   Section        0  py32f002b_ll_utils.o(.text.LL_SetSystemCoreClock)
+    __arm_cp.2_0                             0x080025bc   Number         4  py32f002b_ll_utils.o(.text.LL_SetSystemCoreClock)
+    [Anonymous Symbol]                       0x080025c0   Section        0  py32f002b_ll_tim.o(.text.LL_TIM_Init)
+    [Anonymous Symbol]                       0x08002614   Section        0  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
+    __arm_cp.4_0                             0x080027f4   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
+    __arm_cp.4_1                             0x080027f8   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
+    __arm_cp.4_2                             0x080027fc   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
+    __arm_cp.4_3                             0x08002800   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
+    __arm_cp.4_4                             0x08002804   Number         4  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
+    [Anonymous Symbol]                       0x08002808   Section        0  py32f002b_ll_usart.o(.text.LL_USART_Init)
+    __arm_cp.1_0                             0x080028e4   Number         4  py32f002b_ll_usart.o(.text.LL_USART_Init)
+    __arm_cp.1_1                             0x080028e8   Number         4  py32f002b_ll_usart.o(.text.LL_USART_Init)
+    [Anonymous Symbol]                       0x080028ec   Section        0  py32f002b_ll_utils.o(.text.LL_mDelay)
+    __arm_cp.1_0                             0x08002910   Number         4  py32f002b_ll_utils.o(.text.LL_mDelay)
+    [Anonymous Symbol]                       0x08002914   Section        0  py32f002b_it.o(.text.LPTIM1_IRQHandler)
+    __arm_cp.9_0                             0x08002928   Number         4  py32f002b_it.o(.text.LPTIM1_IRQHandler)
+    __arm_cp.9_1                             0x0800292c   Number         4  py32f002b_it.o(.text.LPTIM1_IRQHandler)
+    [Anonymous Symbol]                       0x08002930   Section        0  led.o(.text.Led_Off)
+    __arm_cp.9_0                             0x08002970   Number         4  led.o(.text.Led_Off)
+    __arm_cp.9_1                             0x08002974   Number         4  led.o(.text.Led_Off)
+    [Anonymous Symbol]                       0x08002978   Section        0  time.o(.text.Lptim_Init)
+    __arm_cp.0_0                             0x08002a1c   Number         4  time.o(.text.Lptim_Init)
+    __arm_cp.0_1                             0x08002a20   Number         4  time.o(.text.Lptim_Init)
+    __arm_cp.0_2                             0x08002a24   Number         4  time.o(.text.Lptim_Init)
+    __arm_cp.0_3                             0x08002a28   Number         4  time.o(.text.Lptim_Init)
+    __arm_cp.0_4                             0x08002a2c   Number         4  time.o(.text.Lptim_Init)
+    __arm_cp.0_5                             0x08002a30   Number         4  time.o(.text.Lptim_Init)
+    __arm_cp.0_6                             0x08002a34   Number         4  time.o(.text.Lptim_Init)
+    [Anonymous Symbol]                       0x08002a38   Section        0  py32f002b_it.o(.text.NMI_Handler)
+    [Anonymous Symbol]                       0x08002a3a   Section        0  py32f002b_it.o(.text.PendSV_Handler)
+    [Anonymous Symbol]                       0x08002a3c   Section        0  system.o(.text.Queue_Read_Byte)
+    __arm_cp.8_0                             0x08002a60   Number         4  system.o(.text.Queue_Read_Byte)
+    __arm_cp.8_1                             0x08002a64   Number         4  system.o(.text.Queue_Read_Byte)
+    __arm_cp.8_2                             0x08002a68   Number         4  system.o(.text.Queue_Read_Byte)
+    [Anonymous Symbol]                       0x08002a6c   Section        0  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_0                            0x08002d98   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_1                            0x08002d9c   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_2                            0x08002da0   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_3                            0x08002da4   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_4                            0x08002da8   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_5                            0x08002dac   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_6                            0x08002db0   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_7                            0x08002db4   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_8                            0x08002db8   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_9                            0x08002dbc   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_10                           0x08002dc0   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_11                           0x08002dc4   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_12                           0x08002dc8   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_14                           0x08002dcc   Number         4  led.o(.text.RGB_App_Handle)
+    __arm_cp.19_15                           0x08002dd0   Number         4  led.o(.text.RGB_App_Handle)
+    [Anonymous Symbol]                       0x08002dd4   Section        0  py32f002b_it.o(.text.SVC_Handler)
+    [Anonymous Symbol]                       0x08002dd6   Section        0  py32f002b_it.o(.text.SysTick_Handler)
+    [Anonymous Symbol]                       0x08002de8   Section        0  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_0                            0x08002f6c   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_1                            0x08002f70   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_2                            0x08002f74   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_3                            0x08002f78   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_4                            0x08002f7c   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_5                            0x08002f80   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_6                            0x08002f84   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_8                            0x08002f88   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_12                           0x08002f8c   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_13                           0x08002f90   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_14                           0x08002f94   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_15                           0x08002f98   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_16                           0x08002f9c   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_17                           0x08002fa0   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    __arm_cp.12_18                           0x08002fa4   Number         4  task.o(.text.Sys_EnterSleep_Handle)
+    [Anonymous Symbol]                       0x08002fa8   Section        0  task.o(.text.Sys_EntreSleep)
+    [Anonymous Symbol]                       0x08002fb0   Section        0  task.o(.text.Sys_Init)
+    [Anonymous Symbol]                       0x08002fdc   Section        0  task.o(.text.Sys_Timer1ms_Handle)
+    __arm_cp.3_0                             0x08003000   Number         4  task.o(.text.Sys_Timer1ms_Handle)
+    __arm_cp.3_1                             0x08003004   Number         4  task.o(.text.Sys_Timer1ms_Handle)
+    [Anonymous Symbol]                       0x08003008   Section        0  system_py32f002b.o(.text.SystemInit)
+    __arm_cp.1_0                             0x08003030   Number         4  system_py32f002b.o(.text.SystemInit)
+    __arm_cp.1_1                             0x08003034   Number         4  system_py32f002b.o(.text.SystemInit)
+    __arm_cp.1_2                             0x08003038   Number         4  system_py32f002b.o(.text.SystemInit)
+    __arm_cp.1_3                             0x0800303c   Number         4  system_py32f002b.o(.text.SystemInit)
+    __arm_cp.1_4                             0x08003040   Number         4  system_py32f002b.o(.text.SystemInit)
+    [Anonymous Symbol]                       0x08003044   Section        0  py32f002b_it.o(.text.TIM14_IRQHandler)
+    __arm_cp.7_0                             0x08003054   Number         4  py32f002b_it.o(.text.TIM14_IRQHandler)
+    [Anonymous Symbol]                       0x08003058   Section        0  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
+    __arm_cp.6_0                             0x08003090   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
+    __arm_cp.6_1                             0x08003094   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
+    __arm_cp.6_2                             0x08003098   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
+    __arm_cp.6_3                             0x0800309c   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
+    __arm_cp.6_4                             0x080030a0   Number         4  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
+    [Anonymous Symbol]                       0x080030a4   Section        0  task.o(.text.TY_Init)
+    __arm_cp.2_0                             0x080030fc   Number         4  task.o(.text.TY_Init)
+    __arm_cp.2_1                             0x08003100   Number         4  task.o(.text.TY_Init)
+    __arm_cp.2_3                             0x08003104   Number         4  task.o(.text.TY_Init)
+    [Anonymous Symbol]                       0x08003108   Section        0  task.o(.text.TY_Updata_Bright)
+    __arm_cp.4_1                             0x08003178   Number         4  task.o(.text.TY_Updata_Bright)
+    [Anonymous Symbol]                       0x0800317c   Section        0  py32f002b_it.o(.text.USART1_IRQHandler)
+    __arm_cp.5_0                             0x08003188   Number         4  py32f002b_it.o(.text.USART1_IRQHandler)
+    [Anonymous Symbol]                       0x0800318c   Section        0  protocol.o(.text.all_data_update)
+    __arm_cp.1_0                             0x080031f8   Number         4  protocol.o(.text.all_data_update)
+    __arm_cp.1_1                             0x080031fc   Number         4  protocol.o(.text.all_data_update)
+    __arm_cp.1_2                             0x08003200   Number         4  protocol.o(.text.all_data_update)
+    [Anonymous Symbol]                       0x08003204   Section        0  mcu_api.o(.text.bt_protocol_init)
+    __arm_cp.20_0                            0x08003218   Number         4  mcu_api.o(.text.bt_protocol_init)
+    __arm_cp.20_1                            0x0800321c   Number         4  mcu_api.o(.text.bt_protocol_init)
+    __arm_cp.20_2                            0x08003220   Number         4  mcu_api.o(.text.bt_protocol_init)
+    [Anonymous Symbol]                       0x08003224   Section        0  mcu_api.o(.text.bt_uart_service)
+    __arm_cp.19_0                            0x080032d4   Number         4  mcu_api.o(.text.bt_uart_service)
+    [Anonymous Symbol]                       0x080032d8   Section        0  system.o(.text.bt_uart_write_frame)
+    [Anonymous Symbol]                       0x08003328   Section        0  system.o(.text.data_handle)
+    __arm_cp.6_0                             0x08003460   Number         4  system.o(.text.data_handle)
+    __arm_cp.6_1                             0x08003464   Number         4  system.o(.text.data_handle)
+    __arm_cp.6_2                             0x08003468   Number         4  system.o(.text.data_handle)
+    __arm_cp.6_3                             0x0800346c   Number         4  system.o(.text.data_handle)
+    __arm_cp.6_4                             0x08003470   Number         4  system.o(.text.data_handle)
+    __arm_cp.6_5                             0x08003474   Number         4  system.o(.text.data_handle)
+    __arm_cp.6_6                             0x08003478   Number         4  system.o(.text.data_handle)
+    __arm_cp.6_7                             0x0800347c   Number         4  system.o(.text.data_handle)
+    [Anonymous Symbol]                       0x08003480   Section        0  protocol.o(.text.dp_download_handle)
+    __arm_cp.2_0                             0x0800383c   Number         4  protocol.o(.text.dp_download_handle)
+    __arm_cp.2_1                             0x08003840   Number         4  protocol.o(.text.dp_download_handle)
+    __arm_cp.2_2                             0x08003844   Number         4  protocol.o(.text.dp_download_handle)
+    __arm_cp.2_3                             0x08003848   Number         4  protocol.o(.text.dp_download_handle)
+    __arm_cp.2_4                             0x0800384c   Number         4  protocol.o(.text.dp_download_handle)
+    __arm_cp.2_5                             0x08003850   Number         4  protocol.o(.text.dp_download_handle)
+    [Anonymous Symbol]                       0x08003854   Section        0  system.o(.text.enable_low_power)
+    __arm_cp.4_0                             0x08003898   Number         4  system.o(.text.enable_low_power)
+    [Anonymous Symbol]                       0x0800389c   Section        0  system.o(.text.get_check_sum)
+    [Anonymous Symbol]                       0x080038b6   Section        0  protocol.o(.text.get_download_cmd_total)
+    [Anonymous Symbol]                       0x080038bc   Section        0  system.o(.text.get_queue_total_data)
+    __arm_cp.7_0                             0x080038cc   Number         4  system.o(.text.get_queue_total_data)
+    __arm_cp.7_1                             0x080038d0   Number         4  system.o(.text.get_queue_total_data)
+    [Anonymous Symbol]                       0x080038d4   Section        0  led.o(.text.led_strip_hsv2rgb)
+    [Anonymous Symbol]                       0x0800398c   Section        0  main.o(.text.main)
+    __arm_cp.0_0                             0x08003c48   Number         4  main.o(.text.main)
+    __arm_cp.0_1                             0x08003c4c   Number         4  main.o(.text.main)
+    __arm_cp.0_2                             0x08003c50   Number         4  main.o(.text.main)
+    __arm_cp.0_3                             0x08003c54   Number         4  main.o(.text.main)
+    __arm_cp.0_4                             0x08003c58   Number         4  main.o(.text.main)
+    __arm_cp.0_6                             0x08003c5c   Number         4  main.o(.text.main)
+    __arm_cp.0_7                             0x08003c60   Number         4  main.o(.text.main)
+    __arm_cp.0_8                             0x08003c64   Number         4  main.o(.text.main)
+    __arm_cp.0_9                             0x08003c68   Number         4  main.o(.text.main)
+    __arm_cp.0_10                            0x08003c6c   Number         4  main.o(.text.main)
+    __arm_cp.0_11                            0x08003c70   Number         4  main.o(.text.main)
+    __arm_cp.0_12                            0x08003c74   Number         4  main.o(.text.main)
+    __arm_cp.0_13                            0x08003c78   Number         4  main.o(.text.main)
+    [Anonymous Symbol]                       0x08003c7c   Section        0  mcu_api.o(.text.mcu_dp_bool_update)
+    [Anonymous Symbol]                       0x08003cbc   Section        0  mcu_api.o(.text.mcu_dp_enum_update)
+    [Anonymous Symbol]                       0x08003cf8   Section        0  mcu_api.o(.text.mcu_dp_raw_update)
+    [Anonymous Symbol]                       0x08003d38   Section        0  mcu_api.o(.text.mcu_dp_string_update)
+    [Anonymous Symbol]                       0x08003d74   Section        0  mcu_api.o(.text.mcu_dp_value_update)
+    __arm_cp.11_0                            0x08003dc4   Number         4  mcu_api.o(.text.mcu_dp_value_update)
+    [Anonymous Symbol]                       0x08003dc8   Section        0  mcu_api.o(.text.mcu_get_dp_download_bool)
+    [Anonymous Symbol]                       0x08003dcc   Section        0  mcu_api.o(.text.mcu_get_dp_download_enum)
+    [Anonymous Symbol]                       0x08003dd0   Section        0  mcu_api.o(.text.mcu_get_dp_download_value)
+    [Anonymous Symbol]                       0x08003de6   Section        0  mcu_api.o(.text.my_memcpy)
+    [Anonymous Symbol]                       0x08003e26   Section        0  mcu_api.o(.text.my_strlen)
+    [Anonymous Symbol]                       0x08003e44   Section        0  system.o(.text.set_bt_uart_buffer)
+    [Anonymous Symbol]                       0x08003e5c   Section        0  system.o(.text.set_bt_uart_byte)
+    __arm_cp.0_0                             0x08003e68   Number         4  system.o(.text.set_bt_uart_byte)
+    [Anonymous Symbol]                       0x08003e6c   Section        0  mcu_api.o(.text.uart_receive_input)
+    __arm_cp.18_0                            0x08003e94   Number         4  mcu_api.o(.text.uart_receive_input)
+    __arm_cp.18_1                            0x08003e98   Number         4  mcu_api.o(.text.uart_receive_input)
+    __arm_cp.18_2                            0x08003e9c   Number         4  mcu_api.o(.text.uart_receive_input)
+    [Anonymous Symbol]                       0x08003ea0   Section        0  protocol.o(.text.uart_transmit_output)
+    __arm_cp.0_0                             0x08003eb4   Number         4  protocol.o(.text.uart_transmit_output)
+    i.__ARM_clz                              0x08003eb8   Section        0  depilogue.o(i.__ARM_clz)
+    i.__aeabi_errno_addr                     0x08003ee8   Section        0  errno.o(i.__aeabi_errno_addr)
+    i.__scatterload_copy                     0x08003ef0   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08003efe   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08003f00   Section       14  handlers.o(i.__scatterload_zeroinit)
+    .constdata                               0x08003f0e   Section      129  ctype_o.o(.constdata)
+    table                                    0x08003f90   Data           4  ctype_o.o(.constdata)
+    .constdata                               0x08003f90   Section        4  ctype_o.o(.constdata)
+    [Anonymous Symbol]                       0x08004054   Section        0  system.o(.rodata.str1.1)
     _errno                                   0x20000000   Data           4  errno.o(.data)
     .data                                    0x20000000   Section        4  errno.o(.data)
-    Bat_StatusCheck_Handle.filter_cnt        0x2000003c   Data           2  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt)
-    [Anonymous Symbol]                       0x2000003c   Section        0  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt)
-    Bat_StatusCheck_Handle.filter_cnt1       0x2000003e   Data           2  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt1)
-    [Anonymous Symbol]                       0x2000003e   Section        0  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt1)
-    Bat_StatusCheck_Handle.low_voltage_cnt   0x20000040   Data           2  adc.o(.bss.Bat_StatusCheck_Handle.low_voltage_cnt)
-    [Anonymous Symbol]                       0x20000040   Section        0  adc.o(.bss.Bat_StatusCheck_Handle.low_voltage_cnt)
-    IR_RGB_MODE_handle.status                0x20000042   Data           1  led.o(.bss.IR_RGB_MODE_handle.status)
-    [Anonymous Symbol]                       0x20000042   Section        0  led.o(.bss.IR_RGB_MODE_handle.status)
-    IR_RGB_MODE_handle.time_cnt              0x20000043   Data           1  led.o(.bss.IR_RGB_MODE_handle.time_cnt)
-    [Anonymous Symbol]                       0x20000043   Section        0  led.o(.bss.IR_RGB_MODE_handle.time_cnt)
-    LED_DisplayBatGear_Handle.charge_flash   0x20000050   Data           1  led.o(.bss.LED_DisplayBatGear_Handle.charge_flash)
-    [Anonymous Symbol]                       0x20000050   Section        0  led.o(.bss.LED_DisplayBatGear_Handle.charge_flash)
-    LED_DisplayBatGear_Handle.flash_cnt      0x20000051   Data           1  led.o(.bss.LED_DisplayBatGear_Handle.flash_cnt)
-    [Anonymous Symbol]                       0x20000051   Section        0  led.o(.bss.LED_DisplayBatGear_Handle.flash_cnt)
-    LED_DisplayBatGear_Handle.low_flash      0x20000052   Data           1  led.o(.bss.LED_DisplayBatGear_Handle.low_flash)
-    [Anonymous Symbol]                       0x20000052   Section        0  led.o(.bss.LED_DisplayBatGear_Handle.low_flash)
-    LED_Scan_Handle.ScanCount                0x20000055   Data           1  led.o(.bss.LED_Scan_Handle.ScanCount)
-    [Anonymous Symbol]                       0x20000055   Section        0  led.o(.bss.LED_Scan_Handle.ScanCount)
-    RGB_App_Handle.TY_Reset_Mode_Status      0x20000098   Data           1  led.o(.bss.RGB_App_Handle.TY_Reset_Mode_Status)
-    [Anonymous Symbol]                       0x20000098   Section        0  led.o(.bss.RGB_App_Handle.TY_Reset_Mode_Status)
-    bt_uart_service.rx_in                    0x2000025c   Data           2  mcu_api.o(.bss.bt_uart_service.rx_in)
-    [Anonymous Symbol]                       0x2000025c   Section        0  mcu_api.o(.bss.bt_uart_service.rx_in)
-    gear_changetemp                          0x2000027e   Data           1  adc.o(.bss.gear_changetemp)
-    [Anonymous Symbol]                       0x2000027e   Section        0  adc.o(.bss.gear_changetemp)
-    heat_beat_check.mcu_reset_state          0x2000027f   Data           1  system.o(.bss.heat_beat_check.mcu_reset_state)
-    [Anonymous Symbol]                       0x2000027f   Section        0  system.o(.bss.heat_beat_check.mcu_reset_state)
-    last_percent                             0x20000280   Data           1  adc.o(.bss.last_percent)
-    [Anonymous Symbol]                       0x20000280   Section        0  adc.o(.bss.last_percent)
-    percent_temp                             0x2000029c   Data          10  adc.o(.bss.percent_temp)
-    [Anonymous Symbol]                       0x2000029c   Section        0  adc.o(.bss.percent_temp)
-    STACK                                    0x200002b8   Section     1024  startup_py32f002bxx.o(STACK)
+    BatVolatageToPercent_handle.Recheck_Timer 0x2000003e   Data           2  adc.o(.bss.BatVolatageToPercent_handle.Recheck_Timer)
+    [Anonymous Symbol]                       0x2000003e   Section        0  adc.o(.bss.BatVolatageToPercent_handle.Recheck_Timer)
+    Bat_StatusCheck_Handle.filter_cnt        0x20000040   Data           2  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt)
+    [Anonymous Symbol]                       0x20000040   Section        0  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt)
+    Bat_StatusCheck_Handle.filter_cnt1       0x20000042   Data           2  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt1)
+    [Anonymous Symbol]                       0x20000042   Section        0  adc.o(.bss.Bat_StatusCheck_Handle.filter_cnt1)
+    Bat_StatusCheck_Handle.low_voltage_cnt   0x20000044   Data           2  adc.o(.bss.Bat_StatusCheck_Handle.low_voltage_cnt)
+    [Anonymous Symbol]                       0x20000044   Section        0  adc.o(.bss.Bat_StatusCheck_Handle.low_voltage_cnt)
+    IR_RGB_MODE_handle.status                0x20000046   Data           2  led.o(.bss.IR_RGB_MODE_handle.status)
+    [Anonymous Symbol]                       0x20000046   Section        0  led.o(.bss.IR_RGB_MODE_handle.status)
+    LED_DisplayBatGear_Handle.charge_flash   0x20000054   Data           1  led.o(.bss.LED_DisplayBatGear_Handle.charge_flash)
+    [Anonymous Symbol]                       0x20000054   Section        0  led.o(.bss.LED_DisplayBatGear_Handle.charge_flash)
+    LED_DisplayBatGear_Handle.flash_cnt      0x20000055   Data           1  led.o(.bss.LED_DisplayBatGear_Handle.flash_cnt)
+    [Anonymous Symbol]                       0x20000055   Section        0  led.o(.bss.LED_DisplayBatGear_Handle.flash_cnt)
+    LED_DisplayBatGear_Handle.low_flash      0x20000056   Data           1  led.o(.bss.LED_DisplayBatGear_Handle.low_flash)
+    [Anonymous Symbol]                       0x20000056   Section        0  led.o(.bss.LED_DisplayBatGear_Handle.low_flash)
+    LED_Scan_Handle.ScanCount                0x20000059   Data           1  led.o(.bss.LED_Scan_Handle.ScanCount)
+    [Anonymous Symbol]                       0x20000059   Section        0  led.o(.bss.LED_Scan_Handle.ScanCount)
+    RGB_App_Handle.TY_Reset_Mode_Status      0x200000a0   Data           1  led.o(.bss.RGB_App_Handle.TY_Reset_Mode_Status)
+    [Anonymous Symbol]                       0x200000a0   Section        0  led.o(.bss.RGB_App_Handle.TY_Reset_Mode_Status)
+    RGB_App_Handle.Timer5ms                  0x200000a1   Data           1  led.o(.bss.RGB_App_Handle.Timer5ms)
+    [Anonymous Symbol]                       0x200000a1   Section        0  led.o(.bss.RGB_App_Handle.Timer5ms)
+    bt_uart_service.rx_in                    0x20000264   Data           2  mcu_api.o(.bss.bt_uart_service.rx_in)
+    [Anonymous Symbol]                       0x20000264   Section        0  mcu_api.o(.bss.bt_uart_service.rx_in)
+    gear_changetemp                          0x20000286   Data           1  adc.o(.bss.gear_changetemp)
+    [Anonymous Symbol]                       0x20000286   Section        0  adc.o(.bss.gear_changetemp)
+    heat_beat_check.mcu_reset_state          0x20000287   Data           1  system.o(.bss.heat_beat_check.mcu_reset_state)
+    [Anonymous Symbol]                       0x20000287   Section        0  system.o(.bss.heat_beat_check.mcu_reset_state)
+    last_percent                             0x20000288   Data           1  adc.o(.bss.last_percent)
+    [Anonymous Symbol]                       0x20000288   Section        0  adc.o(.bss.last_percent)
+    percent_temp                             0x200002a4   Data          10  adc.o(.bss.percent_temp)
+    [Anonymous Symbol]                       0x200002a4   Section        0  adc.o(.bss.percent_temp)
+    STACK                                    0x200002c0   Section     1024  startup_py32f002bxx.o(STACK)
 
     Global Symbols
 
@@ -1648,152 +1671,154 @@ Image Symbol Table
     APP_AdcCalibrate                         0x080006c9   Thumb Code    44  adc.o(.text.APP_AdcCalibrate)
     APP_AdcConfig                            0x080006f9   Thumb Code   252  adc.o(.text.APP_AdcConfig)
     APP_AdcGrpRegularUnitaryConvCompleteCallback 0x08000819   Thumb Code    48  adc.o(.text.APP_AdcGrpRegularUnitaryConvCompleteCallback)
-    APP_ConfigPWMChannel                     0x08000851   Thumb Code   164  led.o(.text.APP_ConfigPWMChannel)
-    APP_ConfigTIM1                           0x080008f5   Thumb Code   100  led.o(.text.APP_ConfigTIM1)
-    APP_ConfigTIM14                          0x08000965   Thumb Code   100  ir.o(.text.APP_ConfigTIM14)
-    APP_ConfigUsart                          0x080009d9   Thumb Code   224  usart.o(.text.APP_ConfigUsart)
-    APP_ErrorHandler                         0x08000ad5   Thumb Code     2  main.o(.text.APP_ErrorHandler)
-    APP_FlashOBProgram                       0x08000ad7   Thumb Code    50  flash.o(.text.APP_FlashOBProgram)
-    APP_IwdgConfig                           0x08000b09   Thumb Code    48  iwdg.o(.text.APP_IwdgConfig)
-    APP_UsartIRQCallback                     0x08000b4d   Thumb Code    42  usart.o(.text.APP_UsartIRQCallback)
-    Adc_BatVolatageCollection_handle         0x08000b79   Thumb Code    76  adc.o(.text.Adc_BatVolatageCollection_handle)
-    Adc_RefVoltage_ON                        0x08000bd9   Thumb Code    72  task.o(.text.Adc_RefVoltage_ON)
-    BLE_Power_OFF                            0x08000c35   Thumb Code    68  task.o(.text.BLE_Power_OFF)
-    BLE_Power_ON                             0x08000c81   Thumb Code    64  task.o(.text.BLE_Power_ON)
-    BatVolatageToPercent_handle              0x08000cc9   Thumb Code   300  adc.o(.text.BatVolatageToPercent_handle)
-    Bat_GpioInit                             0x08000e35   Thumb Code    84  adc.o(.text.Bat_GpioInit)
-    Bat_StatusCheck_Handle                   0x08000e99   Thumb Code   264  adc.o(.text.Bat_StatusCheck_Handle)
-    EXTI0_1_IRQHandler                       0x08000fc9   Thumb Code     2  py32f002b_it.o(.text.EXTI0_1_IRQHandler)
-    EXTI2_3_IRQHandler                       0x08000fcd   Thumb Code    20  py32f002b_it.o(.text.EXTI2_3_IRQHandler)
-    EXTI4_15_IRQHandler                      0x08000fe1   Thumb Code    44  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
-    FLASH_WaitForLastOperation               0x08001015   Thumb Code    40  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
-    Flash_Data_Write                         0x08001045   Thumb Code   108  flash.o(.text.Flash_Data_Write)
-    Flash_Init_Rdata                         0x080010b1   Thumb Code   124  flash.o(.text.Flash_Init_Rdata)
-    Flash_Write                              0x0800112d   Thumb Code   156  flash.o(.text.Flash_Write)
-    HAL_FLASH_Erase                          0x080011d5   Thumb Code   500  py32f002b_hal_flash.o(.text.HAL_FLASH_Erase)
-    HAL_FLASH_Lock                           0x080013cd   Thumb Code    20  py32f002b_hal_flash.o(.text.HAL_FLASH_Lock)
-    HAL_FLASH_OBProgram                      0x080013e1   Thumb Code   316  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
-    HAL_FLASH_OB_Launch                      0x08001541   Thumb Code    16  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Launch)
-    HAL_FLASH_OB_Lock                        0x08001551   Thumb Code    20  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Lock)
-    HAL_FLASH_OB_Unlock                      0x08001569   Thumb Code    28  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
-    HAL_FLASH_Program                        0x08001591   Thumb Code   284  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
-    HAL_FLASH_Unlock                         0x080016d1   Thumb Code    28  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
-    HAL_GetTick                              0x080016f9   Thumb Code     8  py32f002b_hal.o(.text.HAL_GetTick)
-    HAL_IncTick                              0x08001701   Thumb Code    16  py32f002b_hal.o(.text.HAL_IncTick)
-    HardFault_Handler                        0x08001719   Thumb Code     2  py32f002b_it.o(.text.HardFault_Handler)
-    IR_RGB_MODE_handle                       0x0800171d   Thumb Code    88  led.o(.text.IR_RGB_MODE_handle)
-    Ir_CommandReceiv                         0x0800177d   Thumb Code   952  ir.o(.text.Ir_CommandReceiv)
-    Ir_ExtiCallback                          0x08001b5d   Thumb Code    96  ir.o(.text.Ir_ExtiCallback)
-    Ir_Init                                  0x08001bc5   Thumb Code   116  ir.o(.text.Ir_Init)
-    Ir_Power_OFF                             0x08001c45   Thumb Code     8  task.o(.text.Ir_Power_OFF)
-    Ir_Power_ON                              0x08001c51   Thumb Code     8  task.o(.text.Ir_Power_ON)
-    Ir_Scan                                  0x08001c5d   Thumb Code    64  ir.o(.text.Ir_Scan)
-    Ir_Time14IRQCallback                     0x08001c9d   Thumb Code    40  ir.o(.text.Ir_Time14IRQCallback)
-    LED_DisplayBatGear_Handle                0x08001cc9   Thumb Code    92  led.o(.text.LED_DisplayBatGear_Handle)
-    LED_Init                                 0x08001d39   Thumb Code   116  led.o(.text.LED_Init)
-    LED_RGB_HSVdisplay                       0x08001db1   Thumb Code    40  led.o(.text.LED_RGB_HSVdisplay)
-    LED_RGB_Off_Handle                       0x08001ddd   Thumb Code    40  led.o(.text.LED_RGB_Off_Handle)
-    LED_RGB_On_Handle                        0x08001e05   Thumb Code    52  led.o(.text.LED_RGB_On_Handle)
-    LED_RGB_SetDisplayHSV                    0x08001e3d   Thumb Code    12  led.o(.text.LED_RGB_SetDisplayHSV)
-    LED_RGB_SetHSV                           0x08001e49   Thumb Code    12  led.o(.text.LED_RGB_SetHSV)
-    LED_RGB_To_OnStatus                      0x08001e55   Thumb Code    40  led.o(.text.LED_RGB_To_OnStatus)
-    LED_RGB_W_display                        0x08001e7d   Thumb Code    84  led.o(.text.LED_RGB_W_display)
-    LED_RGB_display                          0x08001ed9   Thumb Code   224  led.o(.text.LED_RGB_display)
-    LED_RGB_init                             0x08001fd1   Thumb Code    32  led.o(.text.LED_RGB_init)
-    LED_Scan_Handle                          0x08001ff5   Thumb Code   288  led.o(.text.LED_Scan_Handle)
-    LL_ADC_Init                              0x08002125   Thumb Code    48  py32f002b_ll_adc.o(.text.LL_ADC_Init)
-    LL_ADC_REG_Init                          0x08002159   Thumb Code    36  py32f002b_ll_adc.o(.text.LL_ADC_REG_Init)
-    LL_EXTI_Init                             0x08002181   Thumb Code   156  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
-    LL_GPIO_Init                             0x08002225   Thumb Code   176  py32f002b_ll_gpio.o(.text.LL_GPIO_Init)
-    LL_Init1msTick                           0x080022d5   Thumb Code    28  py32f002b_ll_utils.o(.text.LL_Init1msTick)
-    LL_LPTIM_Init                            0x080022f5   Thumb Code    32  py32f002b_ll_lptim.o(.text.LL_LPTIM_Init)
-    LL_RCC_GetSystemClocksFreq               0x08002319   Thumb Code    80  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
-    LL_SetSystemCoreClock                    0x0800237d   Thumb Code     8  py32f002b_ll_utils.o(.text.LL_SetSystemCoreClock)
-    LL_TIM_Init                              0x08002389   Thumb Code    84  py32f002b_ll_tim.o(.text.LL_TIM_Init)
-    LL_TIM_OC_Init                           0x080023dd   Thumb Code   480  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
-    LL_USART_Init                            0x080025d1   Thumb Code   220  py32f002b_ll_usart.o(.text.LL_USART_Init)
-    LL_mDelay                                0x080026b5   Thumb Code    36  py32f002b_ll_utils.o(.text.LL_mDelay)
-    LPTIM1_IRQHandler                        0x080026dd   Thumb Code    20  py32f002b_it.o(.text.LPTIM1_IRQHandler)
-    Led_Off                                  0x080026f9   Thumb Code    64  led.o(.text.Led_Off)
-    Lptim_Init                               0x08002741   Thumb Code   164  time.o(.text.Lptim_Init)
-    NMI_Handler                              0x08002801   Thumb Code     2  py32f002b_it.o(.text.NMI_Handler)
-    PendSV_Handler                           0x08002803   Thumb Code     2  py32f002b_it.o(.text.PendSV_Handler)
-    Queue_Read_Byte                          0x08002805   Thumb Code    36  system.o(.text.Queue_Read_Byte)
-    RGB_App_Handle                           0x08002835   Thumb Code   788  led.o(.text.RGB_App_Handle)
-    SVC_Handler                              0x08002b75   Thumb Code     2  py32f002b_it.o(.text.SVC_Handler)
-    SysTick_Handler                          0x08002b77   Thumb Code    16  py32f002b_it.o(.text.SysTick_Handler)
-    Sys_EnterSleep_Handle                    0x08002b89   Thumb Code   284  task.o(.text.Sys_EnterSleep_Handle)
-    Sys_EntreSleep                           0x08002cd5   Thumb Code     8  task.o(.text.Sys_EntreSleep)
-    Sys_Init                                 0x08002cdd   Thumb Code    44  task.o(.text.Sys_Init)
-    Sys_Timer1ms_Handle                      0x08002d09   Thumb Code    84  task.o(.text.Sys_Timer1ms_Handle)
-    SystemInit                               0x08002d69   Thumb Code    40  system_py32f002b.o(.text.SystemInit)
-    TIM14_IRQHandler                         0x08002da5   Thumb Code    16  py32f002b_it.o(.text.TIM14_IRQHandler)
-    TIM1_BRK_UP_TRG_COM_IRQHandler           0x08002db9   Thumb Code    56  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
-    TY_Init                                  0x08002e05   Thumb Code    88  task.o(.text.TY_Init)
-    TY_Updata_Bright                         0x08002e69   Thumb Code   112  task.o(.text.TY_Updata_Bright)
-    USART1_IRQHandler                        0x08002edd   Thumb Code    12  py32f002b_it.o(.text.USART1_IRQHandler)
-    all_data_update                          0x08002eed   Thumb Code   108  protocol.o(.text.all_data_update)
-    bt_protocol_init                         0x08002f65   Thumb Code    20  mcu_api.o(.text.bt_protocol_init)
-    bt_uart_service                          0x08002f85   Thumb Code   176  mcu_api.o(.text.bt_uart_service)
-    bt_uart_write_frame                      0x08003039   Thumb Code    80  system.o(.text.bt_uart_write_frame)
-    data_handle                              0x08003089   Thumb Code   312  system.o(.text.data_handle)
-    dp_download_handle                       0x080031e1   Thumb Code   928  protocol.o(.text.dp_download_handle)
-    enable_low_power                         0x080035a9   Thumb Code    68  system.o(.text.enable_low_power)
-    get_check_sum                            0x080035f1   Thumb Code    26  system.o(.text.get_check_sum)
-    get_download_cmd_total                   0x0800360b   Thumb Code     4  protocol.o(.text.get_download_cmd_total)
-    get_queue_total_data                     0x08003611   Thumb Code    16  system.o(.text.get_queue_total_data)
-    led_strip_hsv2rgb                        0x08003629   Thumb Code   184  led.o(.text.led_strip_hsv2rgb)
-    main                                     0x080036e1   Thumb Code   680  main.o(.text.main)
-    mcu_dp_bool_update                       0x080039b9   Thumb Code    64  mcu_api.o(.text.mcu_dp_bool_update)
-    mcu_dp_enum_update                       0x080039f9   Thumb Code    60  mcu_api.o(.text.mcu_dp_enum_update)
-    mcu_dp_raw_update                        0x08003a35   Thumb Code    64  mcu_api.o(.text.mcu_dp_raw_update)
-    mcu_dp_string_update                     0x08003a75   Thumb Code    60  mcu_api.o(.text.mcu_dp_string_update)
-    mcu_dp_value_update                      0x08003ab1   Thumb Code    80  mcu_api.o(.text.mcu_dp_value_update)
-    mcu_get_dp_download_bool                 0x08003b05   Thumb Code     4  mcu_api.o(.text.mcu_get_dp_download_bool)
-    mcu_get_dp_download_enum                 0x08003b09   Thumb Code     4  mcu_api.o(.text.mcu_get_dp_download_enum)
-    mcu_get_dp_download_value                0x08003b0d   Thumb Code    22  mcu_api.o(.text.mcu_get_dp_download_value)
-    my_memcpy                                0x08003b23   Thumb Code    64  mcu_api.o(.text.my_memcpy)
-    my_strlen                                0x08003b63   Thumb Code    28  mcu_api.o(.text.my_strlen)
-    set_bt_uart_buffer                       0x08003b81   Thumb Code    24  system.o(.text.set_bt_uart_buffer)
-    set_bt_uart_byte                         0x08003b99   Thumb Code    12  system.o(.text.set_bt_uart_byte)
-    uart_receive_input                       0x08003ba9   Thumb Code    40  mcu_api.o(.text.uart_receive_input)
-    uart_transmit_output                     0x08003bdd   Thumb Code    20  protocol.o(.text.uart_transmit_output)
-    __ARM_clz                                0x08003bf5   Thumb Code    46  depilogue.o(i.__ARM_clz)
-    __aeabi_errno_addr                       0x08003c25   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
-    __rt_errno_addr                          0x08003c25   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
-    __scatterload_copy                       0x08003c2d   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08003c3b   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08003c3d   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    __ctype_table                            0x08003c4a   Data         129  ctype_o.o(.constdata)
-    AHBPrescTable                            0x08003cd0   Data          64  system_py32f002b.o(.rodata.AHBPrescTable)
-    APBPrescTable                            0x08003d10   Data          32  system_py32f002b.o(.rodata.APBPrescTable)
-    HSIFreqTable                             0x08003d30   Data          32  system_py32f002b.o(.rodata.HSIFreqTable)
-    _FlashTimmingParam                       0x08003d50   Data          32  py32f002b_hal_flash.o(.rodata._FlashTimmingParam)
-    download_cmd                             0x08003d70   Data          32  protocol.o(.rodata.download_cmd)
-    Region$$Table$$Base                      0x08003da0   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08003dc0   Number         0  anon$$obj.o(Region$$Table)
+    APP_ConfigPWMChannel                     0x08000855   Thumb Code   164  led.o(.text.APP_ConfigPWMChannel)
+    APP_ConfigTIM1                           0x080008f9   Thumb Code   100  led.o(.text.APP_ConfigTIM1)
+    APP_ConfigTIM14                          0x08000961   Thumb Code   100  ir.o(.text.APP_ConfigTIM14)
+    APP_ConfigUsart                          0x080009d5   Thumb Code   224  usart.o(.text.APP_ConfigUsart)
+    APP_DeConfigPWMChannel                   0x08000acd   Thumb Code   152  led.o(.text.APP_DeConfigPWMChannel)
+    APP_ErrorHandler                         0x08000b71   Thumb Code     2  main.o(.text.APP_ErrorHandler)
+    APP_FlashOBProgram                       0x08000b73   Thumb Code    50  flash.o(.text.APP_FlashOBProgram)
+    APP_IwdgConfig                           0x08000ba5   Thumb Code    48  iwdg.o(.text.APP_IwdgConfig)
+    APP_UsartIRQCallback                     0x08000be9   Thumb Code    42  usart.o(.text.APP_UsartIRQCallback)
+    Adc_BatVolatageCollection_handle         0x08000c15   Thumb Code    72  adc.o(.text.Adc_BatVolatageCollection_handle)
+    Adc_RefVoltage_ON                        0x08000c6d   Thumb Code    72  task.o(.text.Adc_RefVoltage_ON)
+    BLE_Power_OFF                            0x08000cc9   Thumb Code    68  task.o(.text.BLE_Power_OFF)
+    BLE_Power_ON                             0x08000d11   Thumb Code    64  task.o(.text.BLE_Power_ON)
+    BatVolatageToPercent_handle              0x08000d59   Thumb Code   400  adc.o(.text.BatVolatageToPercent_handle)
+    Bat_GpioInit                             0x08000f29   Thumb Code    84  adc.o(.text.Bat_GpioInit)
+    Bat_StatusCheck_Handle                   0x08000f8d   Thumb Code   264  adc.o(.text.Bat_StatusCheck_Handle)
+    EXTI0_1_IRQHandler                       0x080010c5   Thumb Code     2  py32f002b_it.o(.text.EXTI0_1_IRQHandler)
+    EXTI2_3_IRQHandler                       0x080010c9   Thumb Code    20  py32f002b_it.o(.text.EXTI2_3_IRQHandler)
+    EXTI4_15_IRQHandler                      0x080010dd   Thumb Code    44  py32f002b_it.o(.text.EXTI4_15_IRQHandler)
+    FLASH_WaitForLastOperation               0x08001111   Thumb Code    40  py32f002b_hal_flash.o(.text.FLASH_WaitForLastOperation)
+    Flash_Data_Write                         0x08001141   Thumb Code   108  flash.o(.text.Flash_Data_Write)
+    Flash_Init_Rdata                         0x080011ad   Thumb Code   136  flash.o(.text.Flash_Init_Rdata)
+    Flash_Write                              0x08001239   Thumb Code   156  flash.o(.text.Flash_Write)
+    HAL_FLASH_Erase                          0x080012e1   Thumb Code   500  py32f002b_hal_flash.o(.text.HAL_FLASH_Erase)
+    HAL_FLASH_Lock                           0x080014d9   Thumb Code    20  py32f002b_hal_flash.o(.text.HAL_FLASH_Lock)
+    HAL_FLASH_OBProgram                      0x080014ed   Thumb Code   316  py32f002b_hal_flash.o(.text.HAL_FLASH_OBProgram)
+    HAL_FLASH_OB_Launch                      0x0800164d   Thumb Code    16  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Launch)
+    HAL_FLASH_OB_Lock                        0x0800165d   Thumb Code    20  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Lock)
+    HAL_FLASH_OB_Unlock                      0x08001675   Thumb Code    28  py32f002b_hal_flash.o(.text.HAL_FLASH_OB_Unlock)
+    HAL_FLASH_Program                        0x0800169d   Thumb Code   284  py32f002b_hal_flash.o(.text.HAL_FLASH_Program)
+    HAL_FLASH_Unlock                         0x080017dd   Thumb Code    28  py32f002b_hal_flash.o(.text.HAL_FLASH_Unlock)
+    HAL_GetTick                              0x08001805   Thumb Code     8  py32f002b_hal.o(.text.HAL_GetTick)
+    HAL_IncTick                              0x0800180d   Thumb Code    16  py32f002b_hal.o(.text.HAL_IncTick)
+    HardFault_Handler                        0x08001825   Thumb Code     2  py32f002b_it.o(.text.HardFault_Handler)
+    IR_RGB_MODE_handle                       0x08001829   Thumb Code   104  led.o(.text.IR_RGB_MODE_handle)
+    Ir_CommandReceiv                         0x08001899   Thumb Code  1060  ir.o(.text.Ir_CommandReceiv)
+    Ir_ExtiCallback                          0x08001ccd   Thumb Code   116  ir.o(.text.Ir_ExtiCallback)
+    Ir_Init                                  0x08001d49   Thumb Code   116  ir.o(.text.Ir_Init)
+    Ir_Power_OFF                             0x08001dc9   Thumb Code     8  task.o(.text.Ir_Power_OFF)
+    Ir_Power_ON                              0x08001dd5   Thumb Code     8  task.o(.text.Ir_Power_ON)
+    Ir_ReScan                                0x08001de1   Thumb Code    12  ir.o(.text.Ir_ReScan)
+    Ir_Scan                                  0x08001ded   Thumb Code    64  ir.o(.text.Ir_Scan)
+    Ir_Time14IRQCallback                     0x08001e2d   Thumb Code    44  ir.o(.text.Ir_Time14IRQCallback)
+    LED_DisplayBatGear_Handle                0x08001e5d   Thumb Code   100  led.o(.text.LED_DisplayBatGear_Handle)
+    LED_Init                                 0x08001ed1   Thumb Code   116  led.o(.text.LED_Init)
+    LED_RGB_HSVdisplay                       0x08001f49   Thumb Code    40  led.o(.text.LED_RGB_HSVdisplay)
+    LED_RGB_Off_Handle                       0x08001f71   Thumb Code   108  led.o(.text.LED_RGB_Off_Handle)
+    LED_RGB_On_Handle                        0x08001fe5   Thumb Code    80  led.o(.text.LED_RGB_On_Handle)
+    LED_RGB_SetDisplayHSV                    0x08002035   Thumb Code    12  led.o(.text.LED_RGB_SetDisplayHSV)
+    LED_RGB_SetHSV                           0x08002041   Thumb Code    28  led.o(.text.LED_RGB_SetHSV)
+    LED_RGB_To_OnStatus                      0x0800205d   Thumb Code    48  led.o(.text.LED_RGB_To_OnStatus)
+    LED_RGB_W_display                        0x08002091   Thumb Code    92  led.o(.text.LED_RGB_W_display)
+    LED_RGB_display                          0x080020f5   Thumb Code   248  led.o(.text.LED_RGB_display)
+    LED_RGB_init                             0x08002205   Thumb Code    36  led.o(.text.LED_RGB_init)
+    LED_Scan_Handle                          0x0800222d   Thumb Code   288  led.o(.text.LED_Scan_Handle)
+    LL_ADC_Init                              0x0800235d   Thumb Code    48  py32f002b_ll_adc.o(.text.LL_ADC_Init)
+    LL_ADC_REG_Init                          0x08002391   Thumb Code    36  py32f002b_ll_adc.o(.text.LL_ADC_REG_Init)
+    LL_EXTI_Init                             0x080023b9   Thumb Code   156  py32f002b_ll_exti.o(.text.LL_EXTI_Init)
+    LL_GPIO_Init                             0x0800245d   Thumb Code   176  py32f002b_ll_gpio.o(.text.LL_GPIO_Init)
+    LL_Init1msTick                           0x0800250d   Thumb Code    28  py32f002b_ll_utils.o(.text.LL_Init1msTick)
+    LL_LPTIM_Init                            0x0800252d   Thumb Code    32  py32f002b_ll_lptim.o(.text.LL_LPTIM_Init)
+    LL_RCC_GetSystemClocksFreq               0x08002551   Thumb Code    80  py32f002b_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
+    LL_SetSystemCoreClock                    0x080025b5   Thumb Code     8  py32f002b_ll_utils.o(.text.LL_SetSystemCoreClock)
+    LL_TIM_Init                              0x080025c1   Thumb Code    84  py32f002b_ll_tim.o(.text.LL_TIM_Init)
+    LL_TIM_OC_Init                           0x08002615   Thumb Code   480  py32f002b_ll_tim.o(.text.LL_TIM_OC_Init)
+    LL_USART_Init                            0x08002809   Thumb Code   220  py32f002b_ll_usart.o(.text.LL_USART_Init)
+    LL_mDelay                                0x080028ed   Thumb Code    36  py32f002b_ll_utils.o(.text.LL_mDelay)
+    LPTIM1_IRQHandler                        0x08002915   Thumb Code    20  py32f002b_it.o(.text.LPTIM1_IRQHandler)
+    Led_Off                                  0x08002931   Thumb Code    64  led.o(.text.Led_Off)
+    Lptim_Init                               0x08002979   Thumb Code   164  time.o(.text.Lptim_Init)
+    NMI_Handler                              0x08002a39   Thumb Code     2  py32f002b_it.o(.text.NMI_Handler)
+    PendSV_Handler                           0x08002a3b   Thumb Code     2  py32f002b_it.o(.text.PendSV_Handler)
+    Queue_Read_Byte                          0x08002a3d   Thumb Code    36  system.o(.text.Queue_Read_Byte)
+    RGB_App_Handle                           0x08002a6d   Thumb Code   812  led.o(.text.RGB_App_Handle)
+    SVC_Handler                              0x08002dd5   Thumb Code     2  py32f002b_it.o(.text.SVC_Handler)
+    SysTick_Handler                          0x08002dd7   Thumb Code    16  py32f002b_it.o(.text.SysTick_Handler)
+    Sys_EnterSleep_Handle                    0x08002de9   Thumb Code   388  task.o(.text.Sys_EnterSleep_Handle)
+    Sys_EntreSleep                           0x08002fa9   Thumb Code     8  task.o(.text.Sys_EntreSleep)
+    Sys_Init                                 0x08002fb1   Thumb Code    44  task.o(.text.Sys_Init)
+    Sys_Timer1ms_Handle                      0x08002fdd   Thumb Code    36  task.o(.text.Sys_Timer1ms_Handle)
+    SystemInit                               0x08003009   Thumb Code    40  system_py32f002b.o(.text.SystemInit)
+    TIM14_IRQHandler                         0x08003045   Thumb Code    16  py32f002b_it.o(.text.TIM14_IRQHandler)
+    TIM1_BRK_UP_TRG_COM_IRQHandler           0x08003059   Thumb Code    56  py32f002b_it.o(.text.TIM1_BRK_UP_TRG_COM_IRQHandler)
+    TY_Init                                  0x080030a5   Thumb Code    88  task.o(.text.TY_Init)
+    TY_Updata_Bright                         0x08003109   Thumb Code   112  task.o(.text.TY_Updata_Bright)
+    USART1_IRQHandler                        0x0800317d   Thumb Code    12  py32f002b_it.o(.text.USART1_IRQHandler)
+    all_data_update                          0x0800318d   Thumb Code   108  protocol.o(.text.all_data_update)
+    bt_protocol_init                         0x08003205   Thumb Code    20  mcu_api.o(.text.bt_protocol_init)
+    bt_uart_service                          0x08003225   Thumb Code   176  mcu_api.o(.text.bt_uart_service)
+    bt_uart_write_frame                      0x080032d9   Thumb Code    80  system.o(.text.bt_uart_write_frame)
+    data_handle                              0x08003329   Thumb Code   312  system.o(.text.data_handle)
+    dp_download_handle                       0x08003481   Thumb Code   956  protocol.o(.text.dp_download_handle)
+    enable_low_power                         0x08003855   Thumb Code    68  system.o(.text.enable_low_power)
+    get_check_sum                            0x0800389d   Thumb Code    26  system.o(.text.get_check_sum)
+    get_download_cmd_total                   0x080038b7   Thumb Code     4  protocol.o(.text.get_download_cmd_total)
+    get_queue_total_data                     0x080038bd   Thumb Code    16  system.o(.text.get_queue_total_data)
+    led_strip_hsv2rgb                        0x080038d5   Thumb Code   184  led.o(.text.led_strip_hsv2rgb)
+    main                                     0x0800398d   Thumb Code   700  main.o(.text.main)
+    mcu_dp_bool_update                       0x08003c7d   Thumb Code    64  mcu_api.o(.text.mcu_dp_bool_update)
+    mcu_dp_enum_update                       0x08003cbd   Thumb Code    60  mcu_api.o(.text.mcu_dp_enum_update)
+    mcu_dp_raw_update                        0x08003cf9   Thumb Code    64  mcu_api.o(.text.mcu_dp_raw_update)
+    mcu_dp_string_update                     0x08003d39   Thumb Code    60  mcu_api.o(.text.mcu_dp_string_update)
+    mcu_dp_value_update                      0x08003d75   Thumb Code    80  mcu_api.o(.text.mcu_dp_value_update)
+    mcu_get_dp_download_bool                 0x08003dc9   Thumb Code     4  mcu_api.o(.text.mcu_get_dp_download_bool)
+    mcu_get_dp_download_enum                 0x08003dcd   Thumb Code     4  mcu_api.o(.text.mcu_get_dp_download_enum)
+    mcu_get_dp_download_value                0x08003dd1   Thumb Code    22  mcu_api.o(.text.mcu_get_dp_download_value)
+    my_memcpy                                0x08003de7   Thumb Code    64  mcu_api.o(.text.my_memcpy)
+    my_strlen                                0x08003e27   Thumb Code    28  mcu_api.o(.text.my_strlen)
+    set_bt_uart_buffer                       0x08003e45   Thumb Code    24  system.o(.text.set_bt_uart_buffer)
+    set_bt_uart_byte                         0x08003e5d   Thumb Code    12  system.o(.text.set_bt_uart_byte)
+    uart_receive_input                       0x08003e6d   Thumb Code    40  mcu_api.o(.text.uart_receive_input)
+    uart_transmit_output                     0x08003ea1   Thumb Code    20  protocol.o(.text.uart_transmit_output)
+    __ARM_clz                                0x08003eb9   Thumb Code    46  depilogue.o(i.__ARM_clz)
+    __aeabi_errno_addr                       0x08003ee9   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
+    __rt_errno_addr                          0x08003ee9   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
+    __scatterload_copy                       0x08003ef1   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08003eff   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08003f01   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    __ctype_table                            0x08003f0e   Data         129  ctype_o.o(.constdata)
+    AHBPrescTable                            0x08003f94   Data          64  system_py32f002b.o(.rodata.AHBPrescTable)
+    APBPrescTable                            0x08003fd4   Data          32  system_py32f002b.o(.rodata.APBPrescTable)
+    HSIFreqTable                             0x08003ff4   Data          32  system_py32f002b.o(.rodata.HSIFreqTable)
+    _FlashTimmingParam                       0x08004014   Data          32  py32f002b_hal_flash.o(.rodata._FlashTimmingParam)
+    download_cmd                             0x08004034   Data          32  protocol.o(.rodata.download_cmd)
+    Region$$Table$$Base                      0x08004064   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08004084   Number         0  anon$$obj.o(Region$$Table)
     FlashData                                0x20000004   Data          24  flash.o(.data.FlashData)
     SystemCoreClock                          0x2000001c   Data           4  system_py32f002b.o(.data.SystemCoreClock)
     uwTickFreq                               0x20000020   Data           4  py32f002b_hal.o(.data.uwTickFreq)
     Adc                                      0x20000028   Data          12  adc.o(.bss.Adc)
-    Bat                                      0x20000034   Data           8  adc.o(.bss.Bat)
-    Ir                                       0x20000044   Data          12  ir.o(.bss.Ir)
-    LED_DisplayTemp                          0x20000053   Data           1  led.o(.bss.LED_DisplayTemp)
-    LED_IndicatorOnFlag                      0x20000054   Data           1  led.o(.bss.LED_IndicatorOnFlag)
-    RGB                                      0x20000058   Data          64  led.o(.bss.RGB)
-    Sys                                      0x2000009c   Data          10  task.o(.bss.Sys)
-    TY                                       0x200000a8   Data          22  task.o(.bss.TY)
-    bt_queue_buf                             0x200000be   Data         167  system.o(.bss.bt_queue_buf)
-    bt_uart_rx_buf                           0x20000165   Data         247  system.o(.bss.bt_uart_rx_buf)
-    bt_uart_tx_buf                           0x2000025e   Data          31  system.o(.bss.bt_uart_tx_buf)
-    bt_work_state                            0x2000027d   Data           1  system.o(.bss.bt_work_state)
-    pFlash                                   0x20000284   Data          24  py32f002b_hal_flash.o(.bss.pFlash)
-    queue_in                                 0x200002a8   Data           4  system.o(.bss.queue_in)
-    queue_out                                0x200002ac   Data           4  system.o(.bss.queue_out)
-    reset_bt_flag                            0x200002b0   Data           1  system.o(.bss.reset_bt_flag)
-    stop_update_flag                         0x200002b1   Data           1  system.o(.bss.stop_update_flag)
-    uwTick                                   0x200002b4   Data           4  py32f002b_hal.o(.bss.uwTick)
-    __initial_sp                             0x200006b8   Data           0  startup_py32f002bxx.o(STACK)
+    Bat                                      0x20000034   Data          10  adc.o(.bss.Bat)
+    Ir                                       0x20000048   Data          12  ir.o(.bss.Ir)
+    LED_DisplayTemp                          0x20000057   Data           1  led.o(.bss.LED_DisplayTemp)
+    LED_IndicatorOnFlag                      0x20000058   Data           1  led.o(.bss.LED_IndicatorOnFlag)
+    RGB                                      0x2000005c   Data          68  led.o(.bss.RGB)
+    Sys                                      0x200000a4   Data          10  task.o(.bss.Sys)
+    TY                                       0x200000b0   Data          22  task.o(.bss.TY)
+    bt_queue_buf                             0x200000c6   Data         167  system.o(.bss.bt_queue_buf)
+    bt_uart_rx_buf                           0x2000016d   Data         247  system.o(.bss.bt_uart_rx_buf)
+    bt_uart_tx_buf                           0x20000266   Data          31  system.o(.bss.bt_uart_tx_buf)
+    bt_work_state                            0x20000285   Data           1  system.o(.bss.bt_work_state)
+    pFlash                                   0x2000028c   Data          24  py32f002b_hal_flash.o(.bss.pFlash)
+    queue_in                                 0x200002b0   Data           4  system.o(.bss.queue_in)
+    queue_out                                0x200002b4   Data           4  system.o(.bss.queue_out)
+    reset_bt_flag                            0x200002b8   Data           1  system.o(.bss.reset_bt_flag)
+    stop_update_flag                         0x200002b9   Data           1  system.o(.bss.stop_update_flag)
+    uwTick                                   0x200002bc   Data           4  py32f002b_hal.o(.bss.uwTick)
+    __initial_sp                             0x200006c0   Data           0  startup_py32f002bxx.o(STACK)
 
 
 
@@ -1803,233 +1828,236 @@ Memory Map of the image
 
   Image Entry point : 0x080000c1
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00003de8, Max: 0x00006000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000040b0, Max: 0x00006000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00003dc0, Max: 0x00006000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00004084, Max: 0x00006000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x000000c0   Data   RO            3    RESET               startup_py32f002bxx.o
-    0x080000c0   0x080000c0   0x00000000   Code   RO          703  * .ARM.Collect$$$$00000000  mc_p.l(entry.o)
-    0x080000c0   0x080000c0   0x00000004   Code   RO          730    .ARM.Collect$$$$00000001  mc_p.l(entry2.o)
-    0x080000c4   0x080000c4   0x00000004   Code   RO          733    .ARM.Collect$$$$00000004  mc_p.l(entry5.o)
-    0x080000c8   0x080000c8   0x00000000   Code   RO          735    .ARM.Collect$$$$00000008  mc_p.l(entry7b.o)
-    0x080000c8   0x080000c8   0x00000000   Code   RO          737    .ARM.Collect$$$$0000000A  mc_p.l(entry8b.o)
-    0x080000c8   0x080000c8   0x00000008   Code   RO          738    .ARM.Collect$$$$0000000B  mc_p.l(entry9a.o)
-    0x080000d0   0x080000d0   0x00000000   Code   RO          740    .ARM.Collect$$$$0000000D  mc_p.l(entry10a.o)
-    0x080000d0   0x080000d0   0x00000000   Code   RO          742    .ARM.Collect$$$$0000000F  mc_p.l(entry11a.o)
-    0x080000d0   0x080000d0   0x00000004   Code   RO          731    .ARM.Collect$$$$00002712  mc_p.l(entry2.o)
+    0x080000c0   0x080000c0   0x00000000   Code   RO          710  * .ARM.Collect$$$$00000000  mc_p.l(entry.o)
+    0x080000c0   0x080000c0   0x00000004   Code   RO          737    .ARM.Collect$$$$00000001  mc_p.l(entry2.o)
+    0x080000c4   0x080000c4   0x00000004   Code   RO          740    .ARM.Collect$$$$00000004  mc_p.l(entry5.o)
+    0x080000c8   0x080000c8   0x00000000   Code   RO          742    .ARM.Collect$$$$00000008  mc_p.l(entry7b.o)
+    0x080000c8   0x080000c8   0x00000000   Code   RO          744    .ARM.Collect$$$$0000000A  mc_p.l(entry8b.o)
+    0x080000c8   0x080000c8   0x00000008   Code   RO          745    .ARM.Collect$$$$0000000B  mc_p.l(entry9a.o)
+    0x080000d0   0x080000d0   0x00000000   Code   RO          747    .ARM.Collect$$$$0000000D  mc_p.l(entry10a.o)
+    0x080000d0   0x080000d0   0x00000000   Code   RO          749    .ARM.Collect$$$$0000000F  mc_p.l(entry11a.o)
+    0x080000d0   0x080000d0   0x00000004   Code   RO          738    .ARM.Collect$$$$00002712  mc_p.l(entry2.o)
     0x080000d4   0x080000d4   0x00000040   Code   RO          181    .RamFunc            py32f002b_hal_flash.o
     0x08000114   0x08000114   0x0000001c   Code   RO            4    .text               startup_py32f002bxx.o
-    0x08000130   0x08000130   0x00000024   Code   RO          712    .text               mc_p.l(memcpya.o)
-    0x08000154   0x08000154   0x00000024   Code   RO          714    .text               mc_p.l(memseta.o)
-    0x08000178   0x08000178   0x00000070   Code   RO          718    .text               mc_p.l(strtol.o)
-    0x080001e8   0x080001e8   0x000000d0   Code   RO          720    .text               mf_p.l(dmul.o)
-    0x080002b8   0x080002b8   0x000000f0   Code   RO          722    .text               mf_p.l(ddiv.o)
-    0x080003a8   0x080003a8   0x00000028   Code   RO          724    .text               mf_p.l(dflti.o)
-    0x080003d0   0x080003d0   0x0000001c   Code   RO          726    .text               mf_p.l(dfltui.o)
-    0x080003ec   0x080003ec   0x00000048   Code   RO          728    .text               mf_p.l(dfixi.o)
-    0x08000434   0x08000434   0x0000003e   Code   RO          746    .text               mc_p.l(uidiv_div0.o)
+    0x08000130   0x08000130   0x00000024   Code   RO          719    .text               mc_p.l(memcpya.o)
+    0x08000154   0x08000154   0x00000024   Code   RO          721    .text               mc_p.l(memseta.o)
+    0x08000178   0x08000178   0x00000070   Code   RO          725    .text               mc_p.l(strtol.o)
+    0x080001e8   0x080001e8   0x000000d0   Code   RO          727    .text               mf_p.l(dmul.o)
+    0x080002b8   0x080002b8   0x000000f0   Code   RO          729    .text               mf_p.l(ddiv.o)
+    0x080003a8   0x080003a8   0x00000028   Code   RO          731    .text               mf_p.l(dflti.o)
+    0x080003d0   0x080003d0   0x0000001c   Code   RO          733    .text               mf_p.l(dfltui.o)
+    0x080003ec   0x080003ec   0x00000048   Code   RO          735    .text               mf_p.l(dfixi.o)
+    0x08000434   0x08000434   0x0000003e   Code   RO          753    .text               mc_p.l(uidiv_div0.o)
     0x08000472   0x08000472   0x00000002   PAD
-    0x08000474   0x08000474   0x00000050   Code   RO          748    .text               mc_p.l(idiv_div0.o)
-    0x080004c4   0x080004c4   0x00000022   Code   RO          752    .text               mc_p.l(llushr.o)
+    0x08000474   0x08000474   0x00000050   Code   RO          755    .text               mc_p.l(idiv_div0.o)
+    0x080004c4   0x080004c4   0x00000022   Code   RO          759    .text               mc_p.l(llushr.o)
     0x080004e6   0x080004e6   0x00000002   PAD
-    0x080004e8   0x080004e8   0x00000008   Code   RO          754    .text               mc_p.l(ctype_o.o)
-    0x080004f0   0x080004f0   0x000000a6   Code   RO          789    .text               mc_p.l(_strtoul.o)
-    0x08000596   0x08000596   0x00000000   Code   RO          791    .text               mc_p.l(iusefp.o)
-    0x08000596   0x08000596   0x000000be   Code   RO          792    .text               mf_p.l(depilogue.o)
-    0x08000654   0x08000654   0x00000024   Code   RO          796    .text               mc_p.l(init.o)
-    0x08000678   0x08000678   0x00000020   Code   RO          798    .text               mc_p.l(llshl.o)
-    0x08000698   0x08000698   0x0000001e   Code   RO          800    .text               mc_p.l(_chval.o)
+    0x080004e8   0x080004e8   0x00000008   Code   RO          761    .text               mc_p.l(ctype_o.o)
+    0x080004f0   0x080004f0   0x000000a6   Code   RO          796    .text               mc_p.l(_strtoul.o)
+    0x08000596   0x08000596   0x00000000   Code   RO          798    .text               mc_p.l(iusefp.o)
+    0x08000596   0x08000596   0x000000be   Code   RO          799    .text               mf_p.l(depilogue.o)
+    0x08000654   0x08000654   0x00000024   Code   RO          803    .text               mc_p.l(init.o)
+    0x08000678   0x08000678   0x00000020   Code   RO          805    .text               mc_p.l(llshl.o)
+    0x08000698   0x08000698   0x0000001e   Code   RO          807    .text               mc_p.l(_chval.o)
     0x080006b6   0x080006b6   0x00000002   PAD
     0x080006b8   0x080006b8   0x00000010   Code   RO           43    .text.ADC_COMP_IRQHandler  py32f002b_it.o
     0x080006c8   0x080006c8   0x00000030   Code   RO          379    .text.APP_AdcCalibrate  adc.o
     0x080006f8   0x080006f8   0x00000120   Code   RO          383    .text.APP_AdcConfig  adc.o
-    0x08000818   0x08000818   0x00000038   Code   RO          385    .text.APP_AdcGrpRegularUnitaryConvCompleteCallback  adc.o
-    0x08000850   0x08000850   0x000000a4   Code   RO          485    .text.APP_ConfigPWMChannel  led.o
-    0x080008f4   0x080008f4   0x00000070   Code   RO          483    .text.APP_ConfigTIM1  led.o
-    0x08000964   0x08000964   0x00000074   Code   RO          434    .text.APP_ConfigTIM14  ir.o
-    0x080009d8   0x080009d8   0x000000fc   Code   RO          570    .text.APP_ConfigUsart  usart.o
-    0x08000ad4   0x08000ad4   0x00000002   Code   RO           63    .text.APP_ErrorHandler  main.o
-    0x08000ad6   0x08000ad6   0x00000032   Code   RO          415    .text.APP_FlashOBProgram  flash.o
-    0x08000b08   0x08000b08   0x00000044   Code   RO          457    .text.APP_IwdgConfig  iwdg.o
-    0x08000b4c   0x08000b4c   0x0000002a   Code   RO          576    .text.APP_UsartIRQCallback  usart.o
-    0x08000b76   0x08000b76   0x00000002   PAD
-    0x08000b78   0x08000b78   0x00000060   Code   RO          387    .text.Adc_BatVolatageCollection_handle  adc.o
-    0x08000bd8   0x08000bd8   0x0000005c   Code   RO          539    .text.Adc_RefVoltage_ON  task.o
-    0x08000c34   0x08000c34   0x0000004c   Code   RO          533    .text.BLE_Power_OFF  task.o
-    0x08000c80   0x08000c80   0x00000048   Code   RO          535    .text.BLE_Power_ON  task.o
-    0x08000cc8   0x08000cc8   0x0000016c   Code   RO          389    .text.BatVolatageToPercent_handle  adc.o
-    0x08000e34   0x08000e34   0x00000064   Code   RO          377    .text.Bat_GpioInit  adc.o
-    0x08000e98   0x08000e98   0x00000130   Code   RO          391    .text.Bat_StatusCheck_Handle  adc.o
-    0x08000fc8   0x08000fc8   0x00000002   Code   RO           47    .text.EXTI0_1_IRQHandler  py32f002b_it.o
-    0x08000fca   0x08000fca   0x00000002   PAD
-    0x08000fcc   0x08000fcc   0x00000014   Code   RO           51    .text.EXTI2_3_IRQHandler  py32f002b_it.o
-    0x08000fe0   0x08000fe0   0x00000034   Code   RO           49    .text.EXTI4_15_IRQHandler  py32f002b_it.o
-    0x08001014   0x08001014   0x00000030   Code   RO          171    .text.FLASH_WaitForLastOperation  py32f002b_hal_flash.o
-    0x08001044   0x08001044   0x0000006c   Code   RO          411    .text.Flash_Data_Write  flash.o
-    0x080010b0   0x080010b0   0x0000007c   Code   RO          409    .text.Flash_Init_Rdata  flash.o
-    0x0800112c   0x0800112c   0x000000a8   Code   RO          413    .text.Flash_Write   flash.o
-    0x080011d4   0x080011d4   0x000001f8   Code   RO          173    .text.HAL_FLASH_Erase  py32f002b_hal_flash.o
-    0x080013cc   0x080013cc   0x00000014   Code   RO          161    .text.HAL_FLASH_Lock  py32f002b_hal_flash.o
-    0x080013e0   0x080013e0   0x00000160   Code   RO          187    .text.HAL_FLASH_OBProgram  py32f002b_hal_flash.o
-    0x08001540   0x08001540   0x00000010   Code   RO          167    .text.HAL_FLASH_OB_Launch  py32f002b_hal_flash.o
-    0x08001550   0x08001550   0x00000018   Code   RO          165    .text.HAL_FLASH_OB_Lock  py32f002b_hal_flash.o
-    0x08001568   0x08001568   0x00000028   Code   RO          163    .text.HAL_FLASH_OB_Unlock  py32f002b_hal_flash.o
-    0x08001590   0x08001590   0x00000140   Code   RO          179    .text.HAL_FLASH_Program  py32f002b_hal_flash.o
-    0x080016d0   0x080016d0   0x00000028   Code   RO          159    .text.HAL_FLASH_Unlock  py32f002b_hal_flash.o
-    0x080016f8   0x080016f8   0x00000008   Code   RO           86    .text.HAL_GetTick   py32f002b_hal.o
-    0x08001700   0x08001700   0x00000018   Code   RO           84    .text.HAL_IncTick   py32f002b_hal.o
-    0x08001718   0x08001718   0x00000002   Code   RO           29    .text.HardFault_Handler  py32f002b_it.o
-    0x0800171a   0x0800171a   0x00000002   PAD
-    0x0800171c   0x0800171c   0x00000060   Code   RO          497    .text.IR_RGB_MODE_handle  led.o
-    0x0800177c   0x0800177c   0x000003e0   Code   RO          446    .text.Ir_CommandReceiv  ir.o
-    0x08001b5c   0x08001b5c   0x00000068   Code   RO          438    .text.Ir_ExtiCallback  ir.o
-    0x08001bc4   0x08001bc4   0x00000080   Code   RO          436    .text.Ir_Init       ir.o
-    0x08001c44   0x08001c44   0x0000000c   Code   RO          529    .text.Ir_Power_OFF  task.o
-    0x08001c50   0x08001c50   0x0000000c   Code   RO          531    .text.Ir_Power_ON   task.o
-    0x08001c5c   0x08001c5c   0x00000040   Code   RO          444    .text.Ir_Scan       ir.o
-    0x08001c9c   0x08001c9c   0x0000002c   Code   RO          440    .text.Ir_Time14IRQCallback  ir.o
-    0x08001cc8   0x08001cc8   0x00000070   Code   RO          495    .text.LED_DisplayBatGear_Handle  led.o
-    0x08001d38   0x08001d38   0x00000078   Code   RO          477    .text.LED_Init      led.o
-    0x08001db0   0x08001db0   0x0000002c   Code   RO          471    .text.LED_RGB_HSVdisplay  led.o
-    0x08001ddc   0x08001ddc   0x00000028   Code   RO          489    .text.LED_RGB_Off_Handle  led.o
-    0x08001e04   0x08001e04   0x00000038   Code   RO          493    .text.LED_RGB_On_Handle  led.o
-    0x08001e3c   0x08001e3c   0x0000000c   Code   RO          467    .text.LED_RGB_SetDisplayHSV  led.o
-    0x08001e48   0x08001e48   0x0000000c   Code   RO          465    .text.LED_RGB_SetHSV  led.o
-    0x08001e54   0x08001e54   0x00000028   Code   RO          491    .text.LED_RGB_To_OnStatus  led.o
-    0x08001e7c   0x08001e7c   0x0000005c   Code   RO          475    .text.LED_RGB_W_display  led.o
-    0x08001ed8   0x08001ed8   0x000000f8   Code   RO          473    .text.LED_RGB_display  led.o
-    0x08001fd0   0x08001fd0   0x00000024   Code   RO          487    .text.LED_RGB_init  led.o
-    0x08001ff4   0x08001ff4   0x00000130   Code   RO          479    .text.LED_Scan_Handle  led.o
-    0x08002124   0x08002124   0x00000034   Code   RO          215    .text.LL_ADC_Init   py32f002b_ll_adc.o
-    0x08002158   0x08002158   0x00000028   Code   RO          219    .text.LL_ADC_REG_Init  py32f002b_ll_adc.o
-    0x08002180   0x08002180   0x000000a4   Code   RO          233    .text.LL_EXTI_Init  py32f002b_ll_exti.o
-    0x08002224   0x08002224   0x000000b0   Code   RO          247    .text.LL_GPIO_Init  py32f002b_ll_gpio.o
-    0x080022d4   0x080022d4   0x00000020   Code   RO          311    .text.LL_Init1msTick  py32f002b_ll_utils.o
-    0x080022f4   0x080022f4   0x00000024   Code   RO          365    .text.LL_LPTIM_Init  py32f002b_ll_lptim.o
-    0x08002318   0x08002318   0x00000064   Code   RO          337    .text.LL_RCC_GetSystemClocksFreq  py32f002b_ll_rcc.o
-    0x0800237c   0x0800237c   0x0000000c   Code   RO          315    .text.LL_SetSystemCoreClock  py32f002b_ll_utils.o
-    0x08002388   0x08002388   0x00000054   Code   RO          263    .text.LL_TIM_Init   py32f002b_ll_tim.o
-    0x080023dc   0x080023dc   0x000001f4   Code   RO          267    .text.LL_TIM_OC_Init  py32f002b_ll_tim.o
-    0x080025d0   0x080025d0   0x000000e4   Code   RO          295    .text.LL_USART_Init  py32f002b_ll_usart.o
-    0x080026b4   0x080026b4   0x00000028   Code   RO          313    .text.LL_mDelay     py32f002b_ll_utils.o
-    0x080026dc   0x080026dc   0x0000001c   Code   RO           45    .text.LPTIM1_IRQHandler  py32f002b_it.o
-    0x080026f8   0x080026f8   0x00000048   Code   RO          481    .text.Led_Off       led.o
-    0x08002740   0x08002740   0x000000c0   Code   RO          555    .text.Lptim_Init    time.o
-    0x08002800   0x08002800   0x00000002   Code   RO           27    .text.NMI_Handler   py32f002b_it.o
-    0x08002802   0x08002802   0x00000002   Code   RO           33    .text.PendSV_Handler  py32f002b_it.o
-    0x08002804   0x08002804   0x00000030   Code   RO          683    .text.Queue_Read_Byte  system.o
-    0x08002834   0x08002834   0x00000340   Code   RO          499    .text.RGB_App_Handle  led.o
-    0x08002b74   0x08002b74   0x00000002   Code   RO           31    .text.SVC_Handler   py32f002b_it.o
-    0x08002b76   0x08002b76   0x00000010   Code   RO           35    .text.SysTick_Handler  py32f002b_it.o
-    0x08002b86   0x08002b86   0x00000002   PAD
-    0x08002b88   0x08002b88   0x0000014c   Code   RO          543    .text.Sys_EnterSleep_Handle  task.o
-    0x08002cd4   0x08002cd4   0x00000008   Code   RO          537    .text.Sys_EntreSleep  task.o
-    0x08002cdc   0x08002cdc   0x0000002c   Code   RO          521    .text.Sys_Init      task.o
-    0x08002d08   0x08002d08   0x00000060   Code   RO          525    .text.Sys_Timer1ms_Handle  task.o
-    0x08002d68   0x08002d68   0x0000003c   Code   RO           13    .text.SystemInit    system_py32f002b.o
-    0x08002da4   0x08002da4   0x00000014   Code   RO           41    .text.TIM14_IRQHandler  py32f002b_it.o
-    0x08002db8   0x08002db8   0x0000004c   Code   RO           39    .text.TIM1_BRK_UP_TRG_COM_IRQHandler  py32f002b_it.o
-    0x08002e04   0x08002e04   0x00000064   Code   RO          523    .text.TY_Init       task.o
-    0x08002e68   0x08002e68   0x00000074   Code   RO          527    .text.TY_Updata_Bright  task.o
-    0x08002edc   0x08002edc   0x00000010   Code   RO           37    .text.USART1_IRQHandler  py32f002b_it.o
-    0x08002eec   0x08002eec   0x00000078   Code   RO          652    .text.all_data_update  protocol.o
-    0x08002f64   0x08002f64   0x00000020   Code   RO          639    .text.bt_protocol_init  mcu_api.o
-    0x08002f84   0x08002f84   0x000000b4   Code   RO          637    .text.bt_uart_service  mcu_api.o
-    0x08003038   0x08003038   0x00000050   Code   RO          673    .text.bt_uart_write_frame  system.o
-    0x08003088   0x08003088   0x00000158   Code   RO          679    .text.data_handle   system.o
-    0x080031e0   0x080031e0   0x000003c8   Code   RO          654    .text.dp_download_handle  protocol.o
-    0x080035a8   0x080035a8   0x00000048   Code   RO          675    .text.enable_low_power  system.o
-    0x080035f0   0x080035f0   0x0000001a   Code   RO          671    .text.get_check_sum  system.o
-    0x0800360a   0x0800360a   0x00000004   Code   RO          656    .text.get_download_cmd_total  protocol.o
-    0x0800360e   0x0800360e   0x00000002   PAD
-    0x08003610   0x08003610   0x00000018   Code   RO          681    .text.get_queue_total_data  system.o
-    0x08003628   0x08003628   0x000000b8   Code   RO          469    .text.led_strip_hsv2rgb  led.o
-    0x080036e0   0x080036e0   0x000002d8   Code   RO           61    .text.main          main.o
-    0x080039b8   0x080039b8   0x00000040   Code   RO          619    .text.mcu_dp_bool_update  mcu_api.o
-    0x080039f8   0x080039f8   0x0000003c   Code   RO          625    .text.mcu_dp_enum_update  mcu_api.o
-    0x08003a34   0x08003a34   0x00000040   Code   RO          617    .text.mcu_dp_raw_update  mcu_api.o
-    0x08003a74   0x08003a74   0x0000003c   Code   RO          623    .text.mcu_dp_string_update  mcu_api.o
-    0x08003ab0   0x08003ab0   0x00000054   Code   RO          621    .text.mcu_dp_value_update  mcu_api.o
-    0x08003b04   0x08003b04   0x00000004   Code   RO          629    .text.mcu_get_dp_download_bool  mcu_api.o
-    0x08003b08   0x08003b08   0x00000004   Code   RO          631    .text.mcu_get_dp_download_enum  mcu_api.o
-    0x08003b0c   0x08003b0c   0x00000016   Code   RO          633    .text.mcu_get_dp_download_value  mcu_api.o
-    0x08003b22   0x08003b22   0x00000040   Code   RO          605    .text.my_memcpy     mcu_api.o
-    0x08003b62   0x08003b62   0x0000001c   Code   RO          601    .text.my_strlen     mcu_api.o
-    0x08003b7e   0x08003b7e   0x00000002   PAD
-    0x08003b80   0x08003b80   0x00000018   Code   RO          669    .text.set_bt_uart_buffer  system.o
-    0x08003b98   0x08003b98   0x00000010   Code   RO          667    .text.set_bt_uart_byte  system.o
-    0x08003ba8   0x08003ba8   0x00000034   Code   RO          635    .text.uart_receive_input  mcu_api.o
-    0x08003bdc   0x08003bdc   0x00000018   Code   RO          650    .text.uart_transmit_output  protocol.o
-    0x08003bf4   0x08003bf4   0x0000002e   Code   RO          794    i.__ARM_clz         mf_p.l(depilogue.o)
-    0x08003c22   0x08003c22   0x00000002   PAD
-    0x08003c24   0x08003c24   0x00000008   Code   RO          782    i.__aeabi_errno_addr  mc_p.l(errno.o)
-    0x08003c2c   0x08003c2c   0x0000000e   Code   RO          804    i.__scatterload_copy  mc_p.l(handlers.o)
-    0x08003c3a   0x08003c3a   0x00000002   Code   RO          805    i.__scatterload_null  mc_p.l(handlers.o)
-    0x08003c3c   0x08003c3c   0x0000000e   Code   RO          806    i.__scatterload_zeroinit  mc_p.l(handlers.o)
-    0x08003c4a   0x08003c4a   0x00000081   Data   RO          755    .constdata          mc_p.l(ctype_o.o)
-    0x08003ccb   0x08003ccb   0x00000001   PAD
-    0x08003ccc   0x08003ccc   0x00000004   Data   RO          756    .constdata          mc_p.l(ctype_o.o)
-    0x08003cd0   0x08003cd0   0x00000040   Data   RO           16    .rodata.AHBPrescTable  system_py32f002b.o
-    0x08003d10   0x08003d10   0x00000020   Data   RO           17    .rodata.APBPrescTable  system_py32f002b.o
-    0x08003d30   0x08003d30   0x00000020   Data   RO           18    .rodata.HSIFreqTable  system_py32f002b.o
-    0x08003d50   0x08003d50   0x00000020   Data   RO          202    .rodata._FlashTimmingParam  py32f002b_hal_flash.o
-    0x08003d70   0x08003d70   0x00000020   Data   RO          658    .rodata.download_cmd  protocol.o
-    0x08003d90   0x08003d90   0x0000000f   Data   RO          695    .rodata.str1.1      system.o
-    0x08003d9f   0x08003d9f   0x00000001   PAD
-    0x08003da0   0x08003da0   0x00000020   Data   RO          803    Region$$Table       anon$$obj.o
+    0x08000818   0x08000818   0x0000003c   Code   RO          385    .text.APP_AdcGrpRegularUnitaryConvCompleteCallback  adc.o
+    0x08000854   0x08000854   0x000000a4   Code   RO          490    .text.APP_ConfigPWMChannel  led.o
+    0x080008f8   0x080008f8   0x00000068   Code   RO          488    .text.APP_ConfigTIM1  led.o
+    0x08000960   0x08000960   0x00000074   Code   RO          435    .text.APP_ConfigTIM14  ir.o
+    0x080009d4   0x080009d4   0x000000f8   Code   RO          577    .text.APP_ConfigUsart  usart.o
+    0x08000acc   0x08000acc   0x000000a4   Code   RO          492    .text.APP_DeConfigPWMChannel  led.o
+    0x08000b70   0x08000b70   0x00000002   Code   RO           63    .text.APP_ErrorHandler  main.o
+    0x08000b72   0x08000b72   0x00000032   Code   RO          416    .text.APP_FlashOBProgram  flash.o
+    0x08000ba4   0x08000ba4   0x00000044   Code   RO          460    .text.APP_IwdgConfig  iwdg.o
+    0x08000be8   0x08000be8   0x0000002a   Code   RO          583    .text.APP_UsartIRQCallback  usart.o
+    0x08000c12   0x08000c12   0x00000002   PAD
+    0x08000c14   0x08000c14   0x00000058   Code   RO          387    .text.Adc_BatVolatageCollection_handle  adc.o
+    0x08000c6c   0x08000c6c   0x0000005c   Code   RO          546    .text.Adc_RefVoltage_ON  task.o
+    0x08000cc8   0x08000cc8   0x00000048   Code   RO          540    .text.BLE_Power_OFF  task.o
+    0x08000d10   0x08000d10   0x00000048   Code   RO          542    .text.BLE_Power_ON  task.o
+    0x08000d58   0x08000d58   0x000001d0   Code   RO          389    .text.BatVolatageToPercent_handle  adc.o
+    0x08000f28   0x08000f28   0x00000064   Code   RO          377    .text.Bat_GpioInit  adc.o
+    0x08000f8c   0x08000f8c   0x00000138   Code   RO          391    .text.Bat_StatusCheck_Handle  adc.o
+    0x080010c4   0x080010c4   0x00000002   Code   RO           47    .text.EXTI0_1_IRQHandler  py32f002b_it.o
+    0x080010c6   0x080010c6   0x00000002   PAD
+    0x080010c8   0x080010c8   0x00000014   Code   RO           51    .text.EXTI2_3_IRQHandler  py32f002b_it.o
+    0x080010dc   0x080010dc   0x00000034   Code   RO           49    .text.EXTI4_15_IRQHandler  py32f002b_it.o
+    0x08001110   0x08001110   0x00000030   Code   RO          171    .text.FLASH_WaitForLastOperation  py32f002b_hal_flash.o
+    0x08001140   0x08001140   0x0000006c   Code   RO          412    .text.Flash_Data_Write  flash.o
+    0x080011ac   0x080011ac   0x0000008c   Code   RO          410    .text.Flash_Init_Rdata  flash.o
+    0x08001238   0x08001238   0x000000a8   Code   RO          414    .text.Flash_Write   flash.o
+    0x080012e0   0x080012e0   0x000001f8   Code   RO          173    .text.HAL_FLASH_Erase  py32f002b_hal_flash.o
+    0x080014d8   0x080014d8   0x00000014   Code   RO          161    .text.HAL_FLASH_Lock  py32f002b_hal_flash.o
+    0x080014ec   0x080014ec   0x00000160   Code   RO          187    .text.HAL_FLASH_OBProgram  py32f002b_hal_flash.o
+    0x0800164c   0x0800164c   0x00000010   Code   RO          167    .text.HAL_FLASH_OB_Launch  py32f002b_hal_flash.o
+    0x0800165c   0x0800165c   0x00000018   Code   RO          165    .text.HAL_FLASH_OB_Lock  py32f002b_hal_flash.o
+    0x08001674   0x08001674   0x00000028   Code   RO          163    .text.HAL_FLASH_OB_Unlock  py32f002b_hal_flash.o
+    0x0800169c   0x0800169c   0x00000140   Code   RO          179    .text.HAL_FLASH_Program  py32f002b_hal_flash.o
+    0x080017dc   0x080017dc   0x00000028   Code   RO          159    .text.HAL_FLASH_Unlock  py32f002b_hal_flash.o
+    0x08001804   0x08001804   0x00000008   Code   RO           86    .text.HAL_GetTick   py32f002b_hal.o
+    0x0800180c   0x0800180c   0x00000018   Code   RO           84    .text.HAL_IncTick   py32f002b_hal.o
+    0x08001824   0x08001824   0x00000002   Code   RO           29    .text.HardFault_Handler  py32f002b_it.o
+    0x08001826   0x08001826   0x00000002   PAD
+    0x08001828   0x08001828   0x00000070   Code   RO          504    .text.IR_RGB_MODE_handle  led.o
+    0x08001898   0x08001898   0x00000434   Code   RO          449    .text.Ir_CommandReceiv  ir.o
+    0x08001ccc   0x08001ccc   0x0000007c   Code   RO          439    .text.Ir_ExtiCallback  ir.o
+    0x08001d48   0x08001d48   0x00000080   Code   RO          437    .text.Ir_Init       ir.o
+    0x08001dc8   0x08001dc8   0x0000000c   Code   RO          536    .text.Ir_Power_OFF  task.o
+    0x08001dd4   0x08001dd4   0x0000000c   Code   RO          538    .text.Ir_Power_ON   task.o
+    0x08001de0   0x08001de0   0x0000000c   Code   RO          443    .text.Ir_ReScan     ir.o
+    0x08001dec   0x08001dec   0x00000040   Code   RO          445    .text.Ir_Scan       ir.o
+    0x08001e2c   0x08001e2c   0x00000030   Code   RO          441    .text.Ir_Time14IRQCallback  ir.o
+    0x08001e5c   0x08001e5c   0x00000074   Code   RO          502    .text.LED_DisplayBatGear_Handle  led.o
+    0x08001ed0   0x08001ed0   0x00000078   Code   RO          480    .text.LED_Init      led.o
+    0x08001f48   0x08001f48   0x00000028   Code   RO          474    .text.LED_RGB_HSVdisplay  led.o
+    0x08001f70   0x08001f70   0x00000074   Code   RO          496    .text.LED_RGB_Off_Handle  led.o
+    0x08001fe4   0x08001fe4   0x00000050   Code   RO          500    .text.LED_RGB_On_Handle  led.o
+    0x08002034   0x08002034   0x0000000c   Code   RO          470    .text.LED_RGB_SetDisplayHSV  led.o
+    0x08002040   0x08002040   0x0000001c   Code   RO          468    .text.LED_RGB_SetHSV  led.o
+    0x0800205c   0x0800205c   0x00000034   Code   RO          498    .text.LED_RGB_To_OnStatus  led.o
+    0x08002090   0x08002090   0x00000064   Code   RO          478    .text.LED_RGB_W_display  led.o
+    0x080020f4   0x080020f4   0x00000110   Code   RO          476    .text.LED_RGB_display  led.o
+    0x08002204   0x08002204   0x00000028   Code   RO          494    .text.LED_RGB_init  led.o
+    0x0800222c   0x0800222c   0x00000130   Code   RO          482    .text.LED_Scan_Handle  led.o
+    0x0800235c   0x0800235c   0x00000034   Code   RO          215    .text.LL_ADC_Init   py32f002b_ll_adc.o
+    0x08002390   0x08002390   0x00000028   Code   RO          219    .text.LL_ADC_REG_Init  py32f002b_ll_adc.o
+    0x080023b8   0x080023b8   0x000000a4   Code   RO          233    .text.LL_EXTI_Init  py32f002b_ll_exti.o
+    0x0800245c   0x0800245c   0x000000b0   Code   RO          247    .text.LL_GPIO_Init  py32f002b_ll_gpio.o
+    0x0800250c   0x0800250c   0x00000020   Code   RO          311    .text.LL_Init1msTick  py32f002b_ll_utils.o
+    0x0800252c   0x0800252c   0x00000024   Code   RO          365    .text.LL_LPTIM_Init  py32f002b_ll_lptim.o
+    0x08002550   0x08002550   0x00000064   Code   RO          337    .text.LL_RCC_GetSystemClocksFreq  py32f002b_ll_rcc.o
+    0x080025b4   0x080025b4   0x0000000c   Code   RO          315    .text.LL_SetSystemCoreClock  py32f002b_ll_utils.o
+    0x080025c0   0x080025c0   0x00000054   Code   RO          263    .text.LL_TIM_Init   py32f002b_ll_tim.o
+    0x08002614   0x08002614   0x000001f4   Code   RO          267    .text.LL_TIM_OC_Init  py32f002b_ll_tim.o
+    0x08002808   0x08002808   0x000000e4   Code   RO          295    .text.LL_USART_Init  py32f002b_ll_usart.o
+    0x080028ec   0x080028ec   0x00000028   Code   RO          313    .text.LL_mDelay     py32f002b_ll_utils.o
+    0x08002914   0x08002914   0x0000001c   Code   RO           45    .text.LPTIM1_IRQHandler  py32f002b_it.o
+    0x08002930   0x08002930   0x00000048   Code   RO          486    .text.Led_Off       led.o
+    0x08002978   0x08002978   0x000000c0   Code   RO          562    .text.Lptim_Init    time.o
+    0x08002a38   0x08002a38   0x00000002   Code   RO           27    .text.NMI_Handler   py32f002b_it.o
+    0x08002a3a   0x08002a3a   0x00000002   Code   RO           33    .text.PendSV_Handler  py32f002b_it.o
+    0x08002a3c   0x08002a3c   0x00000030   Code   RO          690    .text.Queue_Read_Byte  system.o
+    0x08002a6c   0x08002a6c   0x00000368   Code   RO          506    .text.RGB_App_Handle  led.o
+    0x08002dd4   0x08002dd4   0x00000002   Code   RO           31    .text.SVC_Handler   py32f002b_it.o
+    0x08002dd6   0x08002dd6   0x00000010   Code   RO           35    .text.SysTick_Handler  py32f002b_it.o
+    0x08002de6   0x08002de6   0x00000002   PAD
+    0x08002de8   0x08002de8   0x000001c0   Code   RO          550    .text.Sys_EnterSleep_Handle  task.o
+    0x08002fa8   0x08002fa8   0x00000008   Code   RO          544    .text.Sys_EntreSleep  task.o
+    0x08002fb0   0x08002fb0   0x0000002c   Code   RO          528    .text.Sys_Init      task.o
+    0x08002fdc   0x08002fdc   0x0000002c   Code   RO          532    .text.Sys_Timer1ms_Handle  task.o
+    0x08003008   0x08003008   0x0000003c   Code   RO           13    .text.SystemInit    system_py32f002b.o
+    0x08003044   0x08003044   0x00000014   Code   RO           41    .text.TIM14_IRQHandler  py32f002b_it.o
+    0x08003058   0x08003058   0x0000004c   Code   RO           39    .text.TIM1_BRK_UP_TRG_COM_IRQHandler  py32f002b_it.o
+    0x080030a4   0x080030a4   0x00000064   Code   RO          530    .text.TY_Init       task.o
+    0x08003108   0x08003108   0x00000074   Code   RO          534    .text.TY_Updata_Bright  task.o
+    0x0800317c   0x0800317c   0x00000010   Code   RO           37    .text.USART1_IRQHandler  py32f002b_it.o
+    0x0800318c   0x0800318c   0x00000078   Code   RO          659    .text.all_data_update  protocol.o
+    0x08003204   0x08003204   0x00000020   Code   RO          646    .text.bt_protocol_init  mcu_api.o
+    0x08003224   0x08003224   0x000000b4   Code   RO          644    .text.bt_uart_service  mcu_api.o
+    0x080032d8   0x080032d8   0x00000050   Code   RO          680    .text.bt_uart_write_frame  system.o
+    0x08003328   0x08003328   0x00000158   Code   RO          686    .text.data_handle   system.o
+    0x08003480   0x08003480   0x000003d4   Code   RO          661    .text.dp_download_handle  protocol.o
+    0x08003854   0x08003854   0x00000048   Code   RO          682    .text.enable_low_power  system.o
+    0x0800389c   0x0800389c   0x0000001a   Code   RO          678    .text.get_check_sum  system.o
+    0x080038b6   0x080038b6   0x00000004   Code   RO          663    .text.get_download_cmd_total  protocol.o
+    0x080038ba   0x080038ba   0x00000002   PAD
+    0x080038bc   0x080038bc   0x00000018   Code   RO          688    .text.get_queue_total_data  system.o
+    0x080038d4   0x080038d4   0x000000b8   Code   RO          472    .text.led_strip_hsv2rgb  led.o
+    0x0800398c   0x0800398c   0x000002f0   Code   RO           61    .text.main          main.o
+    0x08003c7c   0x08003c7c   0x00000040   Code   RO          626    .text.mcu_dp_bool_update  mcu_api.o
+    0x08003cbc   0x08003cbc   0x0000003c   Code   RO          632    .text.mcu_dp_enum_update  mcu_api.o
+    0x08003cf8   0x08003cf8   0x00000040   Code   RO          624    .text.mcu_dp_raw_update  mcu_api.o
+    0x08003d38   0x08003d38   0x0000003c   Code   RO          630    .text.mcu_dp_string_update  mcu_api.o
+    0x08003d74   0x08003d74   0x00000054   Code   RO          628    .text.mcu_dp_value_update  mcu_api.o
+    0x08003dc8   0x08003dc8   0x00000004   Code   RO          636    .text.mcu_get_dp_download_bool  mcu_api.o
+    0x08003dcc   0x08003dcc   0x00000004   Code   RO          638    .text.mcu_get_dp_download_enum  mcu_api.o
+    0x08003dd0   0x08003dd0   0x00000016   Code   RO          640    .text.mcu_get_dp_download_value  mcu_api.o
+    0x08003de6   0x08003de6   0x00000040   Code   RO          612    .text.my_memcpy     mcu_api.o
+    0x08003e26   0x08003e26   0x0000001c   Code   RO          608    .text.my_strlen     mcu_api.o
+    0x08003e42   0x08003e42   0x00000002   PAD
+    0x08003e44   0x08003e44   0x00000018   Code   RO          676    .text.set_bt_uart_buffer  system.o
+    0x08003e5c   0x08003e5c   0x00000010   Code   RO          674    .text.set_bt_uart_byte  system.o
+    0x08003e6c   0x08003e6c   0x00000034   Code   RO          642    .text.uart_receive_input  mcu_api.o
+    0x08003ea0   0x08003ea0   0x00000018   Code   RO          657    .text.uart_transmit_output  protocol.o
+    0x08003eb8   0x08003eb8   0x0000002e   Code   RO          801    i.__ARM_clz         mf_p.l(depilogue.o)
+    0x08003ee6   0x08003ee6   0x00000002   PAD
+    0x08003ee8   0x08003ee8   0x00000008   Code   RO          789    i.__aeabi_errno_addr  mc_p.l(errno.o)
+    0x08003ef0   0x08003ef0   0x0000000e   Code   RO          811    i.__scatterload_copy  mc_p.l(handlers.o)
+    0x08003efe   0x08003efe   0x00000002   Code   RO          812    i.__scatterload_null  mc_p.l(handlers.o)
+    0x08003f00   0x08003f00   0x0000000e   Code   RO          813    i.__scatterload_zeroinit  mc_p.l(handlers.o)
+    0x08003f0e   0x08003f0e   0x00000081   Data   RO          762    .constdata          mc_p.l(ctype_o.o)
+    0x08003f8f   0x08003f8f   0x00000001   PAD
+    0x08003f90   0x08003f90   0x00000004   Data   RO          763    .constdata          mc_p.l(ctype_o.o)
+    0x08003f94   0x08003f94   0x00000040   Data   RO           16    .rodata.AHBPrescTable  system_py32f002b.o
+    0x08003fd4   0x08003fd4   0x00000020   Data   RO           17    .rodata.APBPrescTable  system_py32f002b.o
+    0x08003ff4   0x08003ff4   0x00000020   Data   RO           18    .rodata.HSIFreqTable  system_py32f002b.o
+    0x08004014   0x08004014   0x00000020   Data   RO          202    .rodata._FlashTimmingParam  py32f002b_hal_flash.o
+    0x08004034   0x08004034   0x00000020   Data   RO          665    .rodata.download_cmd  protocol.o
+    0x08004054   0x08004054   0x0000000f   Data   RO          702    .rodata.str1.1      system.o
+    0x08004063   0x08004063   0x00000001   PAD
+    0x08004064   0x08004064   0x00000020   Data   RO          810    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08003dc0, Size: 0x000006b8, Max: 0x00000c00, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08004088, Size: 0x000006c0, Max: 0x00000c00, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08003dc0   0x00000004   Data   RW          785    .data               mc_p.l(errno.o)
-    0x20000004   0x08003dc4   0x00000018   Data   RW          417    .data.FlashData     flash.o
-    0x2000001c   0x08003ddc   0x00000004   Data   RW           15    .data.SystemCoreClock  system_py32f002b.o
-    0x20000020   0x08003de0   0x00000004   Data   RW          117    .data.uwTickFreq    py32f002b_hal.o
-    0x20000024   0x08003de4   0x00000004   PAD
+    0x20000000   0x08004088   0x00000004   Data   RW          792    .data               mc_p.l(errno.o)
+    0x20000004   0x0800408c   0x00000018   Data   RW          418    .data.FlashData     flash.o
+    0x2000001c   0x080040a4   0x00000004   Data   RW           15    .data.SystemCoreClock  system_py32f002b.o
+    0x20000020   0x080040a8   0x00000004   Data   RW          117    .data.uwTickFreq    py32f002b_hal.o
+    0x20000024   0x080040ac   0x00000004   PAD
     0x20000028        -       0x0000000c   Zero   RW          393    .bss.Adc            adc.o
-    0x20000034        -       0x00000008   Zero   RW          394    .bss.Bat            adc.o
-    0x2000003c        -       0x00000002   Zero   RW          398    .bss.Bat_StatusCheck_Handle.filter_cnt  adc.o
-    0x2000003e        -       0x00000002   Zero   RW          399    .bss.Bat_StatusCheck_Handle.filter_cnt1  adc.o
-    0x20000040        -       0x00000002   Zero   RW          400    .bss.Bat_StatusCheck_Handle.low_voltage_cnt  adc.o
-    0x20000042        -       0x00000001   Zero   RW          508    .bss.IR_RGB_MODE_handle.status  led.o
-    0x20000043        -       0x00000001   Zero   RW          509    .bss.IR_RGB_MODE_handle.time_cnt  led.o
-    0x20000044        -       0x0000000c   Zero   RW          448    .bss.Ir             ir.o
-    0x20000050        -       0x00000001   Zero   RW          506    .bss.LED_DisplayBatGear_Handle.charge_flash  led.o
-    0x20000051        -       0x00000001   Zero   RW          507    .bss.LED_DisplayBatGear_Handle.flash_cnt  led.o
-    0x20000052        -       0x00000001   Zero   RW          505    .bss.LED_DisplayBatGear_Handle.low_flash  led.o
-    0x20000053        -       0x00000001   Zero   RW          501    .bss.LED_DisplayTemp  led.o
-    0x20000054        -       0x00000001   Zero   RW          502    .bss.LED_IndicatorOnFlag  led.o
-    0x20000055        -       0x00000001   Zero   RW          504    .bss.LED_Scan_Handle.ScanCount  led.o
-    0x20000056   0x08003de4   0x00000002   PAD
-    0x20000058        -       0x00000040   Zero   RW          503    .bss.RGB            led.o
-    0x20000098        -       0x00000001   Zero   RW          510    .bss.RGB_App_Handle.TY_Reset_Mode_Status  led.o
-    0x20000099   0x08003de4   0x00000003   PAD
-    0x2000009c        -       0x0000000a   Zero   RW          545    .bss.Sys            task.o
-    0x200000a6   0x08003de4   0x00000002   PAD
-    0x200000a8        -       0x00000016   Zero   RW          546    .bss.TY             task.o
-    0x200000be        -       0x000000a7   Zero   RW          691    .bss.bt_queue_buf   system.o
-    0x20000165        -       0x000000f7   Zero   RW          686    .bss.bt_uart_rx_buf  system.o
-    0x2000025c        -       0x00000002   Zero   RW          641    .bss.bt_uart_service.rx_in  mcu_api.o
-    0x2000025e        -       0x0000001f   Zero   RW          685    .bss.bt_uart_tx_buf  system.o
-    0x2000027d        -       0x00000001   Zero   RW          687    .bss.bt_work_state  system.o
-    0x2000027e        -       0x00000001   Zero   RW          397    .bss.gear_changetemp  adc.o
-    0x2000027f        -       0x00000001   Zero   RW          694    .bss.heat_beat_check.mcu_reset_state  system.o
-    0x20000280        -       0x00000001   Zero   RW          396    .bss.last_percent   adc.o
-    0x20000281   0x08003de4   0x00000003   PAD
-    0x20000284        -       0x00000018   Zero   RW          201    .bss.pFlash         py32f002b_hal_flash.o
-    0x2000029c        -       0x0000000a   Zero   RW          395    .bss.percent_temp   adc.o
-    0x200002a6   0x08003de4   0x00000002   PAD
-    0x200002a8        -       0x00000004   Zero   RW          689    .bss.queue_in       system.o
-    0x200002ac        -       0x00000004   Zero   RW          690    .bss.queue_out      system.o
-    0x200002b0        -       0x00000001   Zero   RW          688    .bss.reset_bt_flag  system.o
-    0x200002b1        -       0x00000001   Zero   RW          692    .bss.stop_update_flag  system.o
-    0x200002b2   0x08003de4   0x00000002   PAD
-    0x200002b4        -       0x00000004   Zero   RW          118    .bss.uwTick         py32f002b_hal.o
-    0x200002b8        -       0x00000400   Zero   RW            1    STACK               startup_py32f002bxx.o
+    0x20000034        -       0x0000000a   Zero   RW          394    .bss.Bat            adc.o
+    0x2000003e        -       0x00000002   Zero   RW          397    .bss.BatVolatageToPercent_handle.Recheck_Timer  adc.o
+    0x20000040        -       0x00000002   Zero   RW          399    .bss.Bat_StatusCheck_Handle.filter_cnt  adc.o
+    0x20000042        -       0x00000002   Zero   RW          400    .bss.Bat_StatusCheck_Handle.filter_cnt1  adc.o
+    0x20000044        -       0x00000002   Zero   RW          401    .bss.Bat_StatusCheck_Handle.low_voltage_cnt  adc.o
+    0x20000046        -       0x00000002   Zero   RW          515    .bss.IR_RGB_MODE_handle.status  led.o
+    0x20000048        -       0x0000000c   Zero   RW          451    .bss.Ir             ir.o
+    0x20000054        -       0x00000001   Zero   RW          513    .bss.LED_DisplayBatGear_Handle.charge_flash  led.o
+    0x20000055        -       0x00000001   Zero   RW          514    .bss.LED_DisplayBatGear_Handle.flash_cnt  led.o
+    0x20000056        -       0x00000001   Zero   RW          512    .bss.LED_DisplayBatGear_Handle.low_flash  led.o
+    0x20000057        -       0x00000001   Zero   RW          508    .bss.LED_DisplayTemp  led.o
+    0x20000058        -       0x00000001   Zero   RW          509    .bss.LED_IndicatorOnFlag  led.o
+    0x20000059        -       0x00000001   Zero   RW          511    .bss.LED_Scan_Handle.ScanCount  led.o
+    0x2000005a   0x080040ac   0x00000002   PAD
+    0x2000005c        -       0x00000044   Zero   RW          510    .bss.RGB            led.o
+    0x200000a0        -       0x00000001   Zero   RW          517    .bss.RGB_App_Handle.TY_Reset_Mode_Status  led.o
+    0x200000a1        -       0x00000001   Zero   RW          516    .bss.RGB_App_Handle.Timer5ms  led.o
+    0x200000a2   0x080040ac   0x00000002   PAD
+    0x200000a4        -       0x0000000a   Zero   RW          552    .bss.Sys            task.o
+    0x200000ae   0x080040ac   0x00000002   PAD
+    0x200000b0        -       0x00000016   Zero   RW          553    .bss.TY             task.o
+    0x200000c6        -       0x000000a7   Zero   RW          698    .bss.bt_queue_buf   system.o
+    0x2000016d        -       0x000000f7   Zero   RW          693    .bss.bt_uart_rx_buf  system.o
+    0x20000264        -       0x00000002   Zero   RW          648    .bss.bt_uart_service.rx_in  mcu_api.o
+    0x20000266        -       0x0000001f   Zero   RW          692    .bss.bt_uart_tx_buf  system.o
+    0x20000285        -       0x00000001   Zero   RW          694    .bss.bt_work_state  system.o
+    0x20000286        -       0x00000001   Zero   RW          398    .bss.gear_changetemp  adc.o
+    0x20000287        -       0x00000001   Zero   RW          701    .bss.heat_beat_check.mcu_reset_state  system.o
+    0x20000288        -       0x00000001   Zero   RW          396    .bss.last_percent   adc.o
+    0x20000289   0x080040ac   0x00000003   PAD
+    0x2000028c        -       0x00000018   Zero   RW          201    .bss.pFlash         py32f002b_hal_flash.o
+    0x200002a4        -       0x0000000a   Zero   RW          395    .bss.percent_temp   adc.o
+    0x200002ae   0x080040ac   0x00000002   PAD
+    0x200002b0        -       0x00000004   Zero   RW          696    .bss.queue_in       system.o
+    0x200002b4        -       0x00000004   Zero   RW          697    .bss.queue_out      system.o
+    0x200002b8        -       0x00000001   Zero   RW          695    .bss.reset_bt_flag  system.o
+    0x200002b9        -       0x00000001   Zero   RW          699    .bss.stop_update_flag  system.o
+    0x200002ba   0x080040ac   0x00000002   PAD
+    0x200002bc        -       0x00000004   Zero   RW          118    .bss.uwTick         py32f002b_hal.o
+    0x200002c0        -       0x00000400   Zero   RW            1    STACK               startup_py32f002bxx.o
 
 
 ==============================================================================
@@ -2039,36 +2067,36 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      1256        188          0          0         38       9767   adc.o
-       450         12          0         24          0       3066   flash.o
-      1448        142          0          0         12       8106   ir.o
-        68         20          0          0          0       2108   iwdg.o
-      2576        188          0          0         73      13192   led.o
-       730         48          0          0          0       6082   main.o
-       718         32          0          0          2       6234   mcu_api.o
-      1116        100         32          0          0       7421   protocol.o
-        32          8          0          4          4       4313   py32f002b_hal.o
-      1428        116         32          0         24       9874   py32f002b_hal_flash.o
-       254         44          0          0          0       5261   py32f002b_it.o
-        92          8          0          0          0       4784   py32f002b_ll_adc.o
-       164         12          0          0          0       2588   py32f002b_ll_exti.o
-       176          0          0          0          0       3972   py32f002b_ll_gpio.o
-        36          4          0          0          0       2824   py32f002b_ll_lptim.o
-       100         20          0          0          0       5631   py32f002b_ll_rcc.o
-       584         20          0          0          0      10662   py32f002b_ll_tim.o
-       228          8          0          0          0       4857   py32f002b_ll_usart.o
-        84         12          0          0          0       2918   py32f002b_ll_utils.o
-        28          8        192          0       1024        644   startup_py32f002bxx.o
-       634         76         15          0        457       6136   system.o
-        60         20        128          4          0       1979   system_py32f002b.o
-       960        120          0          0         32       8567   task.o
-       192         28          0          0          0       4502   time.o
-       294         28          0          0          0       7682   usart.o
+      1360        196          0          0         42       9964   adc.o
+       466         16          0         24          0       3165   flash.o
+      1568        128          0          0         12       8393   ir.o
+        68         20          0          0          0       2131   iwdg.o
+      2952        228          0          0         78      13905   led.o
+       754         52          0          0          0       6031   main.o
+       718         32          0          0          2       6258   mcu_api.o
+      1128         84         32          0          0       7495   protocol.o
+        32          8          0          4          4       4336   py32f002b_hal.o
+      1428        116         32          0         24       9897   py32f002b_hal_flash.o
+       254         44          0          0          0       5312   py32f002b_it.o
+        92          8          0          0          0       4807   py32f002b_ll_adc.o
+       164         12          0          0          0       2611   py32f002b_ll_exti.o
+       176          0          0          0          0       3995   py32f002b_ll_gpio.o
+        36          4          0          0          0       2847   py32f002b_ll_lptim.o
+       100         20          0          0          0       5654   py32f002b_ll_rcc.o
+       584         20          0          0          0      10685   py32f002b_ll_tim.o
+       228          8          0          0          0       4880   py32f002b_ll_usart.o
+        84         12          0          0          0       2941   py32f002b_ll_utils.o
+        28          8        192          0       1024        656   startup_py32f002bxx.o
+       634         76         15          0        457       6160   system.o
+        60         20        128          4          0       2002   system_py32f002b.o
+      1020        124          0          0         32       9224   task.o
+       192         28          0          0          0       4525   time.o
+       290         24          0          0          0       7669   usart.o
 
     ----------------------------------------------------------------------
-     13720       1262        432         32       1684     143170   Object Totals
+     14428       1288        432         32       1692     145543   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        12          0          1          0         18          0   (incl. Padding)
+        12          0          1          0         17          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -2124,15 +2152,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     15242       1328        566         36       1684     143602   Grand Totals
-     15242       1328        566         36       1684     143602   ELF Image Totals
-     15242       1328        566         36          0          0   ROM Totals
+     15950       1354        566         36       1692     145975   Grand Totals
+     15950       1354        566         36       1692     145975   ELF Image Totals
+     15950       1354        566         36          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                15808 (  15.44kB)
-    Total RW  Size (RW Data + ZI Data)              1720 (   1.68kB)
-    Total ROM Size (Code + RO Data + RW Data)      15844 (  15.47kB)
+    Total RO  Size (Code + RO Data)                16516 (  16.13kB)
+    Total RW  Size (RW Data + ZI Data)              1728 (   1.69kB)
+    Total ROM Size (Code + RO Data + RW Data)      16552 (  16.16kB)
 
 ==============================================================================
 

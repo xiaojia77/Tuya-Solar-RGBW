@@ -80,55 +80,59 @@ enum RGB_Mode
 
 typedef struct _xRGB
 {
-	uint8_t OnFlag;
+	volatile uint8_t OnFlag;
 
-	uint8_t W_Mode; //白光模式  1 RGBW  RGB模拟
+	volatile uint8_t W_Mode; //白光模式  1 RGBW  RGB模拟
 	
-	uint8_t ResetCnt; //复位计数
-	uint16_t ResetTime; 
+	volatile uint8_t ResetCnt; //复位计数
+	volatile uint16_t ResetTime; 
 	
 	//HSV色彩空间
-	uint16_t h; //色相 0 -360
-	uint16_t s; //饱和 0 - 1000
-	uint16_t v; //明度 0 - 1000
-	uint16_t Setv; //明度 0 - 1000  用来保存亮度的数据
+	volatile uint16_t h; //色相 0 -360
+	volatile uint16_t s; //饱和 0 - 1000
+	volatile uint16_t v; //明度 0 - 1000
+	volatile uint16_t Setv; //明度 0 - 1000  用来保存亮度的数据
 	//W 白光
-	uint16_t w;
-	uint16_t wTemp; //明度 0 - 1000  用来保存亮度的数据	
-	uint16_t wflash;
+	volatile uint16_t w;
+	volatile uint16_t wTemp; //明度 0 - 1000  用来保存亮度的数据	
+	volatile uint16_t wflash;
 	
 	//RGB色彩空间
 	uint8_t Rvalue; 
 	uint8_t Gvalue;
 	uint8_t Bvalue;
 	uint16_t Wvalue;  //白光PWM
+	
 	//实际的PWM值
-	uint16_t Rpwm;
-	uint16_t Gpwm;
-	uint16_t Bpwm;
-	uint16_t Wpwm;  //白光PWM
+	volatile uint16_t Rpwm;
+	volatile uint16_t Gpwm;
+	volatile uint16_t Bpwm;
+	volatile uint16_t Wpwm;  //白光PWM
 	//显示缓存
-	uint16_t Dispaly_h;
-	uint16_t Dispaly_s;
-	uint16_t Dispaly_v;
-	uint16_t Dispaly_w;
+	volatile uint16_t Dispaly_h;
+	volatile uint16_t Dispaly_s;
+	volatile uint16_t Dispaly_v;
+	volatile uint16_t Dispaly_w;
 	//音乐律动步进
 /*	int8_t Music_inc_h;
 	int8_t Music_inc_s;
 	int8_t Music_inc_v;*/
 
-	uint8_t Command; 	 //指令
-	uint8_t LastCommand; //上一指令
+	volatile uint8_t Command; 	 //指令
+	volatile uint8_t LastCommand; //上一指令
 	
-	uint32_t Time;		 //打开的时间
-	uint32_t SetOffTime; //设置关闭的时间 3H 5H
+	volatile uint32_t Time;		 //打开的时间
+	volatile uint32_t SetOffTime; //设置关闭的时间 3H 5H
  	
 	//降序用
-	uint32_t StepTime; //步进时间 	
-	uint32_t StepTimecnt; //步进时间计数
-	uint16_t Powersaving_set_v; //要去的亮度
+	volatile uint32_t StepTime; //步进时间 	
+	volatile uint32_t StepTimecnt; //步进时间计数
+	volatile uint16_t Powersaving_set_v; //要去的亮度
 	
-	uint8_t CurrentGear;
+	volatile uint8_t CurrentGear;
+	
+	//降序时间
+	volatile uint16_t ColourSwTimer;  // LED闪烁计数器
 	
 }xRGB;
 

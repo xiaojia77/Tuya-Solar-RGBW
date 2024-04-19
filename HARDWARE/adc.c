@@ -173,8 +173,8 @@ void APP_AdcConfig(void)
 	
 	Bat.Status  = 0;
 	Bat.Gera = 1;
-	Bat.Percent = 10; //从第五格开始 
-	for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = 10;
+	Bat.Percent = 11; //从第五格开始 
+	for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = 11;
 	
 }
 void APP_AdcGrpRegularUnitaryConvCompleteCallback()
@@ -197,7 +197,6 @@ void Adc_BatVolatageCollection_handle(void) //10MS 采样一次电压
 		Adc.BatVoltage =  Adc.BatVoltage * 1500 * 3 / 4096 ;
 	//	DEBUG_PRINTF("bat = %d \r\n",Adc.BatVoltage);
 	//	PRINT(B,"%d",Adc.BatVoltage);
-		BatVolatageToPercent_handle();
 		Adc.Temp = 0;
 		Adc.TempMax = 0X0000;
 		Adc.TempMin = 0XFFFF;
@@ -212,8 +211,9 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 	uint8_t i;
 	int16_t percent;
 	
-	uint8_t const BatGear_thread[] = {10,20,40,64,81,101};  // percent-voltage   9 -2.65V   30-3.04V   65 - 3.15V  81 - 3.22  93 - 3.27
-	uint8_t const BatGear_threadCharge[] = {0,24,41,66,82,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
+	uint8_t const BatGear_thread[] = {10,20,40,65,85,101};  // percent-voltage   9 -2.65V   30-3.04V   65 - 3.15V  81 - 3.22  93 - 3.27
+	uint8_t const BatGear_threadCharge[] = {0,20,40,65,85,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
+	//uint8_t const BatGear_threadCharge[] = {0,24,41,66,82,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
 	uint32_t add_temp = 0;
 	
 	if( Adc.BatVoltage )
@@ -256,27 +256,45 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 	for(i=0;i<sizeof(percent_temp);i++)add_temp += percent_temp[i];
 	current_percent = add_temp /  sizeof(percent_temp) ;
 	//DEBUG_PRINTF("current_percent = %d last_percent %d \r\n",current_percent,last_percent);
-	if(Bat.Status == BAT_DISCHARGE) //放电状态下的 默认只降不升除非波动超过 10%
-	{
+	
+	if(Bat.Status == BAT_DISCHARGE){
 		//上次的电压大于当前的电压 只降低不升
-		if (last_percent >= current_percent  \
-			|| ( (current_percent  - last_percent >= 6) && (current_percent > last_percent) && (!Bat.ChargeUpFlag) && (!RGB.OnFlag) )  )
-		{
+		if (last_percent > current_percent){ 		
 			Bat.ChargeUpFlag = 0;
 			last_percent = current_percent;
-			if (current_percent == 0)
-						current_percent = 1;
+			if (current_percent == 0)current_percent = 1;		
 			Bat.Percent = current_percent;
 		}
 	}
-	else //只升不降
-	{
-		if (last_percent <= current_percent)
-		{
+	else{ //充电 只升不降
+		if (last_percent < current_percent){		
 			last_percent = current_percent;
 			Bat.Percent = current_percent;
 		}
 	}
+	
+	static uint16_t Recheck_Timer = 0;  
+	if(Bat.ReCheckFlag){	//重新检测电量 ( 给上电的时候 | 异常情况 )
+		if(++Recheck_Timer>20){ // 3秒重新检测
+			Bat.ReCheckFlag = 0;
+			Recheck_Timer = 0;
+		}
+		last_percent = current_percent;
+		Bat.Percent = current_percent ;
+	}
+	else{
+		if( Bat.Status == BAT_DISCHARGE    &&
+			current_percent > last_percent && \
+			(current_percent - last_percent >= 25) )	//放电情况下跳动较大
+		{
+			if(++Recheck_Timer>10){ // 3秒重新检测
+				Recheck_Timer = 0;
+				Bat.ReCheckFlag = 1;	
+			}
+		}
+		else Recheck_Timer = 0;
+	}
+
 	//挡位判断
 	if(Bat.Status == BAT_DISCHARGE)
 	{ 
@@ -288,7 +306,6 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 				break;
 			}
 		}	
-		if(Bat.Gera >= 6)Bat.Gera =  0;
 	}
 	else
 	{
@@ -300,8 +317,8 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 				break;
 			}
 		}	
-		if(Bat.Gera >= 6)Bat.Gera =  0;
 	}
+	if(Bat.Gera >= 6)Bat.Gera =  0;
 	
 	//上报数据
 	if(gear_changetemp != Bat.Gera )
@@ -323,23 +340,19 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 		case BAT_DISCHARGE: //放电处理
 			if(BAT_CDS_RX)
 			{
-				if(++filter_cnt >= 100) // 100MS进一次
+				if(++filter_cnt >= 1000) // 100MS进一次
 				{
 					filter_cnt = 0;
 					Bat.Status = BAT_CHARGE;
-					//开启红外
-					Ir_Power_ON();
-					//开启蓝牙
-					BLE_Power_ON();
+					
+					Ir_Power_ON();//开启红外
+					BLE_Power_ON();//开启蓝牙
+					Sys.LowVoltageFlag = 0;//低压标志位清理
+				
+					if(Bat.SolarMode)LED_RGB_Off_Handle(); //太阳能模式 关灯	
+						 
+					
 					LED_IndicatorOnFlag = 1;
-					//Adc_ReScan();
-					//for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = 0;
-					current_percent = last_percent;
-					Bat.Percent = current_percent;
-					for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = Bat.Percent;
-					Bat.ChargeUpFlag = 1; //只降不升开始
-					if(Bat.SolarMode) //太阳能模式
-						LED_RGB_Off_Handle(); //关灯
 				}
 			}
 			else filter_cnt = 0;
@@ -348,7 +361,7 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 		case BAT_FULL:	
 			if(!BAT_CDS_RX)
 			{
-				if(++filter_cnt >= 100) // 100MS进一次
+				if(++filter_cnt >= 1000) // 100MS进一次
 				{
 					filter_cnt = 0;
 					if(Bat.SolarMode) //太阳能模式
@@ -357,17 +370,18 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 						RGB.Command = RGB.LastCommand;
 					}
 					Bat.Status = BAT_DISCHARGE;
-					//Adc_ReScan();
-					//for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = Bat.Percent;
+					
 					current_percent = last_percent;
 					Bat.Percent = current_percent;
 					for(i=0;i<sizeof(percent_temp);i++) percent_temp[i] = Bat.Percent;
+					Bat.ChargeUpFlag = 1; //只降不升开始
+					break;
 				}
 			}
 			else filter_cnt = 0;
-			if(Bat.Percent > 95) //默认满电
+			if(Adc.BatVoltage > 3600) //满电
 			{
-				if(++filter_cnt1 >= 100) // 10MS进一次
+				if(++filter_cnt1 >= 1000) // 10MS进一次
 				{
 					filter_cnt1 = 0;
 					Bat.Status = BAT_FULL;
@@ -377,28 +391,17 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 			break;
 	}
 	
-	if(Adc.NewBatVoltage < BAT_Protect_Voltage)  //小于2.56
+	if( (Adc.BatVoltage < BAT_Protect_Voltage) && (Bat.Status == BAT_DISCHARGE) )  //小于2.6V
 	{
-		if(++low_voltage_cnt > 100)
+		if(++low_voltage_cnt > 1000)
 		{
-			low_voltage_cnt = 0;
-			Sys.LowVoltageFlag = 1;
-			LED_RGB_Off_Handle();
-		//if( ( Bat.Status == BAT_DISCHARGE ) && ( BAT_CDS_RX == 0) )//Sys.LowVoltageFlag = 1;		
-		//	else 
-			// {
-			// 	Sys.LowVoltageFlag = 0;
-			// 	if(RGB.OnFlag)  //充电保护
-			// 	{
-					
-			// 		//BLE_Power_OFF();
-			// 		//Led_Lmap_Light_OFF();
-			// 		// Led.LampLightDisplayValue = 300;
-			// 	}
-			// }
+			low_voltage_cnt = 0;			//清除计时
+			Sys.LowVoltageFlag = 1;		//低压标志位
+			LED_RGB_Off_Handle();			//关闭RGB灯
+			Ir_Power_OFF();			 			//关闭红外  
+			BLE_Power_OFF();				  //关闭蓝牙
 		}
 	}
 	else low_voltage_cnt = 0;
-	
 
 }

@@ -74,11 +74,11 @@ void TY_Init()
 void Sys_Timer1ms_Handle(void) //1MS
 {
 	//正常进入睡眠
-	if(  ( BAT_CDS_RX == 0 ) && ( ( !RGB.OnFlag && ( Bat.Status == BAT_DISCHARGE ) ) ||  Sys.LowVoltageFlag ) )
+	if( (/*  BAT_CDS_RX == 0 ) && ( ( !RGB.OnFlag && ( Bat.Status == BAT_DISCHARGE ) ) ||*/  Sys.LowVoltageFlag ) )
 	{
 		++Sys.EntreSleepTimeCount;
 		if(Sys.EntreSleepTimeCount > 5000)Sys.EnterSleepFlag = 1;
-		if(Sys.LowVoltageFlag && Sys.EntreSleepTimeCount > 2000)Sys.EnterSleepFlag = 1;
+		//if(Sys.LowVoltageFlag && Sys.EntreSleepTimeCount > 2000)Sys.EnterSleepFlag = 1;
 	}
 	else Sys.EntreSleepTimeCount = 0;
 }
@@ -219,44 +219,58 @@ void Adc_RefVoltage_OFF() //关闭内部通道防止耗电
 // 充电唤醒(外部) 红外唤醒(外部) 蓝牙唤醒(外部)  定时唤醒(内部)
 void Sys_EnterSleep_Handle(void)
 {
+	
+	volatile uint32_t reg;
 	DEBUG_INFO("SysEnterSleep");
 	
-	TAKS_IT_OFF; //关闭任务中断
+	//写flash 保存数据
+	Flash_Data_Write(); 
 	
+	TAKS_IT_OFF; //关闭任务中断
+	Led_Off(); 
+	//使能蓝牙低功耗
+	//enable_low_power();
+	//延迟一会	
+	//LL_mDelay(100);	
+	LL_mDelay(5);	
+	LL_IWDG_ReloadCounter(IWDG); // IWDG 清零
+	
+		//关闭定时器T1
+ 	LL_TIM_DisableCounter(TIM1);
+	LL_TIM_DisableIT_UPDATE(TIM1);
+	APP_DeConfigPWMChannel(); // 关闭PWM输出 睡眠唤醒时要关闭PWM模块 并将IO拉低
+	//关闭定时器T14
+	LL_TIM_DisableCounter(TIM14); 
+	LL_TIM_DisableIT_UPDATE(TIM14);
+	Ir_ReScan();
+	
+	LL_EXTI_ClearFlag(BAT_CDS_EXTI_LINE);	//清除CDS外部中断标志
+	LL_EXTI_ClearFlag(IR_EXTI_LINE);			//清除红外外部中断标志
+	LL_TIM_ClearFlag_UPDATE(TIM14);				//清除定时器标志
+	LL_TIM_ClearFlag_UPDATE(TIM1);
+	
+	
+	
+	//关闭RGB灯
 	LED_RGB_Off_Handle();
 	LL_TIM_OC_SetCompareCH1(TIM1 , RGB_PWM  ); //RED
 	LL_TIM_OC_SetCompareCH2(TIM1 , RGB_PWM  ); //BLUE
-	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM  ); //BLUE
+	LL_TIM_OC_SetCompareCH3(TIM1 , RGB_PWM  ); //BLUE 
 	LL_TIM_OC_SetCompareCH4(TIM1 , RGB_PWM  ); //GREEN
 	RGB.Dispaly_v = 0;
+	//关闭LED指示灯
+	Led_Off(); 
+	//参考电压关闭
+	Adc_RefVoltage_OFF(); 
 	
 	
-	LED_RGB_Off_Handle(); //关闭灯
-	
-	Led_Off(); //关闭LED指示灯
-	
-	Adc_RefVoltage_OFF(); //参考电压关闭
-	
-	//使能蓝牙低功耗
-	//enable_low_power();
-	
-	//延迟一会	
-	LL_mDelay(100);
-	
-	LL_IWDG_ReloadCounter(IWDG); // IWDG 清零
-	
-	Flash_Data_Write(); 
-	
+	//唤醒事件清空
 	Sys.EnterSleepFlag = 0;
+	Sys.EntreSleepTimeCount = 0;
 	Sys.IrWakeUPFlag = 0;
 	Sys.ChargWakeUPFlag = 0;
 	Sys.LPTIMWakeUPFlag = 0;
 	Sys.UartMWakeUPFlag = 0;
-	Sys.EntreSleepTimeCount = 0;
-
-	DEBUG_INFO("IrWakeUPFlag %d",Sys.IrWakeUPFlag);
-	DEBUG_INFO("ChargWakeUPFlag %d",Sys.ChargWakeUPFlag);
-	DEBUG_INFO("UartMWakeUPFlag %d",Sys.UartMWakeUPFlag);
 
 
 	if(Sys.LowVoltageFlag)
@@ -266,18 +280,18 @@ void Sys_EnterSleep_Handle(void)
 		Ir_Power_OFF();	
 		//关闭蓝牙
 		BLE_Power_OFF();
-		//关闭LPTIME唤醒
-		//LL_LPTIM_Disable(LPTIM);
 	}
 	else 
-	{
-		//LL_LPTIM_Enable(LPTIM);
-		
+	{	
 		LL_EXTI_EnableIT(LL_EXTI_LINE_4); //开启串口中断唤醒
 	}
 	
 Resleep:
+	reg = LL_GPIO_ReadInputPort(GPIOA);
+	reg = LL_GPIO_ReadInputPort(GPIOB);
+	reg = LL_GPIO_ReadInputPort(GPIOC);
 	APP_EnterStop();	//进入睡眠
+	__NOP();__NOP();__NOP();	//等待系统稳定
 	if(Sys.LPTIMWakeUPFlag)
 	{
 		DEBUG_INFO("LPTIMWakeUP");
@@ -289,32 +303,35 @@ Resleep:
 			Ir_Power_OFF();	
 			//关闭蓝牙
 			BLE_Power_OFF();	
-			//关闭LPTIME
-			//LL_LPTIM_Disable(LPTIM);
-			//只有CDS可以唤醒
-			DEBUG_INFO("entry shut down mode");
+			DEBUG_INFO("24 shutdown");
 		}
 	}
-	
+	LL_mDelay(1);
 
 	if( !Sys.ChargWakeUPFlag && !Sys.IrWakeUPFlag && !Sys.UartMWakeUPFlag)goto Resleep;
 
-	if(Sys.ChargWakeUPFlag)Sys.SleepTimeCount = 0; // 清空计时
+	//if(Sys.ChargWakeUPFlag)Sys.SleepTimeCount = 0; // 清空计时
 
 	DEBUG_INFO("IrWakeUPFlag %d",Sys.IrWakeUPFlag);
 	DEBUG_INFO("ChargWakeUPFlag %d",Sys.ChargWakeUPFlag);
 	DEBUG_INFO("UartMWakeUPFlag %d",Sys.UartMWakeUPFlag);
+
+	LL_TIM_EnableCounter(TIM1); 	//关闭定时器T1
+	APP_ConfigPWMChannel(); 		
+	
+	LL_TIM_EnableCounter(TIM14); //关闭定时器T4
+	LL_TIM_EnableIT_UPDATE(TIM14);
 	
 	Adc_RefVoltage_ON(); //参考电压开启
+	LL_mDelay(1);
 	
 	// //开启红外
 	// Ir_Power_ON();
 	
 	// //开启蓝牙
 	// BLE_Power_ON();
-	LL_mDelay(1);
 
-	LL_EXTI_DisableIT(LL_EXTI_LINE_4);
+	LL_EXTI_DisableIT(LL_EXTI_LINE_4);	//关闭蓝牙唤醒线
 	
 	//disable_low_power(); //退出蓝牙低功耗
 	
