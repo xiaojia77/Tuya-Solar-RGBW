@@ -73,6 +73,7 @@ void TY_Init()
 }
 void Sys_Timer1ms_Handle(void) //1MS
 {
+	static uint16_t LedOffFilter = 0;
 	//正常进入睡眠
 	if( (/*  BAT_CDS_RX == 0 ) && ( ( !RGB.OnFlag && ( Bat.Status == BAT_DISCHARGE ) ) ||*/  Sys.LowVoltageFlag ) )
 	{
@@ -81,6 +82,16 @@ void Sys_Timer1ms_Handle(void) //1MS
 		//if(Sys.LowVoltageFlag && Sys.EntreSleepTimeCount > 2000)Sys.EnterSleepFlag = 1;
 	}
 	else Sys.EntreSleepTimeCount = 0;
+	
+	if( LED_IndicatorOnFlag && !RGB.OnFlag && ( Bat.Status == BAT_DISCHARGE ) && BAT_CDS_RX == 0)
+	{
+			if(++LedOffFilter > 4000 )
+			{
+					LedOffFilter = 0;
+					LED_IndicatorOnFlag  = 0;
+			}
+	}
+	else LedOffFilter = 0;
 }
 void TY_Updata_Bright()
 {

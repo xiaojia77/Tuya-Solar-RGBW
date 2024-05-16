@@ -635,7 +635,7 @@ void RGB_App_Handle(void) // 5MS时间
 
 			//音乐律动 渐变
 			case TY_MUSIC_MODE:
-				if(++Timer5ms >= 5)
+				if(++Timer5ms >= 7)
 				{
 					Timer5ms = 0;
 					if(RGB.Dispaly_h<RGB.h)RGB.Dispaly_h++;

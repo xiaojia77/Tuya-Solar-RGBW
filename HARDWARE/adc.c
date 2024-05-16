@@ -211,8 +211,8 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 	uint8_t i;
 	int16_t percent;
 	
-	uint8_t const BatGear_thread[] = {10,20,40,65,85,101};  // percent-voltage   9 -2.65V   30-3.04V   65 - 3.15V  81 - 3.22  93 - 3.27
-	uint8_t const BatGear_threadCharge[] = {0,20,40,65,85,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
+	uint8_t const BatGear_thread[] = {10,20,40,60,80,101};  // percent-voltage   9 -2.65V   30-3.04V   65 - 3.15V  81 - 3.22  93 - 3.27
+	uint8_t const BatGear_threadCharge[] = {0,20,40,60,80,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
 	//uint8_t const BatGear_threadCharge[] = {0,24,41,66,82,101};  //percent-voltage  24-3.2V    35-3.35V   65 - 3.45V  76 - 3.5V 
 	uint32_t add_temp = 0;
 	
@@ -229,7 +229,7 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 				else percent = 0;
 			}	
 			else  // 3-3.27
-				percent =  30 + ( Adc.BatVoltage - 3000 )  *70 / 300;
+				percent =  30 + ( Adc.BatVoltage - 3000 )  *70 / 340;
 		}
 		else						//充电百分比
 		{
@@ -283,7 +283,8 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 		Bat.Percent = current_percent ;
 	}
 	else{
-		if( Bat.Status == BAT_DISCHARGE    &&
+		if( ( Bat.Status == BAT_DISCHARGE )   &&
+			  ( Bat.ChargeUpFlag == 0 ) && \
 			current_percent > last_percent && \
 			(current_percent - last_percent >= 25) )	//放电情况下跳动较大
 		{

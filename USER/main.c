@@ -179,6 +179,7 @@ int main(void)
 	//  disable_low_power(); //不使能低功耗 TY发送心跳包
 	
 	Bat.ReCheckFlag = 1;
+	Bat.ChargeUpFlag = 0;
 	
 	TAKS_IT_ON; 	       // 开启任务中断  
 
