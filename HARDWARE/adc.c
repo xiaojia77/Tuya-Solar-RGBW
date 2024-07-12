@@ -4,8 +4,8 @@
 #include "led.h"
 #include "protocol.h"
 
-xADC Adc;
-xBat Bat;
+xADC Adc={0};
+xBat Bat={0};
 
 static uint8_t percent_temp[10]={0,0,0,0,0,0,0,0,0,0};
 static uint8_t last_percent = 0,current_percent = 0 , gear_changetemp = 0;
@@ -153,11 +153,6 @@ void APP_AdcConfig(void)
 		wait_loop_index--;
 	}
 
-	
-	DEBUG_INFO("----------------------------ADC CONFIG----------------------------");
-	DEBUG_INFO("CONFIG:Single_Mode 、Trigg Software 、Data_Overwritten ");
-	DEBUG_INFO(" LL_ADC_CHANNEL_3 (PA6) |  LL_ADC_CHANNEL_7  (PB0)");
-	
 	/* ADC校准 */
 	APP_AdcCalibrate();
 	/* 使能ADC */
@@ -237,12 +232,12 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 			{
 				if(Adc.BatVoltage> 2800)
 				{
-					percent =  ( Adc.BatVoltage - 2800 ) * 60 / 500;
+					percent =  ( Adc.BatVoltage - 2800 ) * 45 / 500;
 				}
 				else percent = 0;
 			}		
 			else 												// 3.33-3.58
-				percent = 60 + ( Adc.BatVoltage - 3300 )  *40 / 300;			
+				percent = 45 + ( Adc.BatVoltage - 3300 )  *55 / 300;			
 		}
 	}
 	else  percent  = 0;

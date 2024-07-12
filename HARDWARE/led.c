@@ -7,7 +7,7 @@
 uint8_t LED_DisplayTemp = 0;   
 uint8_t LED_IndicatorOnFlag = 0;
 
-xRGB RGB;
+xRGB RGB ={0};
 
 void LED_RGB_SetHSV(uint16_t h, uint16_t s, uint16_t v)
 {
@@ -179,15 +179,11 @@ void APP_ConfigTIM1(void) //1500
 	LL_APB1_GRP2_EnableClock(RCC_APBENR2_TIM1EN);
 
 	TIM1CountInit.ClockDivision       = LL_TIM_CLOCKDIVISION_DIV1;	/* 不分频             */
-	TIM1CountInit.CounterMode         = LL_TIM_COUNTERMODE_UP;   	/* 计数模式：向上计数 */
+	TIM1CountInit.CounterMode         = LL_TIM_COUNTERMODE_CENTER_UP; /* 计数模式：中心对齐 */
 	TIM1CountInit.Prescaler           = 0;                   		/* 时钟预分频：8000   */
 	TIM1CountInit.Autoreload          = RGB_PWM;                   	/* 自动重装载值：1000 */
-	TIM1CountInit.RepetitionCounter   = 0;                      	/* 重复计数值：0      */
+	TIM1CountInit.RepetitionCounter   = 1;                      	/* 重复计数值：0      */
 	
-	DEBUG_INFO("----------------------------TIM1 CONFIG----------------------------");
-	DEBUG_INFO("TIM11CountInit.Prescaler:%d",TIM1CountInit.Prescaler );
-	DEBUG_INFO("TIM11CountInit.Autoreload:%d",TIM1CountInit.Autoreload );
-	DEBUG_INFO("NVIC_SetPriority:%d ", 1 );
 	
 	/*初始化TIM1*/
 	LL_TIM_Init(TIM1,&TIM1CountInit);
@@ -443,46 +439,51 @@ void IR_RGB_MODE_handle()
 }
 void RGB_App_Handle(void) // 5MS时间
 {
-	static uint8_t Timer5ms;
-	/*if (++RGB.ResetTime > 800) //4S 后清零  配用计数
-	{
-		RGB.ResetTime = 0;
-		RGB.ResetCnt  = 0;
-	}*/
+	static uint8_t Timer5ms = 0;
+	static uint16_t CurveSwFilter = 0;
 	if (RGB.OnFlag) 
 	{	
 		RGB.Time++; //UINT 5MS
 		RGB.StepTimecnt++; //UINT 5MS
 		if(Bat.SaveEnergMode && Bat.Status == BAT_DISCHARGE) //节能模式 根据时间和电池调节亮度
 		{
-			if (RGB.Time < TIME_10MIN) //nothing
+			if(Adc.BatVoltage >= 3000)
 			{
-				RGB.StepTime = 1 * 1000; // 时间步进间距68S
-				RGB.Powersaving_set_v = 1000;	//测试看有没有降序用 
-			}
-			else if (RGB.Time >= TIME_10MIN && RGB.Time < TIME_1H)
+				if(Bat.Status == BAT_DISCHARGE) //降序
+				{
+					if (RGB.Time < TIME_5MIN) //nothing
+					{
+						RGB.StepTime = 1000; 
+						RGB.Powersaving_set_v = 1000;	
+					}
+					else if (RGB.Time >= TIME_5MIN && RGB.Time < TIME_35MIN)
+					{				
+						RGB.StepTime = 6000;  		// 30MIN = 1800S / 300 = 6S
+						RGB.Powersaving_set_v = 700;	   
+					}
+					else if (RGB.Time >= TIME_35MIN && RGB.Time < TIME_2H35MIN) 
+					{
+						RGB.StepTime = 20600;	   // 2H = 7200S / 350 = 20.6S
+						RGB.Powersaving_set_v = 350;			   
+					}
+					else if (RGB.Time >= TIME_2H35MIN && RGB.Time < TIME_6H) 
+					{
+						RGB.StepTime = 49200;         // 3H25MIN = 12300S / 250 = 49.2S
+						RGB.Powersaving_set_v = 100;			   
+					}
+					CurveSwFilter = 0;
+				}
+			}		
+			else
 			{
-				if (Bat.Percent > 70)
-					RGB.StepTime = ( Bat.Percent - 70 ) * 1000; // 时间步进间距30S
-				else
-					RGB.StepTime = 5 * 1000; //
-				RGB.Powersaving_set_v = 700;	   // 800
+				if(++CurveSwFilter >= 6000)
+				{
+					CurveSwFilter = 6000;
+					RGB.StepTime =  100; // 时间步进间距250S
+					RGB.Powersaving_set_v = 100;	 // 
+				}
 			}
-			else if (RGB.Time >= TIME_1H && RGB.Time < TIME_5H) // 1-2小时 70%-50%
-			{
-				RGB.StepTime = Bat.Percent  * 1000; // 时间步进间距90S
-				RGB.Powersaving_set_v = 500;			   // 600
-			}
-			else if (RGB.Time >= TIME_5H && RGB.Time < TIME_11H)
-			{
-				RGB.StepTime = (Bat.Percent + 20)  * 1000; // 时间步进间距120S
-				RGB.Powersaving_set_v = 200;					// 400
-			}
-			else if (RGB.Time >= TIME_11H)
-			{
-				RGB.StepTime = 250 * 1000;; // 时间步进间距250S
-				RGB.Powersaving_set_v = 100;	 //
-			}
+			
 			if (RGB.Time < TIME_18H)
 			{
 				if (RGB.StepTimecnt > RGB.StepTime)
@@ -490,7 +491,7 @@ void RGB_App_Handle(void) // 5MS时间
 					RGB.StepTimecnt = 0;
 					if(RGB.v > RGB.Powersaving_set_v)
 					{
-						RGB.v -= 5; //降序  0.5%的亮度
+						RGB.v --; //降序  0.5%的亮度
 						
 						TY_Updata_Bright();
 					}
@@ -615,7 +616,7 @@ void RGB_App_Handle(void) // 5MS时间
 			case TY_bright_MODE:	
 				if(RGB.Dispaly_v<RGB.v)RGB.Dispaly_v+=1;
 				if(RGB.Dispaly_v>RGB.v)RGB.Dispaly_v-=1;
-				if(!RGB.wflash && RGB.Time > 75*5)
+				if(!RGB.wflash && RGB.Time > 75*5) //闪烁一下
 				{
 					RGB.wflash = 1;
 					RGB.Dispaly_v = 0;

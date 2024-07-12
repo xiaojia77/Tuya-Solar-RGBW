@@ -139,7 +139,7 @@ int main(void)
 	
 	Bat_GpioInit();     //Bat检测初始化
 	
-    Ir_Init();  	    // 红外初始化
+  Ir_Init();  	    // 红外初始化
 	
 	TY_Init();			// TY初始化
 	
@@ -149,9 +149,8 @@ int main(void)
 	
 	Lptim_Init(); 		// 低功耗定时器唤醒
 	
-	
 	LED_IndicatorOnFlag = 1; //指示灯开启
-
+	
 	Bat.ChargeUpFlag = 0;  //只降不升关闭
 	Sys.LowVoltageFlag = 0;
 	Bat.SolarMode = 1;	   //太阳能功能开启
@@ -159,6 +158,9 @@ int main(void)
 	
 	RGB.W_Mode = 0; //默认RGBW模式	
 	RGB.wflash = 1;	//闪烁关闭
+	
+	RGB.StepTime = 1000; 
+	RGB.Powersaving_set_v = 1000;	
 
 	RGB.CurrentGear = 20; //默认20档
 	
@@ -199,8 +201,7 @@ int main(void)
 //			DEBUG_INFO("Bat.Percent = %d%%  Bat.Voltage %dMV",Bat.Percent,Adc.BatVoltage);
 //			DEBUG_INFO("bt_work_state = %d ",bt_work_state);
 //			DEBUG_INFO("Sys.LowVoltageFlag = %d",Sys.LowVoltageFlag);
-		//	Flash_Data_Write(); 
-			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
+//			DEBUG_PRINTF("---------------------------------------Data Print---------------------------------------\r\n");
 		}
 		//#endif
 		

@@ -38,16 +38,32 @@
 //#define RGB_Light_MAX 2200//最大亮度 PWM
 //#define RGB_Light_MIN 240//最小亮度 PWM
 
-#define RGB_PWM 6000
-#define RGB_Light_MAX 6000 * 0.95//最大亮度 PWM
-#define RGB_Light_MIN 6000 * 0.1//最小亮度 PWM
+//4K 模式下
+#define RGB_PWM 3000
+#define RGB_Light_MAX 3000 * 0.95//最大亮度 PWM
+#define RGB_Light_MIN 3000 * 0.1//最小亮度 PWM
 
-#define TIME_10MIN     10 * 60000 /5
-#define TIME_1H   1  * 60 * 60000 /5
-#define TIME_3H   5  * 60 * 60000 /5 
-#define TIME_5H   5  * 60 * 60000 /5 
-#define TIME_11H  11 * 60 * 60000 /5
-#define	TIME_18H  18 * 60 * 60000 /5
+#define TIME_UINT 1   //单位 1ms单位
+                         // 600000
+#define TIME_3MIN     3 * 60000 /TIME_UINT  
+#define TIME_5MIN     5 * 60000 /TIME_UINT  
+#define TIME_10MIN     10 * 60000 /TIME_UINT  
+#define TIME_30MIN     30 * 60000 /TIME_UINT  
+#define TIME_35MIN     35 * 60000 /TIME_UINT  
+#define TIME_2H35MIN   (120+35) * 60000 /TIME_UINT  
+#define TIME_1H    1  *60 * 60000 /TIME_UINT
+#define TIME_2H    2  *60 * 60000 /TIME_UINT
+#define TIME_3H    3  *60 * 60000 /TIME_UINT 
+#define TIME_4H    4  *60 * 60000 /TIME_UINT 
+#define TIME_5H    5  *60 * 60000 /TIME_UINT
+#define TIME_6H    6  *60 * 60000 /TIME_UINT
+#define TIME_7H    7  *60 * 60000 /TIME_UINT
+#define TIME_8H    8  *60 * 60000 /TIME_UINT 
+#define TIME_9H    9  *60 * 60000 /TIME_UINT
+#define TIME_10H   10 *60 * 60000 /TIME_UINT
+#define TIME_11H   11 *60 * 60000 /TIME_UINT
+#define TIME_12H   12 *60 * 60000 /TIME_UINT
+#define	TIME_18H   18 *60 * 60000 /TIME_UINT
 
 enum RGB_Mode
 {

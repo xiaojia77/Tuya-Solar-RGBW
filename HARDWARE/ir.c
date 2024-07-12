@@ -307,7 +307,7 @@ void Ir_CommandReceiv(uint8_t key)
 						LED_RGB_On_Handle();
 						RGB.Command = IR_WRITE_MODE;
 						RGB.LastCommand = IR_WRITE_MODE;
-						
+						Flash_Data_Write(); 
 						DEBUG_INFO("WRITE_MODE");
 						Ir_ReScan();
 					}
@@ -325,6 +325,7 @@ void Ir_CommandReceiv(uint8_t key)
 						
 						RGB.Command = IR_WRITE_MODE;
 						RGB.LastCommand = IR_WRITE_MODE;
+						Flash_Data_Write(); 
 						DEBUG_INFO("WRITE_MODE Switch");
 						Ir_ReScan();
 					}
@@ -334,6 +335,7 @@ void Ir_CommandReceiv(uint8_t key)
 					LED_RGB_On_Handle();
 					RGB.Command =IR_RGB_MODE;
 					RGB.LastCommand = IR_RGB_MODE;
+					Flash_Data_Write(); 
 					DEBUG_INFO("RGB_MODE");
 					break;
 				case IR_COMMAND_RED_MODE:
@@ -342,6 +344,7 @@ void Ir_CommandReceiv(uint8_t key)
 					LED_RGB_On_Handle();
 					RGB.Command =IR_RED_MODE;
 					RGB.LastCommand = IR_RED_MODE;
+					Flash_Data_Write(); 
 					DEBUG_INFO("RED_MODE");
 					break;
 				case IR_COMMAND_GREEN_MODE:	
@@ -350,6 +353,7 @@ void Ir_CommandReceiv(uint8_t key)
 					LED_RGB_On_Handle();
 					RGB.Command =IR_GREEN_MODE;
 					RGB.LastCommand = IR_GREEN_MODE;
+					Flash_Data_Write(); 
 					DEBUG_INFO("GREEN_MODE");
 					break;
 				case IR_COMMAND_BLUE_MODE:
@@ -358,6 +362,7 @@ void Ir_CommandReceiv(uint8_t key)
 					LED_RGB_On_Handle();
 					RGB.Command =IR_BLUE_MODE;
 					RGB.LastCommand = IR_BLUE_MODE;
+					Flash_Data_Write(); 
 					DEBUG_INFO("IR_BLUE_MODE");
 					break;
 			}

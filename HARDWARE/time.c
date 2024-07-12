@@ -35,7 +35,7 @@ static void APP_ConfigLptim(void)
   LL_LPTIM_Enable(LPTIM);
   
   /* 设置重载值 */
-  LL_LPTIM_SetAutoReload(LPTIM,30718); //7680 2分钟唤醒一次
+  LL_LPTIM_SetAutoReload(LPTIM,20479); //7680 2分钟唤醒一次
   
   /* 启动连续次模式 */
   LL_LPTIM_StartCounter(LPTIM, LL_LPTIM_OPERATING_MODE_CONTINUOUS);
