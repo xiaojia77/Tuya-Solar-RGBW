@@ -46,6 +46,8 @@ typedef struct _TY
 	uint8_t GroupSync;
 	uint8_t ColourData[12];  //12
 	uint8_t SceneData[2];   // 2
+
+	volatile uint8_t BleOnflag;
 }xTY_t;
 
 extern xSys Sys;

@@ -16,7 +16,7 @@
 #define BAT_CDS_EXTI_CONFIG_LINE LL_EXTI_CONFIG_LINE3
 #define BAT_CDS_EXTI_IRQn	EXTI2_3_IRQn
 
-#define BAT_Protect_Voltage 2600 // 低压保护电压
+#define BAT_Protect_Voltage 2650 // 低压保护电压
 
 typedef struct _xADC
 {

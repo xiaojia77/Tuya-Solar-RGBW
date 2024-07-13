@@ -152,6 +152,8 @@ void BLE_Power_OFF()
 	TY_DISANBLE;
 	
 	TY_RST_0;
+
+	TY.BleOnflag = 0;
 		
 }
 void BLE_Power_ON()
@@ -185,6 +187,8 @@ void BLE_Power_ON()
 	TY_ENANBLE;
 	
 	TY_RST_1;
+
+	TY.BleOnflag = 1;
 	
 }
 void Sys_EntreSleep()

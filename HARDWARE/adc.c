@@ -3,6 +3,7 @@
 #include "mcu_api.h"
 #include "led.h"
 #include "protocol.h"
+#include "task.h"
 
 xADC Adc={0};
 xBat Bat={0};
@@ -217,9 +218,9 @@ void BatVolatageToPercent_handle(void) //100ms处理一次  电池可以稍微�
 		{
 			if( Adc.BatVoltage < 3000) // 2.5-3.0
 			{
-				if(Adc.BatVoltage > 2500)
+				if(Adc.BatVoltage > 2600)
 				{
-					percent =  ( Adc.BatVoltage - 2500 ) * 30 / 500 ;
+					percent =  ( Adc.BatVoltage - 2600 ) * 30 / 400 ;
 				}	
 				else percent = 0;
 			}	
@@ -331,6 +332,7 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 	uint8_t i ;
 	static uint16_t filter_cnt= 0,filter_cnt1 = 0; //滤波计数
 	static uint16_t low_voltage_cnt = 0;
+	static uint16_t High_voltage_cnt = 0;
 	switch(Bat.Status)
 	{
 		case BAT_DISCHARGE: //放电处理
@@ -342,7 +344,7 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 					Bat.Status = BAT_CHARGE;
 					
 					Ir_Power_ON();//开启红外
-					BLE_Power_ON();//开启蓝牙
+					if( Adc.BatVoltage > 2650)BLE_Power_ON();//开启蓝牙
 					Sys.LowVoltageFlag = 0;//低压标志位清理
 				
 					if(Bat.SolarMode)LED_RGB_Off_Handle(); //太阳能模式 关灯	
@@ -387,17 +389,30 @@ void Bat_StatusCheck_Handle(void) // 10MS 定时器
 			break;
 	}
 	
-	if( (Adc.BatVoltage < BAT_Protect_Voltage) && (Bat.Status == BAT_DISCHARGE) )  //小于2.6V
+	if( (Adc.BatVoltage < BAT_Protect_Voltage)  )  //小于2.6V
 	{
 		if(++low_voltage_cnt > 1000)
 		{
 			low_voltage_cnt = 0;			//清除计时
-			Sys.LowVoltageFlag = 1;		//低压标志位
-			LED_RGB_Off_Handle();			//关闭RGB灯
-			Ir_Power_OFF();			 			//关闭红外  
+			if((Bat.Status == BAT_DISCHARGE))
+			{	
+				Sys.LowVoltageFlag = 1;	
+				Ir_Power_OFF();			 			//关闭红外 
+			}
+			LED_RGB_Off_Handle();			//关闭RGB灯 
 			BLE_Power_OFF();				  //关闭蓝牙
 		}
 	}
 	else low_voltage_cnt = 0;
+
+	if( Adc.BatVoltage > 2850 && (TY.BleOnflag == 0))
+	{
+		if(++High_voltage_cnt > 2000)
+		{
+			High_voltage_cnt = 0;
+			BLE_Power_ON();
+		}
+	}
+	else High_voltage_cnt = 0;
 
 }
