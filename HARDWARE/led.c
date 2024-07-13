@@ -461,15 +461,25 @@ void RGB_App_Handle(void) // 5MS时间
 						RGB.StepTime = 6000;  		// 30MIN = 1800S / 300 = 6S
 						RGB.Powersaving_set_v = 700;	   
 					}
-					else if (RGB.Time >= TIME_35MIN && RGB.Time < TIME_2H35MIN) 
+					else if (RGB.Time >= TIME_35MIN && RGB.Time < TIME_1H) 
 					{
-						RGB.StepTime = 20600;	   // 2H = 7200S / 350 = 20.6S
+						RGB.StepTime = 7000;	   // 25min = 1500S / 200 = 7S
+						RGB.Powersaving_set_v = 500;			   
+					}
+					else if (RGB.Time >= TIME_1H && RGB.Time < TIME_4H) 
+					{
+						RGB.StepTime = 72000;	   // 3H = 10800 / 150 = 72S
 						RGB.Powersaving_set_v = 350;			   
 					}
-					else if (RGB.Time >= TIME_2H35MIN && RGB.Time < TIME_6H) 
+					else if (RGB.Time >= TIME_4H && RGB.Time < TIME_7H) 
 					{
-						RGB.StepTime = 49200;         // 3H25MIN = 12300S / 250 = 49.2S
+						RGB.StepTime = 43200;    // 3H = 10800 / 250 = 43.2S
 						RGB.Powersaving_set_v = 100;			   
+					}
+					else
+					{
+						RGB.StepTime = 43200;    // 4H = 10800 / 250 = 43.2S
+						RGB.Powersaving_set_v = 100;	
 					}
 					CurveSwFilter = 0;
 				}
